@@ -1,0 +1,45 @@
+### IntelliJ ###
+/.idea/
+/.idea_modules/
+/out/
+*.iml
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### Eclipse ###
+.metadata
+/bin/
+/tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders
+
+### Log files ###
+/logs/
+/log/
+*.log
+
+### Package files ###
+*.jar
+*.war
+*.ear
+
+### Database files ###
+*.bin
+
+### Other files ###
+/debug/
+/release/
+/target/
+
+!.gitignore
