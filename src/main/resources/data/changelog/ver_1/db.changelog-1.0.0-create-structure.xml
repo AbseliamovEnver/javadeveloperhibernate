@@ -31,6 +31,22 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="create_table_movie_genre" author="enver">
+        <createTable tableName="movie_genres">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="movie_id"
+                             referencedTableName="movies" referencedColumnNames="id"/>
+            </column>
+            <column name="genre_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="genre_id"
+                             referencedTableName="genres" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
     <changeSet id="create_table_seat_types" author="enver">
         <createTable tableName="seat_types">
             <column name="id" type="bigint" autoIncrement="true">

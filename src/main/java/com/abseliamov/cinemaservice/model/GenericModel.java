@@ -1,7 +1,15 @@
 package com.abseliamov.cinemaservice.model;
 
+import javax.persistence.*;
+
+@MappedSuperclass
 public class GenericModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false, updatable = false)
     private long id;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
     public GenericModel() {

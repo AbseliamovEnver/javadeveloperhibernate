@@ -1,28 +1,54 @@
 package com.abseliamov.cinemaservice.model;
 
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
+@Entity
+@Table(name = "viewers")
 public class Viewer extends GenericModel {
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "password", nullable = false)
     private String password;
-    private Role role;
+
+    @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "viewer", fetch = FetchType.EAGER)
+    private List<Ticket> tickets;
 
     public Viewer() {
     }
 
-    public Viewer(long id, String name, String lastName, LocalDate birthday) {
-        super(id, name);
+    public Viewer(long id, String firstName, String lastName, LocalDate birthday) {
+        super(id);
+        this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
     }
 
-    public Viewer(long id, String name, String lastName, String password, Role role, LocalDate birthday) {
+    public Viewer(long id, String name, String lastName, String password, LocalDate birthday, Role role) {
         super(id, name);
         this.lastName = lastName;
         this.password = password;
-        this.role = role;
         this.birthday = birthday;
+        this.role = role;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -57,27 +83,12 @@ public class Viewer extends GenericModel {
         this.birthday = birthday;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Viewer viewer = (Viewer) o;
-
-        if (lastName != null ? !lastName.equals(viewer.lastName) : viewer.lastName != null) return false;
-        if (password != null ? !password.equals(viewer.password) : viewer.password != null) return false;
-        if (role != viewer.role) return false;
-        return birthday != null ? birthday.equals(viewer.birthday) : viewer.birthday == null;
-
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    @Override
-    public int hashCode() {
-        int result = lastName != null ? lastName.hashCode() : 0;
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
-        return result;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override

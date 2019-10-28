@@ -10,6 +10,7 @@
 
     <properties>
         <apache-commons.version>3.5</apache-commons.version>
+        <hibernate-core.version>5.4.7.Final</hibernate-core.version>
         <liquibase-core.version>3.8.0</liquibase-core.version>
         <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
         <guava.version>18.0</guava.version>
@@ -23,6 +24,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${apache-commons.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
         </dependency>
 
         <dependency>

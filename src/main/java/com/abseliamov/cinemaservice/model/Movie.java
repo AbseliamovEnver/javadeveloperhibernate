@@ -1,28 +1,58 @@
 package com.abseliamov.cinemaservice.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
+@Entity
+@Table(name = "movies")
 public class Movie extends GenericModel {
-    private Genre genre;
+
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "cost", nullable = false)
     private BigDecimal cost;
 
-    public Movie(long id, String name, Genre genre, BigDecimal cost) {
-        super(id, name);
-        this.genre = genre;
+    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
+    private List<Ticket> tickets;
+
+    @ManyToMany
+    @JoinTable(name = "movie_genres",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genre> genres;
+
+    public Movie() {
+    }
+
+    public Movie(long id, String title, List<Genre> genres, BigDecimal cost) {
+        super(id);
+        this.title = title;
+        this.genres = genres;
         this.cost = cost;
     }
 
-    public Movie(long id, String name, BigDecimal totalPrice) {
-        super(id, name);
+    public Movie(long id, String title, BigDecimal totalPrice) {
+        super(id);
+        this.title = title;
         this.cost = totalPrice;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public String getTitle() {
+        return title;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 
     public BigDecimal getCost() {
@@ -33,20 +63,12 @@ public class Movie extends GenericModel {
         this.cost = cost;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Movie movie = (Movie) o;
-
-        return genre != null ? genre.equals(movie.genre) : movie.genre == null;
-
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    @Override
-    public int hashCode() {
-        return genre != null ? genre.hashCode() : 0;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override

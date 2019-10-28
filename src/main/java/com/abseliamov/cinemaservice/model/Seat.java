@@ -1,8 +1,23 @@
 package com.abseliamov.cinemaservice.model;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "seats")
 public class Seat extends GenericModel {
+
+    @Enumerated(EnumType.STRING)
     private SeatTypes seatTypes;
+
+    @Column(name = "number", nullable = false)
     private long number;
+
+    @OneToMany(mappedBy = "seat", fetch = FetchType.EAGER)
+    private List<Ticket> tickets;
+
+    public Seat() {
+    }
 
     public Seat(long id, SeatTypes seatTypes, long number) {
         super(id);
@@ -26,23 +41,12 @@ public class Seat extends GenericModel {
         this.number = number;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Seat seat = (Seat) o;
-
-        if (number != seat.number) return false;
-        return seatTypes == seat.seatTypes;
-
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    @Override
-    public int hashCode() {
-        int result = seatTypes != null ? seatTypes.hashCode() : 0;
-        result = 31 * result + (int) (number ^ (number >>> 32));
-        return result;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override

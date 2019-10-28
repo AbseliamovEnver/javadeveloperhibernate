@@ -1,14 +1,33 @@
 package com.abseliamov.cinemaservice.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Entity
+@Table(name = "tickets")
 public class Ticket extends GenericModel {
+
+    @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "movie_id")
     private Movie movie;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "seat_id")
     private Seat seat;
+
+    @Column(name = "price", nullable = false)
     private double price;
+
+    @Column(name = "buy_status", nullable = false)
     private long status;
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "viewer_id")
+    private Viewer viewer;
 
     public Ticket(long id, LocalDateTime dateTime, Movie movie, Seat seat, double price, long status) {
         super(id);
@@ -60,39 +79,11 @@ public class Ticket extends GenericModel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Ticket ticket = (Ticket) o;
-
-        if (Double.compare(ticket.price, price) != 0) return false;
-        if (status != ticket.status) return false;
-        if (movie != null ? !movie.equals(ticket.movie) : ticket.movie != null) return false;
-        if (dateTime != null ? !dateTime.equals(ticket.dateTime) : ticket.dateTime != null) return false;
-        return seat != null ? seat.equals(ticket.seat) : ticket.seat == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = movie != null ? movie.hashCode() : 0;
-        result = 31 * result + (dateTime != null ? dateTime.hashCode() : 0);
-        result = 31 * result + (seat != null ? seat.hashCode() : 0);
-        temp = Double.doubleToLongBits(price);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (int) (status ^ (status >>> 32));
-        return result;
-    }
-
-    @Override
     public String toString() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         return String.format("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-1s\n%1s",
-                " ", getId(), getMovie().getName(), getMovie().getGenre().getName(),
+                " ", getId(), getMovie().getName(), getMovie().getGenres().get(1).getName(),
                 getDateTime().toLocalDate().format(dateFormatter), getDateTime().toLocalTime().format(timeFormatter),
                 getSeat().getSeatTypes(), getSeat().getNumber(), getPrice(),
                 "|-------|------------------------------|-------------------|------------|----------" +
