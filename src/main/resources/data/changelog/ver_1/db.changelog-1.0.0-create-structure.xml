@@ -4,6 +4,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
     <changeSet id="create_table_genres" author="enver">
         <createTable tableName="genres">
             <column name="id" type="bigint" autoIncrement="true">
@@ -23,19 +24,12 @@
             <column name="title" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="genre_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="genre_id"
-                             referencedTableName="genres" referencedColumnNames="id"/>
-            </column>
             <column name="cost" type="decimal(5,2)" defaultValue="0.00"/>
         </createTable>
     </changeSet>
 
     <changeSet id="create_table_movie_genre" author="enver">
         <createTable tableName="movie_genres">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
             <column name="movie_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="movie_id"
                              referencedTableName="movies" referencedColumnNames="id"/>
@@ -123,11 +117,11 @@
                 <constraints nullable="false"/>
             </column>
             <column name="movie_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="movie_id"
+                <constraints nullable="false" foreignKeyName="fk_movie_id"
                              referencedTableName="movies" referencedColumnNames="id"/>
             </column>
             <column name="seat_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="seat_id"
+                <constraints nullable="false" foreignKeyName="fk_seat_id"
                              referencedTableName="seats" referencedColumnNames="id"/>
             </column>
         </createTable>

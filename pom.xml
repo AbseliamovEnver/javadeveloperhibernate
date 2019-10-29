@@ -3,9 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.abseliamov</groupId>
-    <artifactId>javadeveloperhibernate</artifactId>
+    <artifactId>javadeveloperjdbc</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -13,10 +12,14 @@
         <hibernate-core.version>5.4.7.Final</hibernate-core.version>
         <liquibase-core.version>3.8.0</liquibase-core.version>
         <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
+        <java.version>8</java.version>
         <guava.version>18.0</guava.version>
+        <slf4j-log4j12.version>1.7.28</slf4j-log4j12.version>
 
         <liquibase-maven-plugin.version>3.8.0</liquibase-maven-plugin.version>
-        <liquibase.createtables>data/changelog/db.changelog-master.xml</liquibase.createtables>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <liquibase.changeLogFile>data/changelog/db.changelog-master.xml</liquibase.changeLogFile>
+        <propertyFile>src/main/resources/liquibase.properties</propertyFile>
     </properties>
 
     <dependencies>
@@ -49,6 +52,15 @@
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-log4j12.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
     <profiles>
@@ -69,9 +81,9 @@
                                     <goal>update</goal>
                                 </goals>
                                 <configuration>
-                                    <changeLogFile>${liquibase.createtables}</changeLogFile>
+                                    <changeLogFile>${liquibase.changeLogFile}</changeLogFile>
                                     <propertyFileWillOverride>true</propertyFileWillOverride>
-                                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                                    <propertyFile>${propertyFile}</propertyFile>
                                 </configuration>
                             </execution>
                         </executions>
@@ -86,9 +98,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 
@@ -97,9 +110,9 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase-maven-plugin.version}</version>
                 <configuration>
-                    <changeLogFile>${liquibase.createtables}</changeLogFile>
+                    <changeLogFile>${liquibase.changeLogFile}</changeLogFile>
                     <propertyFileWillOverride>true</propertyFileWillOverride>
-                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                    <propertyFile>${propertyFile}</propertyFile>
                 </configuration>
                 <executions>
                     <execution>
