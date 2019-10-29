@@ -38,15 +38,15 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
     }
 
     @Override
-    public void add(Ticket ticket) {
+    public void add(Ticket entity) {
         try (PreparedStatement statement = connection
                 .prepareStatement("INSERT INTO " + Injector.TICKETS_TABLE + " VALUES (?,?,?,?,?,?);")) {
-            statement.setLong(1, ticket.getId());
-            statement.setTimestamp(2, Timestamp.valueOf(ticket.getDateTime()));
-            statement.setBigDecimal(3, BigDecimal.valueOf(ticket.getPrice()));
-            statement.setLong(4, ticket.getStatus());
-            statement.setLong(5, ticket.getMovie().getId());
-            statement.setLong(6, ticket.getSeat().getId());
+            statement.setLong(1, entity.getId());
+            statement.setTimestamp(2, Timestamp.valueOf(entity.getDateTime()));
+            statement.setBigDecimal(3, BigDecimal.valueOf(entity.getPrice()));
+            statement.setLong(4, entity.getStatus());
+            statement.setLong(5, entity.getMovie().getId());
+            statement.setLong(6, entity.getSeat().getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);

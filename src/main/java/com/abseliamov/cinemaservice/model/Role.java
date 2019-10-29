@@ -3,7 +3,7 @@ package com.abseliamov.cinemaservice.model;
 public enum Role {
     ADMIN(1),
     USER(2),
-    GUEST(3);
+    ANONYMOUS(3);
 
     private long id;
 

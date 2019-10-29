@@ -2,74 +2,106 @@ package com.abseliamov.cinemaservice.dao;
 
 import com.abseliamov.cinemaservice.exceptions.ConnectionException;
 import com.abseliamov.cinemaservice.model.GenericModel;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.slf4j.LoggerFactory;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractDao<T extends GenericModel> implements GenericDao<T> {
-    private static final String ERROR_MESSAGE = "Cannot connect to database. In table: ";
-    private String tableName;
-    private Connection connection;
+    private static final String ERROR_MESSAGE = "Cannot connect to database. ";
+    private org.slf4j.Logger logger = LoggerFactory.getLogger(AbstractDao.class);
+    private String entityName;
+    protected SessionFactory sessionFactory;
+    private Class<T> clazz;
 
-    public AbstractDao(Connection connection, String tableName) {
-        this.connection = connection;
-        this.tableName = tableName;
+    public AbstractDao(String entityName, SessionFactory sessionFactory, Class<T> clazz) {
+        this.entityName = entityName;
+        this.sessionFactory = sessionFactory;
+        this.clazz = clazz;
     }
 
-    public void add(T item) {
-        try (PreparedStatement statement = connection
-                .prepareStatement("INSERT INTO " + tableName + " (name)VALUES (?);")) {
-            statement.setString(1, item.getName());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + tableName + ". " + e);
-            throw new ConnectionException(ERROR_MESSAGE, e);
+    public void add(T entity) {
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.beginTransaction();
+                session.save(entity);
+                session.getTransaction().commit();
+            } catch (HibernateException e) {
+                session.getTransaction().rollback();
+                logger.error(ERROR_MESSAGE, e);
+                throw new ConnectionException(ERROR_MESSAGE, e);
+            }
         }
     }
 
     public T getById(long id) {
-        T result = null;
-        try (PreparedStatement statement = connection
-                .prepareStatement("SELECT * FROM " + tableName + " WHERE id = ?;")) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                result = convertToEntity(resultSet);
+        T entity;
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.beginTransaction();
+                entity = session.get(clazz, id);
+                session.getTransaction().commit();
+            } catch (HibernateException e) {
+                session.getTransaction().rollback();
+                logger.error(ERROR_MESSAGE, e);
+                throw new ConnectionException(ERROR_MESSAGE, e);
             }
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + tableName + ". " + e);
-            throw new ConnectionException(ERROR_MESSAGE, e);
         }
-        return result;
+        return entity;
     }
 
     public List<T> getAll() {
-        List<T> result = new ArrayList<>();
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName)) {
-            while (resultSet.next()) {
-                T entity = convertToEntity(resultSet);
-                result.add(entity);
+        List<T> entities;
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.beginTransaction();
+                entities = session.createQuery("FROM " + entityName).list();
+                session.getTransaction().commit();
+            } catch (HibernateException e) {
+                session.getTransaction().rollback();
+                logger.error(ERROR_MESSAGE, e);
+                throw new ConnectionException(ERROR_MESSAGE, e);
             }
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + tableName + ". " + e);
-            throw new ConnectionException(ERROR_MESSAGE, e);
+        }
+        return entities;
+    }
+
+    public boolean update(long id, T entity) {
+        boolean result;
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.beginTransaction();
+                T entityOld = getById(id);
+                entity.setId(entityOld.getId());
+                session.update(entity);
+                session.getTransaction().commit();
+                result = true;
+            } catch (HibernateException e) {
+                session.getTransaction().rollback();
+                logger.error(ERROR_MESSAGE, e);
+                throw new ConnectionException(ERROR_MESSAGE, e);
+            }
         }
         return result;
     }
 
     public boolean delete(long id) {
-        try (PreparedStatement statement = connection
-                .prepareStatement("DELETE FROM " + tableName + " WHERE id = ?;")) {
-            statement.setLong(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + tableName + ". " + e);
-            throw new ConnectionException(ERROR_MESSAGE, e);
+        boolean result;
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.beginTransaction();
+                T entity = getById(id);
+                session.delete(entity);
+                session.getTransaction().commit();
+                result = true;
+            } catch (HibernateException e) {
+                session.getTransaction().rollback();
+                logger.error(ERROR_MESSAGE, e);
+                throw new ConnectionException(ERROR_MESSAGE, e);
+            }
         }
-        return true;
+        return result;
     }
-
-    public abstract T convertToEntity(ResultSet resultSet) throws SQLException;
 }

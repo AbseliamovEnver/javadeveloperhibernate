@@ -22,15 +22,15 @@ public class ViewerDaoImpl extends AbstractDao<Viewer> {
     }
 
     @Override
-    public void add(Viewer viewer) {
+    public void add(Viewer entity) {
         try (PreparedStatement statement = connection
                 .prepareStatement("INSERT INTO viewers VALUES(?,?,?,?,?,?)")) {
-            statement.setLong(1, viewer.getId());
-            statement.setString(2, viewer.getName());
-            statement.setString(3, viewer.getLastName());
-            statement.setString(4, viewer.getPassword());
-            statement.setDate(5, Date.valueOf(viewer.getBirthday()));
-            statement.setLong(6, viewer.getRole().getId());
+            statement.setLong(1, entity.getId());
+            statement.setString(2, entity.getName());
+            statement.setString(3, entity.getLastName());
+            statement.setString(4, entity.getPassword());
+            statement.setDate(5, Date.valueOf(entity.getBirthday()));
+            statement.setLong(6, entity.getRole().getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);

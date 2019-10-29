@@ -28,15 +28,15 @@ public class SeatDaoImpl extends AbstractDao<Seat> {
     }
 
     @Override
-    public void add(Seat seat){
+    public void add(Seat entity){
         try (PreparedStatement statement = connection
                 .prepareStatement("INSERT INTO seats VALUES(?,?,?)")) {
-            statement.setLong(1, seat.getId());
-            statement.setLong(2, seat.getNumber());
-            statement.setLong(3, seat.getSeatTypes().getId());
+            statement.setLong(1, entity.getId());
+            statement.setLong(2, entity.getNumber());
+            statement.setLong(3, entity.getSeatTypes().getId());
             statement.executeUpdate();
-            System.out.println("Seat number = " + seat.getNumber() +
-                    " and type " + seat.getSeatTypes() + " successfully added.");
+            System.out.println("Seat number = " + entity.getNumber() +
+                    " and type " + entity.getSeatTypes() + " successfully added.");
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);
         }
