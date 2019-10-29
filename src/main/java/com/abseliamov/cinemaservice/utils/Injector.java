@@ -6,10 +6,13 @@ import com.abseliamov.cinemaservice.service.*;
 import com.abseliamov.cinemaservice.view.AdminMenu;
 import com.abseliamov.cinemaservice.view.AuthorizationMenu;
 import com.abseliamov.cinemaservice.view.ViewerMenu;
+import org.hibernate.SessionFactory;
 
 import java.sql.Connection;
 
 public class Injector {
+
+    private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     private static Connection connection = ConnectionUtil.getConnection();
     private static CurrentViewer currentViewer = CurrentViewer.getInstance();
