@@ -6,10 +6,15 @@ import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "tickets")
+@AttributeOverride(name = "id", column = @Column(name = "ticket_id"))
 public class Ticket extends GenericModel {
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "viewer_id", nullable = false)
+    private Viewer viewer;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "movie_id")
@@ -22,28 +27,17 @@ public class Ticket extends GenericModel {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "buy_status", nullable = false)
-    private long status;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "viewer_id")
-    private Viewer viewer;
+    public Ticket() {
+    }
 
-    public Ticket(long id, LocalDateTime dateTime, Movie movie, Seat seat, double price, long status) {
+    public Ticket(long id, LocalDateTime dateTime, Movie movie, Seat seat, double price, Viewer viewer) {
         super(id);
         this.dateTime = dateTime;
+        this.viewer = viewer;
         this.movie = movie;
         this.seat = seat;
         this.price = price;
-        this.status = status;
-    }
-
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public void setMovie(Movie movie) {
-        this.movie = movie;
     }
 
     public LocalDateTime getDateTime() {
@@ -52,6 +46,22 @@ public class Ticket extends GenericModel {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public Viewer getViewer() {
+        return viewer;
+    }
+
+    public void setViewer(Viewer viewer) {
+        this.viewer = viewer;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
     public Seat getSeat() {
@@ -68,14 +78,6 @@ public class Ticket extends GenericModel {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public long getStatus() {
-        return status;
-    }
-
-    public void setStatus(long status) {
-        this.status = status;
     }
 
     @Override

@@ -5,6 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "seats")
+@AttributeOverride(name = "id", column = @Column(name = "seat_id"))
 public class Seat extends GenericModel {
 
     @Enumerated(EnumType.STRING)

@@ -5,6 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "genres")
+@AttributeOverride(name = "id", column = @Column(name = "genre_id"))
 public class Genre extends GenericModel {
 
     @ManyToMany

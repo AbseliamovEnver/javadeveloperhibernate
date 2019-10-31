@@ -1,10 +1,18 @@
 package com.abseliamov.cinemaservice.model;
 
-public enum Role {
-    ADMIN(1),
-    USER(2),
-    ANONYMOUS(3);
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+@Table(name = "roles")
+public enum Role {
+    ANONYMOUS(1),
+    USER(2),
+    ADMIN(3);
+
+    @Column(name = "id")
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private long id;
 
     Role(long id) {
@@ -14,8 +22,6 @@ public enum Role {
     public long getId() {
         return id;
     }
-
-
 
     @Override
     public String toString() {

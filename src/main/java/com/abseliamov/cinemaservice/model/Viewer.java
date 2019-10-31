@@ -6,9 +6,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "viewers")
+@AttributeOverride(name = "id", column = @Column(name = "viewer_id"))
+@AttributeOverride(name = "name", column = @Column(name = "first_name"))
 public class Viewer extends GenericModel {
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
@@ -19,36 +19,28 @@ public class Viewer extends GenericModel {
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "role_id", nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "viewer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "viewer", fetch = FetchType.LAZY)
     private List<Ticket> tickets;
 
     public Viewer() {
     }
 
     public Viewer(long id, String firstName, String lastName, LocalDate birthday) {
-        super(id);
-        this.firstName = firstName;
+        super(id, firstName);
         this.lastName = lastName;
         this.birthday = birthday;
     }
 
-    public Viewer(long id, String name, String lastName, String password, LocalDate birthday, Role role) {
-        super(id, name);
+    public Viewer(long id, String firstName, String lastName, String password, LocalDate birthday, Role role) {
+        super(id, firstName);
         this.lastName = lastName;
         this.password = password;
         this.birthday = birthday;
         this.role = role;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {

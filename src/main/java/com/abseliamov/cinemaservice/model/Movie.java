@@ -6,10 +6,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "movies")
+@AttributeOverride(name = "id", column = @Column(name = "movie_id"))
+@AttributeOverride(name = "name", column = @Column(name = "title"))
 public class Movie extends GenericModel {
-
-    @Column(name = "title", nullable = false)
-    private String title;
 
     @Column(name = "cost", nullable = false)
     private BigDecimal cost;
@@ -27,24 +26,14 @@ public class Movie extends GenericModel {
     }
 
     public Movie(long id, String title, List<Genre> genres, BigDecimal cost) {
-        super(id);
-        this.title = title;
+        super(id, title);
         this.genres = genres;
         this.cost = cost;
     }
 
     public Movie(long id, String title, BigDecimal totalPrice) {
-        super(id);
-        this.title = title;
+        super(id, title);
         this.cost = totalPrice;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public List<Genre> getGenres() {
