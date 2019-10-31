@@ -22,10 +22,10 @@ public class MovieService {
                     .filter(movieItem -> movieItem.getName().equalsIgnoreCase(movieTitle))
                     .findFirst()
                     .orElse(null);
-            if (movie == null) {
+            /*if (movie == null) {
                 movieDao.add(new Movie(0, movieTitle, genre,
                         new BigDecimal(0).setScale(2, RoundingMode.DOWN)));
-            }
+            }*/
         }
     }
 
@@ -44,7 +44,7 @@ public class MovieService {
     }
 
     public void update(long movieId, String movieTitle, Genre genre, BigDecimal cost) {
-        movieDao.update(movieId, new Movie(movieId, movieTitle, genre, cost.setScale(2, RoundingMode.DOWN)));
+//        movieDao.update(movieId, new Movie(movieId, movieTitle, genre, cost.setScale(2, RoundingMode.DOWN)));
     }
 
     public void delete(long movieId) {
@@ -55,14 +55,14 @@ public class MovieService {
 
     public boolean increaseCostMovie(BigDecimal ticketCost, Movie movie) {
         long movieId = movie.getId();
-        Movie newMovie = new Movie(movieId, movie.getName(), movie.getGenre(),
+        Movie newMovie = new Movie(movieId, movie.getName(), movie.getGenres(),
                 (movie.getCost()).add(ticketCost).setScale(2, RoundingMode.DOWN));
         return movieDao.update(movieId, newMovie);
     }
 
     public boolean reduceCostMovie(BigDecimal ticketCost, Movie movie) {
         long movieId = movie.getId();
-        Movie newMovie = new Movie(movieId, movie.getName(), movie.getGenre(),
+        Movie newMovie = new Movie(movieId, movie.getName(), movie.getGenres(),
                 movie.getCost().subtract(ticketCost).setScale(2, RoundingMode.DOWN));
         return movieDao.update(movieId, newMovie);
     }
@@ -87,7 +87,7 @@ public class MovieService {
             System.out.printf("%-3s%-18s%-25s%-13s%-1s\n%-1s\n", " ", "ID", "TITLE", "GENRE", "TOTAL COST",
                     "|------|-----------------------------|-------------------|------------|");
             movies.forEach(movie -> System.out.printf("%-3s%-6s%-30s%-21s%-1s\n%-1s\n",
-                    " ", movie.getId(), movie.getName(), movie.getGenre().getName(),
+                    " ", movie.getId(), movie.getName(), movie.getGenres(),
                     movie.getCost().setScale(2, RoundingMode.DOWN),
                     "|------|-----------------------------|-------------------|------------|"));
         } else {

@@ -2,6 +2,7 @@ package com.abseliamov.cinemaservice.utils;
 
 import com.abseliamov.cinemaservice.controller.*;
 import com.abseliamov.cinemaservice.dao.*;
+import com.abseliamov.cinemaservice.model.*;
 import com.abseliamov.cinemaservice.service.*;
 import com.abseliamov.cinemaservice.view.AdminMenu;
 import com.abseliamov.cinemaservice.view.AuthorizationMenu;
@@ -14,43 +15,33 @@ public class Injector {
 
     private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-    private static Connection connection = ConnectionUtil.getConnection();
     private static CurrentViewer currentViewer = CurrentViewer.getInstance();
 
-    public static final String GENRES_TABLE = "genres";
-    public static final String MOVIES_TABLE = "movies";
-    public static final String SEAT_TYPES_TABLE = "seat_types";
-    public static final String SEATS_TABLE = "seats";
-    public static final String ROLES_TABLE = "roles";
-    public static final String VIEWERS_TABLE = "viewers";
-    public static final String TICKETS_TABLE = "tickets";
-
-    private static ViewerDaoImpl viewerDao = new ViewerDaoImpl(connection, VIEWERS_TABLE);
+    private static ViewerDaoImpl viewerDao = new ViewerDaoImpl(Viewer.class.getSimpleName(), sessionFactory, Viewer.class);
     private static ViewerService viewerService = new ViewerService(viewerDao, currentViewer);
     private static ViewerController viewerController = new ViewerController(viewerService);
 
-    private static GenreDaoImpl genreDao = new GenreDaoImpl(connection, GENRES_TABLE);
+    private static GenreDaoImpl genreDao = new GenreDaoImpl(Genre.class.getSimpleName(), sessionFactory, Genre.class);
     private static GenreService genreService = new GenreService(genreDao);
     private static GenreController genreController = new GenreController(genreService);
 
-    private static MovieDaoImpl movieDao = new MovieDaoImpl(connection, genreDao, MOVIES_TABLE);
+    private static MovieDaoImpl movieDao = new MovieDaoImpl(Movie.class.getSimpleName(), sessionFactory, Movie.class);
     private static MovieService movieService = new MovieService(movieDao);
     private static MovieController movieController = new MovieController(movieService);
 
-    private static SeatTypesDao seatTypesDao = new SeatTypesDao(connection, SEAT_TYPES_TABLE);
+    private static SeatTypesDao seatTypesDao = new SeatTypesDao(sessionFactory, SeatTypes.class);
     private static SeatTypesService seatTypesService = new SeatTypesService(seatTypesDao);
     private static SeatTypesController seatTypesController = new SeatTypesController(seatTypesService);
 
-    private static SeatDaoImpl seatDao = new SeatDaoImpl(connection, seatTypesDao, SEATS_TABLE);
+    private static SeatDaoImpl seatDao = new SeatDaoImpl(Seat.class.getSimpleName(), sessionFactory, Seat.class);
     private static SeatService seatService = new SeatService(seatDao);
     private static SeatController seatController = new SeatController(seatService);
 
-    private static RoleDao roleDao = new RoleDao(connection, ROLES_TABLE);
+    private static RoleDao roleDao = new RoleDao(sessionFactory, Role.class);
     private static RoleService roleService = new RoleService(roleDao);
     private static RoleController roleController = new RoleController(roleService);
 
-    private static TicketDaoImpl ticketDao = new TicketDaoImpl(
-            connection, currentViewer, movieDao, seatDao, TICKETS_TABLE);
+    private static TicketDaoImpl ticketDao = new TicketDaoImpl(Ticket.class.getSimpleName(), sessionFactory, Ticket.class);
     private static TicketService ticketService = new TicketService(ticketDao, viewerDao, currentViewer);
     private static TicketController ticketController = new TicketController(ticketService);
 

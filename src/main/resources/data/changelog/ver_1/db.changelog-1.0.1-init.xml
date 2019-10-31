@@ -6,42 +6,34 @@
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet id="insert_genres" author="enver">
         <insert tableName="genres">
-            <column name="id" value="1"/>
             <column name="name" value="Detective"/>
         </insert>
         <insert tableName="genres">
-            <column name="id" value="2"/>
             <column name="name" value="Western"/>
         </insert>
         <insert tableName="genres">
-            <column name="id" value="3"/>
             <column name="name" value="Drama"/>
         </insert>
         <insert tableName="genres">
-            <column name="id" value="4"/>
             <column name="name" value="Adventure"/>
         </insert>
         <insert tableName="genres">
-            <column name="id" value="5"/>
             <column name="name" value="Thriller"/>
         </insert>
     </changeSet>
     
     <changeSet id="insert_movies" author="enver">
         <insert tableName="movies">
-            <column name="id" value="1"/>
             <column name="title" value="Red Dragon"/>
-            <column name="cost" value="10.0"/>
+            <column name="total_cost" value="10.0"/>
         </insert>
         <insert tableName="movies">
-            <column name="id" value="2"/>
             <column name="title" value="The Illusionist"/>
-            <column name="cost" value="25.0"/>
+            <column name="total_cost" value="25.0"/>
         </insert>
         <insert tableName="movies">
-            <column name="id" value="3"/>
             <column name="title" value="Sherlock Holmes"/>
-            <column name="cost" value="56.0"/>
+            <column name="total_cost" value="56.0"/>
         </insert>
     </changeSet>
     
@@ -70,43 +62,35 @@
 
     <changeSet id="insert_seat_types" author="enver">
         <insert tableName="seat_types">
-            <column name="id" value="1"/>
             <column name="type" value="VIP"/>
         </insert>
         <insert tableName="seat_types">
-            <column name="id" value="2"/>
             <column name="type" value="STANDARD"/>
         </insert>
     </changeSet>
 
     <changeSet id="insert_seats" author="enver">
         <insert tableName="seats">
-            <column name="id" value="1"/>
             <column name="number" value="1"/>
             <column name="seat_type_id" value="1"/>
         </insert>
         <insert tableName="seats">
-            <column name="id" value="2"/>
             <column name="number" value="2"/>
             <column name="seat_type_id" value="1"/>
         </insert>
         <insert tableName="seats">
-            <column name="id" value="3"/>
             <column name="number" value="3"/>
             <column name="seat_type_id" value="1"/>
         </insert>
         <insert tableName="seats">
-            <column name="id" value="4"/>
             <column name="number" value="1"/>
             <column name="seat_type_id" value="2"/>
         </insert>
         <insert tableName="seats">
-            <column name="id" value="5"/>
             <column name="number" value="2"/>
             <column name="seat_type_id" value="2"/>
         </insert>
         <insert tableName="seats">
-            <column name="id" value="6"/>
             <column name="number" value="3"/>
             <column name="seat_type_id" value="2"/>
         </insert>
@@ -114,38 +98,32 @@
 
     <changeSet id="insert_roles" author="enver">
         <insert tableName="roles">
-            <column name="id" value="1"/>
-            <column name="role" value="ADMIN"/>
+            <column name="role" value="ANONYMOUS"/>
         </insert>
         <insert tableName="roles">
-            <column name="id" value="2"/>
             <column name="role" value="USER"/>
         </insert>
         <insert tableName="roles">
-            <column name="id" value="3"/>
-            <column name="role" value="ANONYMOUS"/>
+            <column name="role" value="ADMIN"/>
         </insert>
     </changeSet>
 
     <changeSet id="insert_viewers" author="enver">
         <insert tableName="viewers">
-            <column name="id" value="1"/>
             <column name="first_name" value="123"/>
             <column name="last_name" value="Ivanov"/>
             <column name="password" value="123"/>
             <column name="birthday" value="2019-02-01"/>
-            <column name="role_id" value="1"/>
+            <column name="role_id" value="3"/>
         </insert>
         <insert tableName="viewers">
-            <column name="id" value="2"/>
             <column name="first_name" value="admin"/>
             <column name="last_name" value="Sidorov"/>
             <column name="password" value="admin"/>
             <column name="birthday" value="1970-01-01"/>
-            <column name="role_id" value="1"/>
+            <column name="role_id" value="3"/>
         </insert>
         <insert tableName="viewers">
-            <column name="id" value="3"/>
             <column name="first_name" value="viewer"/>
             <column name="last_name" value="viewer"/>
             <column name="password" value="viewer"/>
@@ -153,37 +131,33 @@
             <column name="role_id" value="2"/>
         </insert>
         <insert tableName="viewers">
-            <column name="id" value="4"/>
             <column name="first_name" value="anonymous"/>
             <column name="last_name" value="anonymous"/>
             <column name="password" value="anonymous"/>
             <column name="birthday" value="2010-02-02"/>
-            <column name="role_id" value="3"/>
+            <column name="role_id" value="1"/>
         </insert>
     </changeSet>
 
     <changeSet id="insert_tickets" author="enver">
         <insert tableName="tickets">
-            <column name="id" value="1"/>
             <column name="date_time" value="2019-11-01 09:00:00"/>
             <column name="price" value="5.5"/>
-            <column name="buy_status" value="1"/>
+            <column name="viewer_id" value="1"/>
             <column name="movie_id" value="1"/>
             <column name="seat_id" value="1"/>
         </insert>
         <insert tableName="tickets">
-            <column name="id" value="2"/>
             <column name="date_time" value="2019-11-01 09:00:00"/>
             <column name="price" value="5.5"/>
-            <column name="buy_status" value="1"/>
+            <column name="viewer_id" value="1"/>
             <column name="movie_id" value="1"/>
             <column name="seat_id" value="2"/>
         </insert>
         <insert tableName="tickets">
-            <column name="id" value="3"/>
             <column name="date_time" value="2019-11-01 11:00:00"/>
             <column name="price" value="3.5"/>
-            <column name="buy_status" value="2"/>
+            <column name="viewer_id" value="2"/>
             <column name="movie_id" value="2"/>
             <column name="seat_id" value="4"/>
         </insert>

@@ -29,21 +29,21 @@ public class TicketService {
     }
 
     public boolean createTicket(Movie movie, Seat seat, double price, LocalDateTime dateTime) {
-        Ticket newTicket = new Ticket(0, dateTime, movie, seat, price, 0);
-        List<Ticket> tickets = ticketDao.getAll();
-        Ticket ticket = tickets.stream()
-                .filter(ticketItem -> ticketItem.getDateTime().equals(dateTime) &&
-                        ticketItem.getMovie().equals(movie) &&
-                        ticketItem.getSeat().equals(seat))
-                .findFirst()
-                .orElse(null);
-        if (ticket == null) {
-            ticketDao.add(newTicket);
-            System.out.println("Ticket successfully added.");
-            return true;
-        } else {
-            System.out.println("Such ticket already exists.");
-        }
+//        Ticket newTicket = new Ticket(0, dateTime, movie, seat, price, 0);
+//        List<Ticket> tickets = ticketDao.getAll();
+//        Ticket ticket = tickets.stream()
+//                .filter(ticketItem -> ticketItem.getDateTime().equals(dateTime) &&
+//                        ticketItem.getMovie().equals(movie) &&
+//                        ticketItem.getSeat().equals(seat))
+//                .findFirst()
+//                .orElse(null);
+//        if (ticket == null) {
+//            ticketDao.add(newTicket);
+//            System.out.println("Ticket successfully added.");
+//            return true;
+//        } else {
+//            System.out.println("Such ticket already exists.");
+//        }
         return false;
     }
 
@@ -67,10 +67,10 @@ public class TicketService {
 
     public Ticket getById(long ticketId) {
         Ticket ticket = ticketDao.getById(ticketId);
-        if (ticket.getStatus() == 0) {
-            List<Ticket> list = Arrays.asList(ticket);
-            printTicket(list);
-        } else ticket = null;
+//        if (ticket.getStatus() == 0) {
+//            List<Ticket> list = Arrays.asList(ticket);
+//            printTicket(list);
+//        } else ticket = null;
         return ticket;
     }
 
@@ -136,7 +136,7 @@ public class TicketService {
             date = ticket.getDateTime().toLocalDate();
             result = ticketList.stream()
                     .filter(ticketItem -> ticketItem.getDateTime().toLocalDate().equals(date))
-                    .filter(ticketItem -> ticketItem.getStatus() == 0)
+//                    .filter(ticketItem -> ticketItem.getStatus() == 0)
                     .collect(Collectors.toList());
             printTicket(result);
         } else {
@@ -162,17 +162,17 @@ public class TicketService {
     }
 
     public void update(long ticketId, Movie movie, Seat seat, long buyStatus, double price, LocalDateTime dateTime) {
-        List<Ticket> tickets = ticketDao.getAll();
-        Ticket updateTicket = new Ticket(ticketId, dateTime, movie, seat, price, buyStatus);
-        Ticket ticket = tickets.stream()
-                .filter(ticketItem -> ticketItem.getDateTime().equals(dateTime) &&
-                        ticketItem.getMovie().equals(movie) &&
-                        ticketItem.getSeat().equals(seat))
-                .findFirst()
-                .orElse(null);
-        if (ticket == null && ticketDao.update(ticketId, updateTicket)) {
-            System.out.println("Ticket with id \'" + ticketId + "\' updated successfully.");
-        }
+//        List<Ticket> tickets = ticketDao.getAll();
+//        Ticket updateTicket = new Ticket(ticketId, dateTime, movie, seat, price, buyStatus);
+//        Ticket ticket = tickets.stream()
+//                .filter(ticketItem -> ticketItem.getDateTime().equals(dateTime) &&
+//                        ticketItem.getMovie().equals(movie) &&
+//                        ticketItem.getSeat().equals(seat))
+//                .findFirst()
+//                .orElse(null);
+//        if (ticket == null && ticketDao.update(ticketId, updateTicket)) {
+//            System.out.println("Ticket with id \'" + ticketId + "\' updated successfully.");
+//        }
     }
 
     public void delete(long ticketId) {
@@ -194,13 +194,13 @@ public class TicketService {
 
     public boolean checkTicketAvailable(long ticketId) {
         boolean ticketAvailable = false;
-        Ticket ticket = ticketDao.getById(ticketId);
-        if (ticket.getStatus() == 0) {
-            ticketAvailable = true;
-        } else {
-            System.out.println("Ticket with id \'" + ticketId + "\' not available.\n" +
-                    "Please try again.");
-        }
+//        Ticket ticket = ticketDao.getById(ticketId);
+//        if (ticket.getStatus() == 0) {
+//            ticketAvailable = true;
+//        } else {
+//            System.out.println("Ticket with id \'" + ticketId + "\' not available.\n" +
+//                    "Please try again.");
+//        }
         return ticketAvailable;
     }
 
@@ -239,11 +239,11 @@ public class TicketService {
                     .sorted(Comparator.comparing(Ticket::getId))
                     .collect(Collectors.toList())
                     .forEach(ticket -> System.out.printf("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-11s%-1s\n%1s\n",
-                            " ", ticket.getId(), ticket.getMovie().getName(), ticket.getMovie().getGenre().getName(),
+                            " ", ticket.getId(), ticket.getMovie().getName(), ticket.getMovie().getGenres(),
                             ticket.getDateTime().toLocalDate().format(dateFormatter),
                             ticket.getDateTime().toLocalTime().format(timeFormatter),
                             ticket.getSeat().getSeatTypes(), ticket.getSeat().getNumber(),
-                            ticket.getPrice(), ticket.getStatus(),
+//                            ticket.getPrice(), ticket.getStatus(),
                             "|-------|------------------------------|-------------------|------------|----------" +
                                     "|-----------|-------------|---------|--------|"));
         } else {

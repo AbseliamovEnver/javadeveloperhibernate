@@ -36,7 +36,7 @@ public class ViewerService {
                 .findFirst()
                 .orElse(null);
         if (viewer == null) {
-            viewerDao.add(new Viewer(0, firstName, lastName, password, role, birthday));
+            viewerDao.add(new Viewer(0, firstName, lastName, password, birthday, role));
             System.out.println("Viewer with name \'" + firstName + "\' successfully added.");
             return true;
         } else {
@@ -79,7 +79,7 @@ public class ViewerService {
     public void update(long viewerId, String firstName, String lastName,
                        String password, LocalDate birthday, Role role) {
         List<Viewer> viewers = viewerDao.getAll();
-        Viewer updateViewer = new Viewer(viewerId, firstName, lastName, password, role, birthday);
+        Viewer updateViewer = new Viewer(viewerId, firstName, lastName, password, birthday, role);
         Viewer viewer = viewers
                 .stream()
                 .filter(viewerItem -> viewerItem.equals(updateViewer))

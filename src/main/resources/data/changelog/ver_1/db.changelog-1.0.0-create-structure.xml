@@ -7,7 +7,7 @@
 
     <changeSet id="create_table_genres" author="enver">
         <createTable tableName="genres">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="genre_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(50)">
@@ -18,13 +18,13 @@
 
     <changeSet id="create_table_movies" author="enver">
         <createTable tableName="movies">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="movie_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="cost" type="decimal(5,2)" defaultValue="0.00"/>
+            <column name="total_cost" type="decimal(5,2)" defaultValue="0.00"/>
         </createTable>
     </changeSet>
 
@@ -32,11 +32,11 @@
         <createTable tableName="movie_genres">
             <column name="movie_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="movie_id"
-                             referencedTableName="movies" referencedColumnNames="id"/>
+                             referencedTableName="movies" referencedColumnNames="movie_id"/>
             </column>
             <column name="genre_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="genre_id"
-                             referencedTableName="genres" referencedColumnNames="id"/>
+                             referencedTableName="genres" referencedColumnNames="genre_id"/>
             </column>
         </createTable>
     </changeSet>
@@ -54,7 +54,7 @@
 
     <changeSet id="create_table_seats" author="enver">
         <createTable tableName="seats">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="seat_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="number" type="int">
@@ -69,7 +69,7 @@
 
     <changeSet id="create_table_roles" author="enver">
         <createTable tableName="roles">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="role_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="role" type="varchar(50)">
@@ -80,7 +80,7 @@
 
     <changeSet id="create_table_viewers" author="enver">
         <createTable tableName="viewers">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="viewer_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="first_name" type="varchar(50)">
@@ -97,14 +97,14 @@
             </column>
             <column name="role_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="role_id"
-                             referencedTableName="roles" referencedColumnNames="id"/>
+                             referencedTableName="roles" referencedColumnNames="role_id"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet id="create_table_tickets" author="enver">
         <createTable tableName="tickets">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="ticket_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="date_time" type="timestamp">
@@ -113,16 +113,17 @@
             <column name="price" type="decimal(3,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="buy_status" type="int" defaultValue="0">
-                <constraints nullable="false"/>
+            <column name="viewer_id" type="bigint" defaultValue="0">
+                <constraints nullable="false" foreignKeyName="fk_viewer_id"
+                             referencedTableName="viewers" referencedColumnNames="viewer_id"/>
             </column>
             <column name="movie_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_movie_id"
-                             referencedTableName="movies" referencedColumnNames="id"/>
+                             referencedTableName="movies" referencedColumnNames="movie_id"/>
             </column>
             <column name="seat_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_seat_id"
-                             referencedTableName="seats" referencedColumnNames="id"/>
+                             referencedTableName="seats" referencedColumnNames="seat_id"/>
             </column>
         </createTable>
     </changeSet>

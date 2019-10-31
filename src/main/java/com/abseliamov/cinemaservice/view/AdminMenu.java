@@ -330,7 +330,7 @@ public class AdminMenu extends ViewerMenu {
                 genreController.getAll();
                 String genreStr = IOUtil.readString("Select genre ID to update or press \'ENTER\' key to continue: ");
                 if (genreStr.equals("")) {
-                    genre = movie.getGenre();
+                    genre = movie.getGenres().get(1);
                 } else {
                     genre = genreController.getById(Long.parseLong(genreStr));
                 }

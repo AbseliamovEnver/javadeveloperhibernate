@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="DEBUG">
+
+    <Properties>
+        <Property name="logPath">./src/main/resources/logs</Property>
+    </Properties>
+
+    <Appenders>
+        <!--     Console Appender -->
+        <Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            %highlight{%level}{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=green, TRACE=blue}"/>
+        </Console>
+        <!--     File Appender -->
+        <RollingRandomAccessFile name="LogToRollingRandomAccessFile" fileName="${logPath}/logging.log"
+                                 filePattern="${logPath}/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+        <Async name="Async">
+            <AppenderRef ref="LogToRollingRandomAccessFile"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <!--     Logging everything in Hibernate (level debug) -->
+        <Logger name="org.hibernate" level="debug" additivity="false">
+            <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="Async"/>
+        </Logger>
+        <Logger name="com.abseliamov" level="debug" additivity="false">
+            <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="Async"/>
+        </Logger>
+        <Root level="debug">
+            <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="Async"/>
+        </Root>
+    </Loggers>
+</Configuration>
