@@ -2,8 +2,9 @@ package com.abseliamov.cinemaservice.dao;
 
 import com.abseliamov.cinemaservice.model.Movie;
 import com.abseliamov.cinemaservice.utils.ConnectionUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
-import org.slf4j.LoggerFactory;
 
 import java.math.RoundingMode;
 import java.sql.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDaoImpl extends AbstractDao<Movie> {
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(MovieDaoImpl.class);
+    private static final Logger logger = LogManager.getLogger(MovieDaoImpl.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database: ";
     private Connection connection = ConnectionUtil.getConnection();
 

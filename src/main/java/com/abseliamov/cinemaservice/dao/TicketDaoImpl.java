@@ -4,74 +4,36 @@ import com.abseliamov.cinemaservice.exceptions.ConnectionException;
 import com.abseliamov.cinemaservice.model.Ticket;
 import com.abseliamov.cinemaservice.utils.ConnectionUtil;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
-import com.abseliamov.cinemaservice.utils.Injector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.SessionFactory;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TicketDaoImpl extends AbstractDao<Ticket> {
+    private static final Logger logger = LogManager.getLogger(AbstractDao.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database: ";
     private Connection connection = ConnectionUtil.getConnection();
     private CurrentViewer currentViewer;
     private MovieDaoImpl movieDao;
     private SeatDaoImpl seatDao;
 
-    public TicketDaoImpl(Connection connection, CurrentViewer currentViewer, MovieDaoImpl movieDao,
-                         SeatDaoImpl seatDao, String tableName) {
-        super(connection, tableName);
-        this.currentViewer = currentViewer;
-        this.movieDao = movieDao;
-        this.seatDao = seatDao;
+    public TicketDaoImpl(String entityName, SessionFactory sessionFactory, Class<Ticket> clazz) {
+        super(entityName, sessionFactory, clazz);
     }
 
-    @Override
-    public Ticket convertToEntity(ResultSet resultSet) throws SQLException {
-        return new Ticket(
-                resultSet.getLong("id"),
-                resultSet.getTimestamp("date_time").toLocalDateTime(),
-                movieDao.getById(resultSet.getLong("movie_id")),
-                seatDao.getById(resultSet.getLong("seat_id")),
-                resultSet.getDouble("price"),
-                resultSet.getLong("buy_status"));
-    }
 
-    @Override
-    public void add(Ticket entity) {
-        try (PreparedStatement statement = connection
-                .prepareStatement("INSERT INTO " + Injector.TICKETS_TABLE + " VALUES (?,?,?,?,?,?);")) {
-            statement.setLong(1, entity.getId());
-            statement.setTimestamp(2, Timestamp.valueOf(entity.getDateTime()));
-            statement.setBigDecimal(3, BigDecimal.valueOf(entity.getPrice()));
-            statement.setLong(4, entity.getStatus());
-            statement.setLong(5, entity.getMovie().getId());
-            statement.setLong(6, entity.getSeat().getId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + e);
-            throw new ConnectionException(e);
-        }
-    }
-
-    @Override
-    public boolean update(long id, Ticket ticket) {
-        try (PreparedStatement statement = connection
-                .prepareStatement("UPDATE tickets SET date_time = ?, price = ?, buy_status = ?, " +
-                        "movie_id = ?, seat_id = ? WHERE id = ?")) {
-            statement.setTimestamp(1, Timestamp.valueOf(ticket.getDateTime()));
-            statement.setBigDecimal(2, BigDecimal.valueOf(ticket.getPrice()));
-            statement.setLong(3, ticket.getStatus());
-            statement.setLong(4, ticket.getMovie().getId());
-            statement.setLong(5, ticket.getSeat().getId());
-            statement.setLong(6, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + e);
-            throw new ConnectionException(e);
-        }
-        return true;
-    }
+//    public Ticket convertToEntity(ResultSet resultSet) throws SQLException {
+//        return new Ticket(
+//                resultSet.getLong("id"),
+//                resultSet.getTimestamp("date_time").toLocalDateTime(),
+//                movieDao.getById(resultSet.getLong("movie_id")),
+//                seatDao.getById(resultSet.getLong("seat_id")),
+//                resultSet.getDouble("price"),
+//                resultSet.getLong("buy_status"));
+//    }
 
     public List<Ticket> getTicketByMovieTitle(String movieTitle) {
         List<Ticket> ticketList = new ArrayList<>();
@@ -82,7 +44,7 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
             statement.setString(1, movieTitle);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ticketList.add(convertToEntity(resultSet));
+//                ticketList.add(convertToEntity(resultSet));
             }
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);
@@ -100,7 +62,7 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
             statement.setLong(1, genreId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ticketList.add(convertToEntity(resultSet));
+//                ticketList.add(convertToEntity(resultSet));
             }
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);
@@ -116,7 +78,7 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
                         " AND buy_status = 0")) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ticketList.add(convertToEntity(resultSet));
+//                ticketList.add(convertToEntity(resultSet));
             }
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);
@@ -134,7 +96,7 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
             statement.setLong(1, seatTypeId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ticketList.add(convertToEntity(resultSet));
+//                ticketList.add(convertToEntity(resultSet));
             }
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);
@@ -165,7 +127,7 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
             statement.setLong(1, currentViewer.getViewer().getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ticketList.add(convertToEntity(resultSet));
+//                ticketList.add(convertToEntity(resultSet));
             }
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);
@@ -183,7 +145,7 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
             statement.setLong(2, currentViewer.getViewer().getId());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                ticket = convertToEntity(resultSet);
+//                ticket = convertToEntity(resultSet);
             }
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);
@@ -212,7 +174,7 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
             statement.setLong(1, viewerId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ticketList.add(convertToEntity(resultSet));
+//                ticketList.add(convertToEntity(resultSet));
             }
         } catch (SQLException e) {
             System.out.println(ERROR_MESSAGE + e);

@@ -1,11 +1,12 @@
 package com.abseliamov.cinemaservice.dao;
 
 import com.abseliamov.cinemaservice.exceptions.ConnectionException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,8 +14,8 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 public abstract class AbstractDaoEnum<T> implements GenericDao<T> {
+    private static final Logger logger = LogManager.getLogger(AbstractDao.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database. ";
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(AbstractDaoEnum.class);
     private SessionFactory sessionFactory;
     private Class<T> clazz;
     private CriteriaBuilder criteriaBuilder;

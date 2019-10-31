@@ -1,11 +1,12 @@
 package com.abseliamov.cinemaservice.dao;
 
-import com.abseliamov.cinemaservice.exceptions.ConnectionException;
-import com.abseliamov.cinemaservice.model.Role;
 import com.abseliamov.cinemaservice.model.Viewer;
 import com.abseliamov.cinemaservice.utils.ConnectionUtil;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.SessionFactory;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -14,43 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewerDaoImpl extends AbstractDao<Viewer> {
+    private static final Logger logger = LogManager.getLogger(AbstractDao.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database: ";
     Connection connection = ConnectionUtil.getConnection();
 
-    public ViewerDaoImpl(Connection connection, String tableName) {
-        super(connection, tableName);
-    }
-
-    @Override
-    public void add(Viewer entity) {
-        try (PreparedStatement statement = connection
-                .prepareStatement("INSERT INTO viewers VALUES(?,?,?,?,?,?)")) {
-            statement.setLong(1, entity.getId());
-            statement.setString(2, entity.getName());
-            statement.setString(3, entity.getLastName());
-            statement.setString(4, entity.getPassword());
-            statement.setDate(5, Date.valueOf(entity.getBirthday()));
-            statement.setLong(6, entity.getRole().getId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + e);
-        }
-    }
-
-    @Override
-    public Viewer convertToEntity(ResultSet resultSet) throws SQLException {
-        Role role = null;
-        for (Role roleItem : Role.values()) {
-            if (roleItem.getId() == resultSet.getLong("role_id")) {
-                role = roleItem;
-            }
-        }
-        return new Viewer(resultSet.getLong("id"),
-                resultSet.getString("first_name"),
-                resultSet.getString("last_name"),
-                resultSet.getString("password"),
-                role,
-                resultSet.getDate("birthday").toLocalDate());
+    public ViewerDaoImpl(String entityName, SessionFactory sessionFactory, Class<Viewer> clazz) {
+        super(entityName, sessionFactory, clazz);
     }
 
     public Viewer checkUserAuthorization(String name, String password) {
@@ -59,25 +29,6 @@ public class ViewerDaoImpl extends AbstractDao<Viewer> {
                 .filter(viewer -> viewer.getPassword().equals(password))
                 .findFirst()
                 .orElse(null);
-    }
-
-    @Override
-    public boolean update(long id, Viewer viewer) {
-        try (PreparedStatement statement = connection
-                .prepareStatement("UPDATE viewers SET first_name = ?, last_name = ?, password = ?, " +
-                        "birthday = ?, role_id = ? WHERE id = ?")) {
-            statement.setString(1, viewer.getName().trim());
-            statement.setString(2, viewer.getLastName().trim());
-            statement.setString(3, viewer.getPassword().trim());
-            statement.setDate(4, Date.valueOf(viewer.getBirthday()));
-            statement.setLong(5, viewer.getRole().getId());
-            statement.setLong(6, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + e);
-            throw new ConnectionException(e);
-        }
-        return true;
     }
 
     public List<Viewer> searchViewerMovieCountByGenre(long genreId) {
