@@ -1,8 +1,6 @@
 package com.abseliamov.cinemaservice.model;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Table(name = "roles")
@@ -12,11 +10,22 @@ public enum Role {
     ADMIN(3);
 
     @Column(name = "id")
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private long id;
 
     Role(long id) {
         this.id = id;
+    }
+
+    public static Role getRole(Long id) {
+        if (id == null) {
+            return null;
+        }
+        for (Role role : Role.values()) {
+            if (id == role.getId()) {
+                return role;
+            }
+        }
+        return null;
     }
 
     public long getId() {

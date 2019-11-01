@@ -19,8 +19,8 @@ public class Viewer extends GenericModel {
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 
-    @Enumerated(EnumType.ORDINAL)
     @Column(name = "role_id", nullable = false)
+    @Convert(converter = RoleConverter.class)
     private Role role;
 
     @OneToMany(mappedBy = "viewer", fetch = FetchType.LAZY)

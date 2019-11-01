@@ -121,7 +121,7 @@
             <column name="last_name" value="Sidorov"/>
             <column name="password" value="admin"/>
             <column name="birthday" value="1970-01-01"/>
-            <column name="role_id" value="3"/>
+            <column name="role_id" value="2"/>
         </insert>
         <insert tableName="viewers">
             <column name="first_name" value="viewer"/>
