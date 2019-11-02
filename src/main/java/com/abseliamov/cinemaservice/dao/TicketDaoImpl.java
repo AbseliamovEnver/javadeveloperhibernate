@@ -31,35 +31,6 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
         this.currentViewer = currentViewer;
     }
 
-
-//    public Ticket convertToEntity(ResultSet resultSet) throws SQLException {
-//        return new Ticket(
-//                resultSet.getLong("id"),
-//                resultSet.getTimestamp("date_time").toLocalDateTime(),
-//                movieDao.getById(resultSet.getLong("movie_id")),
-//                seatDao.getById(resultSet.getLong("seat_id")),
-//                resultSet.getDouble("price"),
-//                resultSet.getLong("buy_status"));
-//    }
-
-//    public List<Ticket> getTicketByMovieTitle(String movieTitle) {
-//        List<Ticket> ticketList = new ArrayList<>();
-//        try (PreparedStatement statement = connection
-//                .prepareStatement("SELECT * FROM tickets WHERE movie_id IN (" +
-//                        "SELECT id FROM movies WHERE movies.name = ?) " +
-//                        "AND buy_status = 0")) {
-//            statement.setString(1, movieTitle);
-//            ResultSet resultSet = statement.executeQuery();
-//            while (resultSet.next()) {
-////                ticketList.add(convertToEntity(resultSet));
-//            }
-//        } catch (SQLException e) {
-//            System.out.println(ERROR_MESSAGE + e);
-//            throw new ConnectionException(e);
-//        }
-//        return ticketList;
-//    }
-
     public boolean buyTicket(Ticket ticket) {
         try (Session session = sessionFactory.openSession()) {
             try {
@@ -79,24 +50,6 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
                 throw new ConnectionException(ERROR_MESSAGE, e);
             }
         }
-    }
-
-    public List<Ticket> getTicketByGenre(long genreId) {
-        List<Ticket> ticketList = new ArrayList<>();
-        try (PreparedStatement statement = connection
-                .prepareStatement("SELECT * FROM tickets WHERE movie_id IN(" +
-                        "SELECT id FROM movies WHERE movies.genre_id = ?)" +
-                        "AND buy_status = 0")) {
-            statement.setLong(1, genreId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-//                ticketList.add(convertToEntity(resultSet));
-            }
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + e);
-            throw new ConnectionException(e);
-        }
-        return ticketList;
     }
 
     public List<Ticket> getAllDate() {

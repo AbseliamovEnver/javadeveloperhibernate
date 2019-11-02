@@ -53,8 +53,8 @@ public class TicketController {
         return ticketService.getOrderedTicketById(ticketId);
     }
 
-    public Map<LocalDate, Long> getAllDate() {
-        return ticketService.getAllDate();
+    public Map<LocalDate, Long> printAllActiveTicketDate() {
+        return ticketService.printAllActiveTicketDate();
     }
 
     public List<Ticket> getAllTicketByDate(long dateId) {

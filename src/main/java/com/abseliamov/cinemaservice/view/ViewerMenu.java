@@ -220,7 +220,7 @@ public class ViewerMenu {
     private long searchTicketByDate() {
         long ticketId = 0;
         List<Ticket> ticketList;
-        if (ticketController.getAllDate() != null) {
+        if (ticketController.printAllActiveTicketDate() != null) {
             long dateId = IOUtil.readNumber("\nEnter ID date or \'0\' to return: ");
             if (dateId != 0) {
                 ticketList = ticketController.getAllTicketByDate(dateId);

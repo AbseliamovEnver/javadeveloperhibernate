@@ -58,21 +58,23 @@ public class TicketService {
     }
 
     public List<Ticket> getTicketByGenre(long genreId) {
-        List<Ticket> tickets = new ArrayList<>();
+        List<Ticket> activeTicketsList;
+        List<Ticket> result = new ArrayList<>();
         List<Ticket> ticketList = ticketDao.getAll();
         if (ticketList != null) {
-            tickets = ticketList.stream()
+            activeTicketsList = ticketList.stream()
                     .filter(ticket -> ticket.getStatus() == TicketStatus.ACTIVE)
-                    .flatMap(genre -> genre.getMovie().getGenres().stream())
-                    .filter(genre -> genre.getId() == genreId)
                     .collect(Collectors.toList());
-            tickets.stream()
-                    .filter(ticket -> ticket.getMovie().getGenres().stream()
-                            .filter(genre -> genre.getId() == genreId))
-                    .collect(Collectors.toList())
+            for (Ticket ticket : activeTicketsList) {
+                for (Genre genre : ticket.getMovie().getGenres()) {
+                    if (genre.getId() == genreId) {
+                        result.add(ticket);
+                    }
+                }
+            }
         }
-        printTicket(tickets);
-        return tickets;
+        printTicket(result);
+        return result;
     }
 
     public List<Ticket> getTicketBySeatType(long seatTypeId) {
@@ -129,13 +131,13 @@ public class TicketService {
         return ticketList;
     }
 
-    public Map<LocalDate, Long> getAllDate() {
+    public Map<LocalDate, Long> printAllActiveTicketDate() {
         Map<LocalDate, Long> dateMap = new TreeMap<>();
-        List<Ticket> ticketList = ticketDao.getAllDate();
+        List<Ticket> ticketList = ticketDao.getAll();
         if (ticketList != null) {
-            for (Ticket ticket : ticketList) {
-                dateMap.put(ticket.getDateTime().toLocalDate(), ticket.getId());
-            }
+            ticketList.stream()
+                    .filter(ticket -> ticket.getStatus() == TicketStatus.ACTIVE)
+                    .forEach(ticket -> dateMap.put(ticket.getDateTime().toLocalDate(), ticket.getId()));
             printAllDate(dateMap);
         } else {
             System.out.println("Date list is empty.");
