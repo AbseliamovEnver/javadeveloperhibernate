@@ -5,25 +5,38 @@ import java.util.List;
 
 @Entity
 @Table(name = "seats")
-@AttributeOverride(name = "id", column = @Column(name = "seat_id"))
-public class Seat extends GenericModel {
+public class Seat {
 
-    @Enumerated(EnumType.STRING)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "seat_id", nullable = false, updatable = false)
+    private long id;
+
+    @Column(name = "seat_type_id", nullable = false)
+    @Convert(converter = SeatTypesConverter.class)
     private SeatTypes seatTypes;
 
     @Column(name = "number", nullable = false)
     private long number;
 
-    @OneToMany(mappedBy = "seat", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "seat", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Ticket> tickets;
 
     public Seat() {
     }
 
     public Seat(long id, SeatTypes seatTypes, long number) {
-        super(id);
+        this.id = id;
         this.seatTypes = seatTypes;
         this.number = number;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public SeatTypes getSeatTypes() {

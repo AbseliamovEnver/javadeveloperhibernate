@@ -1,6 +1,6 @@
 package com.abseliamov.cinemaservice.service;
 
-import com.abseliamov.cinemaservice.dao.GenreDaoImpl;
+import com.abseliamov.cinemaservice.dao.GenreDaoEntityImpl;
 import com.abseliamov.cinemaservice.model.GenericModel;
 import com.abseliamov.cinemaservice.model.Genre;
 
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GenreService {
-    private GenreDaoImpl genreDao;
+    private GenreDaoEntityImpl genreDao;
 
-    public GenreService(GenreDaoImpl genreDao) {
+    public GenreService(GenreDaoEntityImpl genreDao) {
         this.genreDao = genreDao;
     }
 
@@ -42,6 +42,10 @@ public class GenreService {
     }
 
     public List<Genre> getAll() {
+        return genreDao.getAll();
+    }
+
+    public List<Genre> printGenre(){
         List<Genre> genreList = genreDao.getAll();
         if (!genreList.isEmpty()) {
             List<Genre> sortedGenreList = genreList
@@ -49,11 +53,12 @@ public class GenreService {
                     .sorted(Comparator.comparingLong(GenericModel::getId))
                     .collect(Collectors.toList());
             System.out.println("\n|------------------------|");
-            System.out.printf("%-5s%-1s\n", " ", "LIST OF GENRES");
+            System.out.printf("%-6s%-1s\n", " ", "LIST OF GENRES");
             System.out.println("|------------------------|");
-            System.out.printf("%-3s%-9s%-1s\n", " ", "ID", "GENRE");
+            System.out.printf("%-3s%-11s%-1s\n", " ", "ID", "GENRE");
             System.out.println("|-------|----------------|");
-            sortedGenreList.forEach(System.out::println);
+            sortedGenreList.forEach(genre -> System.out.printf("%-2s%-8s%-1s\n%-1s\n",
+                    " ", genre.getId(), genre.getName(), "|-------|----------------|"));
         } else {
             System.out.println("Genre list is empty.");
         }

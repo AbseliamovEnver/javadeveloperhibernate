@@ -383,7 +383,7 @@ public class AdminMenu extends ViewerMenu {
                 roleController.printAllRoles();
                 long roleId = IOUtil.readNumber("Select a new role ID to update " +
                         "or enter \'0\' to continue: ");
-                firstName = firstName.equals("") ? viewer.getName() : firstName;
+                firstName = firstName.equals("") ? viewer.getFirstName() : firstName;
                 lastName = lastName.equals("") ? viewer.getLastName() : lastName;
                 password = password.equals("") ? viewer.getPassword() : password;
                 birthday = birthday == null ? viewer.getBirthday() : birthday;

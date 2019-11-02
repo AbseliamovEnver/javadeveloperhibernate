@@ -189,10 +189,14 @@ public class ViewerMenu {
     }
 
     private long searchTicketByMovieTitle() {
-        long ticketId;
+        long ticketId = 0;
         String movieTitle = IOUtil.readString("Enter movie title: ");
         List<Ticket> ticketList = ticketController.getTicketByMovieTitle(movieTitle);
-        ticketId = checkTicketAvailable(ticketList);
+        if (ticketList != null) {
+            ticketId = checkTicketAvailable(ticketList);
+        } else {
+            System.out.println("Movie tickets for " + movieTitle + " not found.");
+        }
         return ticketId;
     }
 
@@ -200,7 +204,7 @@ public class ViewerMenu {
         long ticketId = 0;
         long genreListSize;
         List<Ticket> ticketList;
-        if ((genreListSize = genreController.getAll().size()) != 0) {
+        if ((genreListSize = genreController.printGenre().size()) != 0) {
             long genreId = IOUtil.readNumber("\nEnter ID genre or \'0\' to return: ");
             if (genreId != 0 && genreId <= genreListSize) {
                 ticketList = ticketController.getTicketByGenre(genreId);
@@ -245,14 +249,12 @@ public class ViewerMenu {
 
     private boolean buyTicketById(long ticketId) {
         boolean buyExist = false;
-        Ticket ticket;
-        if (ticketId != 0 && (ticket = ticketController.getById(ticketId)) != null) {
+        if (ticketId != 0 && ticketController.getById(ticketId) != null) {
             long ticketConfirm = IOUtil.readNumber("\nEnter the ticket ID to confirm the purchase or \'0\' to return: ");
             if (ticketConfirm == 0) {
                 return buyExist;
             } else if (ticketId == ticketConfirm) {
-                if (ticketController.buyTicket(ticketId) && movieController.increaseCostMovie(BigDecimal.valueOf(ticket.getPrice()),
-                        ticket.getMovie())) {
+                if (ticketController.buyTicket(ticketId)) {
                     System.out.println("Thanks for your purchase\n");
                     buyExist = true;
                 } else {

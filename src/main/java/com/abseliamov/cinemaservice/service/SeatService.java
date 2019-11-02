@@ -1,15 +1,15 @@
 package com.abseliamov.cinemaservice.service;
 
-import com.abseliamov.cinemaservice.dao.SeatDaoImpl;
+import com.abseliamov.cinemaservice.dao.SeatDaoEntityImpl;
 import com.abseliamov.cinemaservice.model.Seat;
 import com.abseliamov.cinemaservice.model.SeatTypes;
 
 import java.util.List;
 
 public class SeatService {
-    private SeatDaoImpl seatDao;
+    private SeatDaoEntityImpl seatDao;
 
-    public SeatService(SeatDaoImpl seatDao) {
+    public SeatService(SeatDaoEntityImpl seatDao) {
         this.seatDao = seatDao;
     }
 

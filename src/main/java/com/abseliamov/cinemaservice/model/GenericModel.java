@@ -43,10 +43,4 @@ public class GenericModel {
     public void setName(String name) {
         this.name = name;
     }
-
-    @Override
-    public String toString() {
-        return String.format("%-2s%-8s%-1s\n%-1s",
-                " ", getId(), getName(), "|-------|----------------|");
-    }
 }

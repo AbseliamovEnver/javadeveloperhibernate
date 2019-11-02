@@ -31,11 +31,11 @@
     <changeSet id="create_table_movie_genre" author="enver">
         <createTable tableName="movie_genres">
             <column name="movie_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="movie_id"
+                <constraints nullable="false" foreignKeyName="fk_movie_id"
                              referencedTableName="movies" referencedColumnNames="movie_id"/>
             </column>
             <column name="genre_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="genre_id"
+                <constraints nullable="false" foreignKeyName="fk_genre_id"
                              referencedTableName="genres" referencedColumnNames="genre_id"/>
             </column>
         </createTable>
@@ -43,7 +43,7 @@
 
     <changeSet id="create_table_seat_types" author="enver">
         <createTable tableName="seat_types">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="seat_type_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="type" type="varchar(50)">
@@ -61,8 +61,8 @@
                 <constraints nullable="false"/>
             </column>
             <column name="seat_type_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="seat_type_id"
-                             referencedTableName="seat_types" referencedColumnNames="id"/>
+                <constraints nullable="false" foreignKeyName="fk_seat_types_id"
+                             referencedTableName="seat_types" referencedColumnNames="seat_type_id"/>
             </column>
         </createTable>
     </changeSet>
@@ -96,8 +96,19 @@
                 <constraints nullable="false"/>
             </column>
             <column name="role_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="role_id"
+                <constraints nullable="false" foreignKeyName="fk_role_id"
                              referencedTableName="roles" referencedColumnNames="role_id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_ticket_status" author="enver">
+        <createTable tableName="ticket_status">
+            <column name="status_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
             </column>
         </createTable>
     </changeSet>
@@ -110,20 +121,24 @@
             <column name="date_time" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="price" type="decimal(3,2)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="viewer_id" type="bigint" defaultValue="0">
-                <constraints nullable="false" foreignKeyName="fk_viewer_id"
-                             referencedTableName="viewers" referencedColumnNames="viewer_id"/>
-            </column>
             <column name="movie_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_movie_id"
+                <constraints nullable="false" foreignKeyName="fk1_movie_id"
                              referencedTableName="movies" referencedColumnNames="movie_id"/>
             </column>
             <column name="seat_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_seat_id"
                              referencedTableName="seats" referencedColumnNames="seat_id"/>
+            </column>
+            <column name="price" type="decimal(3,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_status_id"
+                             referencedTableName="ticket_status" referencedColumnNames="status_id"/>
+            </column>
+            <column name="viewer_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_viewer_id"
+                             referencedTableName="viewers" referencedColumnNames="viewer_id"/>
             </column>
         </createTable>
     </changeSet>

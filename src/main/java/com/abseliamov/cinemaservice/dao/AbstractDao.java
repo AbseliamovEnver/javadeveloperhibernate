@@ -1,7 +1,6 @@
 package com.abseliamov.cinemaservice.dao;
 
 import com.abseliamov.cinemaservice.exceptions.ConnectionException;
-import com.abseliamov.cinemaservice.model.GenericModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -10,15 +9,15 @@ import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public abstract class AbstractDao<T extends GenericModel> implements GenericDao<T> {
+public class AbstractDao<T> implements GenericDao<T> {
     private static final Logger logger = LogManager.getLogger(AbstractDao.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database. ";
-    private String entityName;
+    private String name;
     protected SessionFactory sessionFactory;
     private Class<T> clazz;
 
-    public AbstractDao(String entityName, SessionFactory sessionFactory, Class<T> clazz) {
-        this.entityName = entityName;
+    public AbstractDao(String name, SessionFactory sessionFactory, Class<T> clazz) {
+        this.name = name;
         this.sessionFactory = sessionFactory;
         this.clazz = clazz;
     }
@@ -61,7 +60,7 @@ public abstract class AbstractDao<T extends GenericModel> implements GenericDao<
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.beginTransaction();
-                entities = session.createQuery("from " + entityName).list();
+                entities = session.createQuery("from " + name).list();
                 session.getTransaction().commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -79,9 +78,10 @@ public abstract class AbstractDao<T extends GenericModel> implements GenericDao<
             try {
                 session.beginTransaction();
                 T entityOld = getById(id);
-                entity.setId(entityOld.getId());
-                session.update(entity);
-                session.getTransaction().commit();
+                if (entityOld != null) {
+                    session.update(entity);
+                    session.getTransaction().commit();
+                }
                 result = true;
             } catch (HibernateException e) {
                 session.getTransaction().rollback();

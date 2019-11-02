@@ -41,6 +41,7 @@
         <mapping class="com.abseliamov.cinemaservice.model.Seat"/>
         <mapping class="com.abseliamov.cinemaservice.model.Role"/>
         <mapping class="com.abseliamov.cinemaservice.model.Viewer"/>
+        <mapping class="com.abseliamov.cinemaservice.model.TicketStatus"/>
         <mapping class="com.abseliamov.cinemaservice.model.Ticket"/>
     </session-factory>
 </hibernate-configuration>

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SeatTypesDao extends AbstractDaoEnum<SeatTypes>{
-    private static final Logger logger = LogManager.getLogger(AbstractDao.class);
+    private static final Logger logger = LogManager.getLogger(SeatTypesDao.class);
 
     public SeatTypesDao(SessionFactory sessionFactory, Class<SeatTypes> clazz) {
         super(sessionFactory, clazz);

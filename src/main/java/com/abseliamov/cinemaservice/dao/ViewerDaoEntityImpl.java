@@ -14,18 +14,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewerDaoImpl extends AbstractDao<Viewer> {
-    private static final Logger logger = LogManager.getLogger(AbstractDao.class);
+public class ViewerDaoEntityImpl extends AbstractDao<Viewer> {
+    private static final Logger logger = LogManager.getLogger(ViewerDaoEntityImpl.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database: ";
     Connection connection = ConnectionUtil.getConnection();
 
-    public ViewerDaoImpl(String entityName, SessionFactory sessionFactory, Class<Viewer> clazz) {
+    public ViewerDaoEntityImpl(String entityName, SessionFactory sessionFactory, Class<Viewer> clazz) {
         super(entityName, sessionFactory, clazz);
     }
 
     public Viewer checkUserAuthorization(String name, String password) {
         return getAll().stream()
-                .filter(viewer -> viewer.getName().equals(name))
+                .filter(viewer -> viewer.getFirstName().equals(name))
                 .filter(viewer -> viewer.getPassword().equals(password))
                 .findFirst()
                 .orElse(null);

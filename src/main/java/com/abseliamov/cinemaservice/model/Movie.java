@@ -1,7 +1,11 @@
 package com.abseliamov.cinemaservice.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -10,17 +14,18 @@ import java.util.List;
 @AttributeOverride(name = "name", column = @Column(name = "title"))
 public class Movie extends GenericModel {
 
-    @Column(name = "cost", nullable = false)
+    @Column(name = "total_cost", nullable = false)
     private BigDecimal cost;
 
     @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
     private List<Ticket> tickets;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     @JoinTable(name = "movie_genres",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private List<Genre> genres;
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "genre_id"))
+    private List<Genre> genres = new ArrayList<>();
 
     public Movie() {
     }

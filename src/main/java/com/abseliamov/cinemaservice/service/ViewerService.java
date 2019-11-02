@@ -1,6 +1,6 @@
 package com.abseliamov.cinemaservice.service;
 
-import com.abseliamov.cinemaservice.dao.ViewerDaoImpl;
+import com.abseliamov.cinemaservice.dao.ViewerDaoEntityImpl;
 import com.abseliamov.cinemaservice.model.GenericModel;
 import com.abseliamov.cinemaservice.model.Role;
 import com.abseliamov.cinemaservice.model.Viewer;
@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ViewerService {
-    private ViewerDaoImpl viewerDao;
+    private ViewerDaoEntityImpl viewerDao;
     private CurrentViewer currentViewer;
     private static final String ERROR_NAME_OR_PASSWORD =
             "Please enter correct username and password or enter \'0\' to exit:";
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public ViewerService(ViewerDaoImpl viewerDao, CurrentViewer currentViewer) {
+    public ViewerService(ViewerDaoEntityImpl viewerDao, CurrentViewer currentViewer) {
         this.viewerDao = viewerDao;
         this.currentViewer = currentViewer;
     }
@@ -31,7 +31,7 @@ public class ViewerService {
         List<Viewer> viewers = viewerDao.getAll();
         Viewer viewer = viewers
                 .stream()
-                .filter(viewerItem -> viewerItem.getName().equalsIgnoreCase(firstName) &&
+                .filter(viewerItem -> viewerItem.getFirstName().equalsIgnoreCase(firstName) &&
                         viewerItem.getLastName().equalsIgnoreCase(lastName))
                 .findFirst()
                 .orElse(null);
@@ -109,14 +109,14 @@ public class ViewerService {
                     " ", "ID", "FIRST NAME", "LAST NAME", "PASSWORD", "ROLE", "BIRTHDAY");
             System.out.println("|-------|---------------------|----------------------|----------------" +
                     "---|--------------|--------------|");
-            viewerList.stream()
-                    .sorted(Comparator.comparing(GenericModel::getId))
-                    .collect(Collectors.toList())
-                    .forEach(viewer -> System.out.printf("%-2s%-8s%-22s%-24s%-20s%-14s%-1s\n%-1s",
-                            " ", viewer.getId(), viewer.getName(), viewer.getLastName(), viewer.getPassword(),
-                            viewer.getRole().name(), formatter.format(viewer.getBirthday()),
-                            "|-------|---------------------|----------------------|----------------" +
-                                    "---|--------------|--------------|\n"));
+//            viewerList.stream()
+//                    .sorted(Comparator.comparing(GenericModel::getId))
+//                    .collect(Collectors.toList())
+//                    .forEach(viewer -> System.out.printf("%-2s%-8s%-22s%-24s%-20s%-14s%-1s\n%-1s",
+//                            " ", viewer.getId(), viewer.getName(), viewer.getLastName(), viewer.getPassword(),
+//                            viewer.getRole().name(), formatter.format(viewer.getBirthday()),
+//                            "|-------|---------------------|----------------------|----------------" +
+//                                    "---|--------------|--------------|\n"));
         } else {
             System.out.println("List viewers is empty.");
         }
@@ -130,10 +130,10 @@ public class ViewerService {
             System.out.printf("%-3s%-12s%-23s%-21s%-13s%-1s\n",
                     " ", "ID", "FIRST NAME", "LAST NAME", "ROLE", "BIRTHDAY");
             System.out.println("|-------|---------------------|----------------------|--------------|--------------|");
-            viewerList.stream()
-                    .sorted(Comparator.comparing(GenericModel::getId))
-                    .collect(Collectors.toList())
-                    .forEach(System.out::println);
+//            viewerList.stream()
+//                    .sorted(Comparator.comparing(GenericModel::getId))
+//                    .collect(Collectors.toList())
+//                    .forEach(System.out::println);
         } else {
             System.out.println("List viewers is empty.");
         }
@@ -171,7 +171,7 @@ public class ViewerService {
             System.out.printf("%-3s%-10s%-21s%-17s%-1s\n%-1s\n", " ", "ID", "FIRST NAME", "LAST NAME", "BIRTHDAY",
                     "|------|-------------------|--------------------|------------|");
             viewers.forEach(viewer -> System.out.printf("%-3s%-6s%-20s%-21s%-1s\n%-1s\n",
-                    " ", viewer.getId(), viewer.getName(), viewer.getLastName(),
+                    " ", viewer.getId(), viewer.getFirstName(), viewer.getLastName(),
                     formatter.format(viewer.getBirthday()),
                     "|------|-------------------|--------------------|------------|"));
         } else {
@@ -193,7 +193,7 @@ public class ViewerService {
                             "ID", "FIRST NAME", "LAST NAME", "BIRTHDAY",
                             "|------|-------------------|--------------------|------------|");
                     System.out.printf("%-3s%-6s%-20s%-21s%-1s\n%-1s\n",
-                            " ", viewer.getId(), viewer.getName(), viewer.getLastName(),
+                            " ", viewer.getId(), viewer.getFirstName(), viewer.getLastName(),
                             formatter.format(viewer.getBirthday()),
                             "|------|-------------------|--------------------|------------|");
                 }

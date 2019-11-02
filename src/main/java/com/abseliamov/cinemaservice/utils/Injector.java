@@ -9,23 +9,21 @@ import com.abseliamov.cinemaservice.view.AuthorizationMenu;
 import com.abseliamov.cinemaservice.view.ViewerMenu;
 import org.hibernate.SessionFactory;
 
-import java.sql.Connection;
-
 public class Injector {
 
     private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     private static CurrentViewer currentViewer = CurrentViewer.getInstance();
 
-    private static ViewerDaoImpl viewerDao = new ViewerDaoImpl(Viewer.class.getSimpleName(), sessionFactory, Viewer.class);
+    private static ViewerDaoEntityImpl viewerDao = new ViewerDaoEntityImpl(Viewer.class.getSimpleName(), sessionFactory, Viewer.class);
     private static ViewerService viewerService = new ViewerService(viewerDao, currentViewer);
     private static ViewerController viewerController = new ViewerController(viewerService);
 
-    private static GenreDaoImpl genreDao = new GenreDaoImpl(Genre.class.getSimpleName(), sessionFactory, Genre.class);
+    private static GenreDaoEntityImpl genreDao = new GenreDaoEntityImpl(Genre.class.getSimpleName(), sessionFactory, Genre.class);
     private static GenreService genreService = new GenreService(genreDao);
     private static GenreController genreController = new GenreController(genreService);
 
-    private static MovieDaoImpl movieDao = new MovieDaoImpl(Movie.class.getSimpleName(), sessionFactory, Movie.class);
+    private static MovieDaoEntityImpl movieDao = new MovieDaoEntityImpl(Movie.class.getSimpleName(), sessionFactory, Movie.class);
     private static MovieService movieService = new MovieService(movieDao);
     private static MovieController movieController = new MovieController(movieService);
 
@@ -33,7 +31,7 @@ public class Injector {
     private static SeatTypesService seatTypesService = new SeatTypesService(seatTypesDao);
     private static SeatTypesController seatTypesController = new SeatTypesController(seatTypesService);
 
-    private static SeatDaoImpl seatDao = new SeatDaoImpl(Seat.class.getSimpleName(), sessionFactory, Seat.class);
+    private static SeatDaoEntityImpl seatDao = new SeatDaoEntityImpl(Seat.class.getSimpleName(), sessionFactory, Seat.class);
     private static SeatService seatService = new SeatService(seatDao);
     private static SeatController seatController = new SeatController(seatService);
 
@@ -41,7 +39,8 @@ public class Injector {
     private static RoleService roleService = new RoleService(roleDao);
     private static RoleController roleController = new RoleController(roleService);
 
-    private static TicketDaoImpl ticketDao = new TicketDaoImpl(Ticket.class.getSimpleName(), sessionFactory, Ticket.class);
+    private static TicketDaoImpl ticketDao = new TicketDaoImpl(Ticket.class.getSimpleName(),
+            sessionFactory, Ticket.class, currentViewer);
     private static TicketService ticketService = new TicketService(ticketDao, viewerDao, currentViewer);
     private static TicketController ticketController = new TicketController(ticketService);
 

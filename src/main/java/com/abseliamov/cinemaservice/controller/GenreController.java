@@ -16,6 +16,10 @@ public class GenreController {
         return genreService.getAll();
     }
 
+    public List<Genre> printGenre() {
+        return genreService.printGenre();
+    }
+
     public void createGenre(String genreName) {
         genreService.createGenre(genreName);
     }

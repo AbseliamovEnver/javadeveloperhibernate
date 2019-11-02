@@ -1,6 +1,6 @@
 package com.abseliamov.cinemaservice.service;
 
-import com.abseliamov.cinemaservice.dao.MovieDaoImpl;
+import com.abseliamov.cinemaservice.dao.MovieDaoEntityImpl;
 import com.abseliamov.cinemaservice.model.Genre;
 import com.abseliamov.cinemaservice.model.Movie;
 
@@ -9,9 +9,9 @@ import java.math.RoundingMode;
 import java.util.List;
 
 public class MovieService {
-    private MovieDaoImpl movieDao;
+    private MovieDaoEntityImpl movieDao;
 
-    public MovieService(MovieDaoImpl movieDao) {
+    public MovieService(MovieDaoEntityImpl movieDao) {
         this.movieDao = movieDao;
     }
 

@@ -6,38 +6,62 @@ import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "tickets")
-@AttributeOverride(name = "id", column = @Column(name = "ticket_id"))
-public class Ticket extends GenericModel {
+public class Ticket {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ticket_id", nullable = false, updatable = false)
+    private long id;
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "viewer_id", nullable = false)
-    private Viewer viewer;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "seat_id")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "seat_id", nullable = false)
     private Seat seat;
 
     @Column(name = "price", nullable = false)
     private double price;
 
+    @Column(name = "status_id", nullable = false)
+    @Convert(converter = TicketStatusConvert.class)
+    private TicketStatus status;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "viewer_id", nullable = false)
+    private Viewer viewer;
 
     public Ticket() {
     }
 
-    public Ticket(long id, LocalDateTime dateTime, Movie movie, Seat seat, double price, Viewer viewer) {
-        super(id);
+    public Ticket(long id, LocalDateTime dateTime, Movie movie, Seat seat, double price) {
+        this.id = id;
         this.dateTime = dateTime;
-        this.viewer = viewer;
         this.movie = movie;
         this.seat = seat;
         this.price = price;
+    }
+
+    public Ticket(long id, LocalDateTime dateTime, Movie movie, Seat seat, double price, TicketStatus status, Viewer viewer) {
+        this.id = id;
+        this.dateTime = dateTime;
+        this.movie = movie;
+        this.seat = seat;
+        this.price = price;
+        this.status = status;
+        this.viewer = viewer;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -80,12 +104,39 @@ public class Ticket extends GenericModel {
         this.price = price;
     }
 
+    public TicketStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TicketStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        return String.format("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-1s\n%1s",
-                " ", getId(), getMovie().getName(), getMovie().getGenres().get(1).getName(),
+        StringBuilder genres = new StringBuilder();
+        int firstGenre = 0;
+        for (Genre genre : getMovie().getGenres()) {
+            if (firstGenre == 0) {
+                firstGenre = 1;
+                continue;
+            }
+            genres.append(genre.getName());
+            genres.append("\n");
+
+        }
+        if (getMovie().getGenres().size() > 1) {
+            return String.format("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-1s\n%-41s%-1s%1s",
+                    " ", getId(), getMovie().getName(), getMovie().getGenres().get(0).getName(),
+                    getDateTime().toLocalDate().format(dateFormatter), getDateTime().toLocalTime().format(timeFormatter),
+                    getSeat().getSeatTypes(), getSeat().getNumber(), getPrice(), " ", genres,
+                    "|-------|------------------------------|-------------------|------------|----------" +
+                            "|-----------|-------------|---------|");
+        }
+        return String.format("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-1s\n%-1s",
+                " ", getId(), getMovie().getName(), getMovie().getGenres().get(0).getName(),
                 getDateTime().toLocalDate().format(dateFormatter), getDateTime().toLocalTime().format(timeFormatter),
                 getSeat().getSeatTypes(), getSeat().getNumber(), getPrice(),
                 "|-------|------------------------------|-------------------|------------|----------" +

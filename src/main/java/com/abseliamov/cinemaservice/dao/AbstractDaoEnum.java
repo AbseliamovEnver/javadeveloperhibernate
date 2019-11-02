@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 public abstract class AbstractDaoEnum<T> implements GenericDao<T> {
-    private static final Logger logger = LogManager.getLogger(AbstractDao.class);
+    private static final Logger logger = LogManager.getLogger(AbstractDaoEnum.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database. ";
     private SessionFactory sessionFactory;
     private Class<T> clazz;

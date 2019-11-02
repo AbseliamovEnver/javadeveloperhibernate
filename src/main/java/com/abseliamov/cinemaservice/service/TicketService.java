@@ -1,11 +1,8 @@
 package com.abseliamov.cinemaservice.service;
 
 import com.abseliamov.cinemaservice.dao.TicketDaoImpl;
-import com.abseliamov.cinemaservice.dao.ViewerDaoImpl;
-import com.abseliamov.cinemaservice.model.Movie;
-import com.abseliamov.cinemaservice.model.Seat;
-import com.abseliamov.cinemaservice.model.Ticket;
-import com.abseliamov.cinemaservice.model.Viewer;
+import com.abseliamov.cinemaservice.dao.ViewerDaoEntityImpl;
+import com.abseliamov.cinemaservice.model.*;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 
 import java.time.LocalDate;
@@ -16,13 +13,13 @@ import java.util.stream.Collectors;
 
 public class TicketService {
     private TicketDaoImpl ticketDao;
-    private ViewerDaoImpl viewerDao;
+    private ViewerDaoEntityImpl viewerDao;
     private CurrentViewer currentViewer;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private DateTimeFormatter weekdayFormatter = DateTimeFormatter.ofPattern("EEEE").withLocale(Locale.ENGLISH);
 
-    public TicketService(TicketDaoImpl ticketDao, ViewerDaoImpl viewerDao, CurrentViewer currentViewer) {
+    public TicketService(TicketDaoImpl ticketDao, ViewerDaoEntityImpl viewerDao, CurrentViewer currentViewer) {
         this.ticketDao = ticketDao;
         this.viewerDao = viewerDao;
         this.currentViewer = currentViewer;
@@ -48,15 +45,34 @@ public class TicketService {
     }
 
     public List<Ticket> getTicketByMovieTitle(String movieTitle) {
-        List<Ticket> ticketList = ticketDao.getTicketByMovieTitle(movieTitle);
-        printTicket(ticketList);
-        return ticketList;
+        List<Ticket> tickets = new ArrayList<>();
+        List<Ticket> ticketList = ticketDao.getAll();
+        if (ticketList != null) {
+            tickets = ticketList.stream()
+                    .filter(ticket -> ticket.getStatus() == TicketStatus.ACTIVE &&
+                            ticket.getMovie().getName().equalsIgnoreCase(movieTitle))
+                    .collect(Collectors.toList());
+        }
+        printTicket(tickets);
+        return tickets;
     }
 
     public List<Ticket> getTicketByGenre(long genreId) {
-        List<Ticket> ticketList = ticketDao.getTicketByGenre(genreId);
-        printTicket(ticketList);
-        return ticketList;
+        List<Ticket> tickets = new ArrayList<>();
+        List<Ticket> ticketList = ticketDao.getAll();
+        if (ticketList != null) {
+            tickets = ticketList.stream()
+                    .filter(ticket -> ticket.getStatus() == TicketStatus.ACTIVE)
+                    .flatMap(genre -> genre.getMovie().getGenres().stream())
+                    .filter(genre -> genre.getId() == genreId)
+                    .collect(Collectors.toList());
+            tickets.stream()
+                    .filter(ticket -> ticket.getMovie().getGenres().stream()
+                            .filter(genre -> genre.getId() == genreId))
+                    .collect(Collectors.toList())
+        }
+        printTicket(tickets);
+        return tickets;
     }
 
     public List<Ticket> getTicketBySeatType(long seatTypeId) {
@@ -105,10 +121,10 @@ public class TicketService {
         List<Ticket> ticketList = ticketDao.getAllTicketByViewerId(viewerId);
         Viewer viewer = viewerDao.getById(viewerId);
         if (ticketList.size() != 0) {
-            System.out.println("List of tickets of a viewer with a name \'" + viewer.getName() + "\'.");
+            System.out.println("List of tickets of a viewer with a name \'" + viewer.getFirstName() + "\'.");
             printTicket(ticketList);
         } else {
-            System.out.println("List of tickets of a viewer with a name \'" + viewer.getName() + "\' is empty.");
+            System.out.println("List of tickets of a viewer with a name \'" + viewer.getFirstName() + "\' is empty.");
         }
         return ticketList;
     }
@@ -194,13 +210,13 @@ public class TicketService {
 
     public boolean checkTicketAvailable(long ticketId) {
         boolean ticketAvailable = false;
-//        Ticket ticket = ticketDao.getById(ticketId);
-//        if (ticket.getStatus() == 0) {
-//            ticketAvailable = true;
-//        } else {
-//            System.out.println("Ticket with id \'" + ticketId + "\' not available.\n" +
-//                    "Please try again.");
-//        }
+        Ticket ticket = ticketDao.getById(ticketId);
+        if (ticket.getStatus() == TicketStatus.ACTIVE) {
+            ticketAvailable = true;
+        } else {
+            System.out.println("Ticket with id \'" + ticketId + "\' not available.\n" +
+                    "Please try again.");
+        }
         return ticketAvailable;
     }
 
