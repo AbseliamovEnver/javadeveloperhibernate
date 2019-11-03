@@ -1,15 +1,10 @@
-package com.abseliamov.cinemaservice.model;
+package com.abseliamov.cinemaservice.model.enums;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-
-@Table(name = "roles")
 public enum Role {
     ANONYMOUS(1),
     USER(2),
     ADMIN(3);
 
-    @Column(name = "id")
     private long id;
 
     Role(long id) {

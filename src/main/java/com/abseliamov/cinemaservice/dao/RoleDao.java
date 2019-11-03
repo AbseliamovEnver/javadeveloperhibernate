@@ -1,6 +1,6 @@
 package com.abseliamov.cinemaservice.dao;
 
-import com.abseliamov.cinemaservice.model.Role;
+import com.abseliamov.cinemaservice.model.enums.Role;
 import org.hibernate.SessionFactory;
 
 public class RoleDao extends AbstractDaoEnum<Role> {

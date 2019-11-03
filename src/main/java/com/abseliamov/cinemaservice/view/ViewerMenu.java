@@ -1,7 +1,7 @@
 package com.abseliamov.cinemaservice.view;
 
 import com.abseliamov.cinemaservice.controller.*;
-import com.abseliamov.cinemaservice.model.Role;
+import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.model.Ticket;
 import com.abseliamov.cinemaservice.model.Viewer;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
@@ -208,8 +208,11 @@ public class ViewerMenu {
         if ((genreListSize = genreController.printGenre().size()) != 0) {
             long genreId = IOUtil.readNumber("\nEnter ID genre or \'0\' to return: ");
             if (genreId != 0 && genreId <= genreListSize) {
-                ticketList = ticketController.getTicketByGenre(genreId);
-                ticketId = checkTicketAvailable(ticketList);
+                if ((ticketList = ticketController.getTicketByGenre(genreId)).size() != 0) {
+                    ticketId = checkTicketAvailable(ticketList);
+                } else {
+                    System.out.println("Tickets for the requested genre not found.");
+                }
             } else {
                 System.out.println("Genre with id \'" + genreId + "\' not available.\n" +
                         "Please try again.");
@@ -224,11 +227,12 @@ public class ViewerMenu {
         Map<LocalDate, Long> dateMap;
         if ((dateMap = ticketController.printAllActiveTicketDate()).size() != 0) {
             long dateId = IOUtil.readNumber("\nEnter ID date or \'0\' to return: ");
-            if (dateId != 0) {
-                ticketList = ticketController.getAllTicketByDate(dateId, dateMap);
+            if (dateId != 0 && (ticketList = ticketController.getAllTicketByDate(dateId, dateMap)).size() != 0) {
                 ticketId = checkTicketAvailable(ticketList);
+            } else {
+                System.out.println("Tickets for the requested date not found.");
             }
-        }else {
+        } else {
             System.out.println("List date is empty. ");
         }
         return ticketId;

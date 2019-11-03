@@ -3,6 +3,7 @@ package com.abseliamov.cinemaservice.service;
 import com.abseliamov.cinemaservice.dao.TicketDaoImpl;
 import com.abseliamov.cinemaservice.dao.ViewerDaoEntityImpl;
 import com.abseliamov.cinemaservice.model.*;
+import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 
 import java.time.LocalDate;

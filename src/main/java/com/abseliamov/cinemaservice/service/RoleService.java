@@ -1,7 +1,7 @@
 package com.abseliamov.cinemaservice.service;
 
 import com.abseliamov.cinemaservice.dao.RoleDao;
-import com.abseliamov.cinemaservice.model.Role;
+import com.abseliamov.cinemaservice.model.enums.Role;
 
 import java.util.Comparator;
 import java.util.List;

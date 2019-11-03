@@ -2,6 +2,8 @@ package com.abseliamov.cinemaservice.view;
 
 import com.abseliamov.cinemaservice.controller.*;
 import com.abseliamov.cinemaservice.model.*;
+import com.abseliamov.cinemaservice.model.enums.Role;
+import com.abseliamov.cinemaservice.model.enums.SeatTypes;
 import com.abseliamov.cinemaservice.utils.IOUtil;
 
 import java.math.BigDecimal;

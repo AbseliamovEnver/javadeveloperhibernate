@@ -41,17 +41,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="create_table_seat_types" author="enver">
-        <createTable tableName="seat_types">
-            <column name="seat_type_id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="type" type="varchar(50)">
-                <constraints unique="true" nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-
     <changeSet id="create_table_seats" author="enver">
         <createTable tableName="seats">
             <column name="seat_id" type="bigint" autoIncrement="true">
@@ -60,20 +49,8 @@
             <column name="number" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="seat_type_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_seat_types_id"
-                             referencedTableName="seat_types" referencedColumnNames="seat_type_id"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="create_table_roles" author="enver">
-        <createTable tableName="roles">
-            <column name="role_id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="role" type="varchar(50)">
-                <constraints unique="true" nullable="false"/>
+            <column name="seat_type" type="varchar(25)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
@@ -95,20 +72,8 @@
             <column name="birthday" type="date">
                 <constraints nullable="false"/>
             </column>
-            <column name="role_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_role_id"
-                             referencedTableName="roles" referencedColumnNames="role_id"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="create_table_ticket_status" author="enver">
-        <createTable tableName="ticket_status">
-            <column name="status_id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="status" type="varchar(50)">
-                <constraints unique="true" nullable="false"/>
+            <column name="role" type="varchar(25)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
@@ -132,9 +97,8 @@
             <column name="price" type="decimal(3,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="status_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_status_id"
-                             referencedTableName="ticket_status" referencedColumnNames="status_id"/>
+            <column name="status" type="varchar(25)">
+                <constraints nullable="false"/>
             </column>
             <column name="viewer_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_viewer_id"

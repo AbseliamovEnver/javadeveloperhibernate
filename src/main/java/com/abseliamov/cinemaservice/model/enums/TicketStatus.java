@@ -1,18 +1,12 @@
-package com.abseliamov.cinemaservice.model;
+package com.abseliamov.cinemaservice.model.enums;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-
-@Table(name = "ticket_status")
 public enum TicketStatus {
     PENDING(1),
     ACTIVE(2),
     INACTIVE(3),
     DELETED(4);
 
-    @Column(name = "id")
     private long id;
-
 
     TicketStatus(long id) {
         this.id = id;

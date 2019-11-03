@@ -1,5 +1,8 @@
 package com.abseliamov.cinemaservice.model;
 
+import com.abseliamov.cinemaservice.model.enums.Role;
+import com.abseliamov.cinemaservice.model.enums.RoleConverter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,8 +29,9 @@ public class Viewer {
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 
-    @Column(name = "role_id", nullable = false)
+    @Column(name = "role", nullable = false)
     @Convert(converter = RoleConverter.class)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "viewer", fetch = FetchType.EAGER, orphanRemoval = true)

@@ -1,7 +1,7 @@
 package com.abseliamov.cinemaservice.view;
 
 import com.abseliamov.cinemaservice.controller.ViewerController;
-import com.abseliamov.cinemaservice.model.Role;
+import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 import com.abseliamov.cinemaservice.utils.IOUtil;
 

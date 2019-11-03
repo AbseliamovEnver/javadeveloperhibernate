@@ -3,6 +3,8 @@ package com.abseliamov.cinemaservice.utils;
 import com.abseliamov.cinemaservice.controller.*;
 import com.abseliamov.cinemaservice.dao.*;
 import com.abseliamov.cinemaservice.model.*;
+import com.abseliamov.cinemaservice.model.enums.Role;
+import com.abseliamov.cinemaservice.model.enums.SeatTypes;
 import com.abseliamov.cinemaservice.service.*;
 import com.abseliamov.cinemaservice.view.AdminMenu;
 import com.abseliamov.cinemaservice.view.AuthorizationMenu;
@@ -27,7 +29,7 @@ public class Injector {
     private static MovieService movieService = new MovieService(movieDao);
     private static MovieController movieController = new MovieController(movieService);
 
-    private static SeatTypesDao seatTypesDao = new SeatTypesDao(sessionFactory, SeatTypes.class);
+    private static SeatTypesDao seatTypesDao = new SeatTypesDao(SeatTypes.class.getSimpleName(), sessionFactory, SeatTypes.class);
     private static SeatTypesService seatTypesService = new SeatTypesService(seatTypesDao);
     private static SeatTypesController seatTypesController = new SeatTypesController(seatTypesService);
 

@@ -1,5 +1,8 @@
 package com.abseliamov.cinemaservice.model;
 
+import com.abseliamov.cinemaservice.model.enums.SeatTypes;
+import com.abseliamov.cinemaservice.model.enums.SeatTypesConverter;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,8 +15,9 @@ public class Seat {
     @Column(name = "seat_id", nullable = false, updatable = false)
     private long id;
 
-    @Column(name = "seat_type_id", nullable = false)
+    @Column(name = "seat_type", nullable = false)
     @Convert(converter = SeatTypesConverter.class)
+    @Enumerated(EnumType.STRING)
     private SeatTypes seatTypes;
 
     @Column(name = "number", nullable = false)

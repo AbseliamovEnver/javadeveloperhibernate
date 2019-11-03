@@ -1,14 +1,9 @@
-package com.abseliamov.cinemaservice.model;
+package com.abseliamov.cinemaservice.model.enums;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-
-@Table(name = "seat_types")
 public enum SeatTypes {
     VIP(1),
     STANDARD(2);
 
-    @Column(name = "seat_type_id")
     private long id;
 
     SeatTypes(long id) {

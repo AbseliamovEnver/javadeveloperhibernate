@@ -2,7 +2,7 @@ package com.abseliamov.cinemaservice.dao;
 
 import com.abseliamov.cinemaservice.exceptions.ConnectionException;
 import com.abseliamov.cinemaservice.model.Ticket;
-import com.abseliamov.cinemaservice.model.TicketStatus;
+import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.ConnectionUtil;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 import org.apache.logging.log4j.LogManager;

@@ -1,8 +1,7 @@
 package com.abseliamov.cinemaservice.service;
 
 import com.abseliamov.cinemaservice.dao.ViewerDaoEntityImpl;
-import com.abseliamov.cinemaservice.model.GenericModel;
-import com.abseliamov.cinemaservice.model.Role;
+import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.model.Viewer;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 import com.google.common.collect.Multimap;
@@ -10,10 +9,8 @@ import com.google.common.collect.Multimap;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ViewerService {
     private ViewerDaoEntityImpl viewerDao;
@@ -47,16 +44,23 @@ public class ViewerService {
 
     public boolean authorization(String name, String password) {
         boolean checkUser = false;
-        Viewer viewer;
+        Viewer viewerExist;
         if (name.isEmpty() || password.isEmpty()) {
             System.out.println(ERROR_NAME_OR_PASSWORD);
             return checkUser;
-        } else if ((viewer = viewerDao.checkUserAuthorization(name, password)) != null) {
-            currentViewer.setViewer(viewer);
-            checkUser = true;
         } else {
-            System.out.println("User with name \'" + name + "\' and password \'" + password + "\' does not exist.");
-            System.out.println(ERROR_NAME_OR_PASSWORD);
+            viewerExist = viewerDao.getAll().stream()
+                    .filter(viewer -> viewer.getFirstName().equals(name))
+                    .filter(viewer -> viewer.getPassword().equals(password))
+                    .findFirst()
+                    .orElse(null);
+            if (viewerExist != null) {
+                currentViewer.setViewer(viewerExist);
+                checkUser = true;
+            } else {
+                System.out.println("User with name \'" + name + "\' and password \'" + password + "\' does not exist.");
+                System.out.println(ERROR_NAME_OR_PASSWORD);
+            }
         }
         return checkUser;
     }

@@ -1,4 +1,4 @@
-package com.abseliamov.cinemaservice.model;
+package com.abseliamov.cinemaservice.model.enums;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

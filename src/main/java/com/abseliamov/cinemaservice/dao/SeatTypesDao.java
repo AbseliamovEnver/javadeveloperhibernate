@@ -1,6 +1,6 @@
 package com.abseliamov.cinemaservice.dao;
 
-import com.abseliamov.cinemaservice.model.SeatTypes;
+import com.abseliamov.cinemaservice.model.enums.SeatTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -9,11 +9,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SeatTypesDao extends AbstractDaoEnum<SeatTypes>{
+public class SeatTypesDao extends AbstractDao<SeatTypes>{
     private static final Logger logger = LogManager.getLogger(SeatTypesDao.class);
 
-    public SeatTypesDao(SessionFactory sessionFactory, Class<SeatTypes> clazz) {
-        super(sessionFactory, clazz);
+    public SeatTypesDao(String entityName, SessionFactory sessionFactory, Class<SeatTypes> clazz) {
+        super(entityName, sessionFactory, clazz);
     }
 
     public void printSeatTypes(List<SeatTypes> seatTypesList) {

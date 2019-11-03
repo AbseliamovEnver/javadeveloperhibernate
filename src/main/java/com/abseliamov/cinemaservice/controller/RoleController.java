@@ -1,6 +1,6 @@
 package com.abseliamov.cinemaservice.controller;
 
-import com.abseliamov.cinemaservice.model.Role;
+import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.service.RoleService;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.abseliamov.cinemaservice.controller;
 
 import com.abseliamov.cinemaservice.model.Seat;
-import com.abseliamov.cinemaservice.model.SeatTypes;
+import com.abseliamov.cinemaservice.model.enums.SeatTypes;
 import com.abseliamov.cinemaservice.service.SeatService;
 
 import java.util.List;

@@ -1,5 +1,8 @@
 package com.abseliamov.cinemaservice.model;
 
+import com.abseliamov.cinemaservice.model.enums.TicketStatus;
+import com.abseliamov.cinemaservice.model.enums.TicketStatusConvert;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,8 +30,9 @@ public class Ticket {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "status_id", nullable = false)
+    @Column(name = "status", nullable = false)
     @Convert(converter = TicketStatusConvert.class)
+    @Enumerated(EnumType.STRING)
     private TicketStatus status;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
