@@ -1,5 +1,6 @@
 package com.abseliamov.cinemaservice.controller;
 
+import com.abseliamov.cinemaservice.model.Ticket;
 import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.model.Viewer;
 import com.abseliamov.cinemaservice.service.ViewerService;
@@ -17,6 +18,14 @@ public class ViewerController {
 
     public boolean authorization(String name, String password) {
         return viewerService.authorization(name, password);
+    }
+
+    public List<Ticket> getAllViewerTicket() {
+        return viewerService.getAllViewerTicket();
+    }
+
+    public Ticket getOrderedTicketById(long ticketId) {
+        return viewerService.getOrderedTicketById(ticketId);
     }
 
     public boolean createViewer(String firstName, String lastName, String password, Role role, LocalDate birthday) {

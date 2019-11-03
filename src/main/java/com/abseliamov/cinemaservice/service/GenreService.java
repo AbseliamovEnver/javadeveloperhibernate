@@ -1,6 +1,6 @@
 package com.abseliamov.cinemaservice.service;
 
-import com.abseliamov.cinemaservice.dao.GenreDaoEntityImpl;
+import com.abseliamov.cinemaservice.dao.GenreDaoImpl;
 import com.abseliamov.cinemaservice.model.GenericModel;
 import com.abseliamov.cinemaservice.model.Genre;
 
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GenreService {
-    private GenreDaoEntityImpl genreDao;
+    private GenreDaoImpl genreDao;
 
-    public GenreService(GenreDaoEntityImpl genreDao) {
+    public GenreService(GenreDaoImpl genreDao) {
         this.genreDao = genreDao;
     }
 

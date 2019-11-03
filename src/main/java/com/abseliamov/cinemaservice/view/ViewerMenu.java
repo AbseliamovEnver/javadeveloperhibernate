@@ -63,8 +63,7 @@ public class ViewerMenu {
                     mainMenuItem = ticketId != 0 ? 2 : -1;
                     break;
                 case 2:
-                    if (ticketId != 0) {
-                        buyTicketById(ticketId);
+                    if (ticketId != 0 && buyTicketById(ticketId)) {
                         ticketId = 0;
                         mainMenuItem = -1;
                     } else {
@@ -74,7 +73,7 @@ public class ViewerMenu {
                     }
                     break;
                 case 3:
-                    mainMenuItem = returnTicket() ? 3 : -1;
+                    mainMenuItem = returnTicket() ? -1 : -1;
                     break;
                 case 4:
                     mainMenuItem = searchTicketByViewer() ? 4 : -1;
@@ -196,7 +195,7 @@ public class ViewerMenu {
         if (ticketList != null) {
             ticketId = checkTicketAvailable(ticketList);
         } else {
-            System.out.println("Movie tickets for " + movieTitle + " not found.");
+            System.out.println("\nMovie tickets for " + movieTitle + " not found.");
         }
         return ticketId;
     }
@@ -211,10 +210,10 @@ public class ViewerMenu {
                 if ((ticketList = ticketController.getTicketByGenre(genreId)).size() != 0) {
                     ticketId = checkTicketAvailable(ticketList);
                 } else {
-                    System.out.println("Tickets for the requested genre not found.");
+                    System.out.println("\nTickets for the requested genre not found.");
                 }
             } else {
-                System.out.println("Genre with id \'" + genreId + "\' not available.\n" +
+                System.out.println("\nGenre with id \'" + genreId + "\' not available.\n" +
                         "Please try again.");
             }
         }
@@ -230,10 +229,10 @@ public class ViewerMenu {
             if (dateId != 0 && (ticketList = ticketController.getAllTicketByDate(dateId, dateMap)).size() != 0) {
                 ticketId = checkTicketAvailable(ticketList);
             } else {
-                System.out.println("Tickets for the requested date not found.");
+                System.out.println("\nTickets for the requested date not found.");
             }
         } else {
-            System.out.println("List date is empty. ");
+            System.out.println("\nList date is empty. ");
         }
         return ticketId;
     }
@@ -248,10 +247,10 @@ public class ViewerMenu {
                 if ((ticketList = ticketController.getTicketBySeatType(seatTypeId)).size() != 0) {
                     ticketId = checkTicketAvailable(ticketList);
                 } else {
-                    System.out.println("Tickets for the requested seat type not found.");
+                    System.out.println("\nTickets for the requested seat type not found.");
                 }
             } else {
-                System.out.println("Seat type with id \'" + seatTypeId + "\' not available.\n" +
+                System.out.println("\nSeat type with id \'" + seatTypeId + "\' not available.\n" +
                         "Please try again.");
             }
         }
@@ -266,17 +265,17 @@ public class ViewerMenu {
                 return buyExist;
             } else if (ticketId == ticketConfirm) {
                 if (ticketController.buyTicket(ticketId)) {
-                    System.out.println("Thanks for your purchase\n");
+                    System.out.println("\nThanks for your purchase\n");
                     buyExist = true;
                 } else {
-                    System.out.println("Purchase failed. Please try again.\n");
+                    System.out.println("\nPurchase failed. Please try again.\n");
                 }
             } else {
-                System.out.println("The entered \'" + ticketConfirm + "\' does not match the available ticket.");
+                System.out.println("\nThe entered \'" + ticketConfirm + "\' does not match the available ticket.");
                 System.out.println("Please try again.");
             }
         } else {
-            System.out.println("Ticket with id \'" + ticketId + "\' not found.\n");
+            System.out.println("\nTicket with id \'" + ticketId + "\' not found.\n");
         }
         return buyExist;
     }
@@ -292,21 +291,19 @@ public class ViewerMenu {
 
     private boolean returnTicket() {
         boolean returnExist = false;
-        Ticket ticket;
-        if (!ticketController.getAllTicketViewer().isEmpty()) {
+        if (viewerController.getAllViewerTicket().size() != 0) {
             long ticketId = IOUtil.readNumber("\nEnter the ticket ID to return or \'0\' to return menu: ");
-            if (ticketId != 0 && (ticket = ticketController.getOrderedTicketById(ticketId)) != null) {
-                long ticketConfirm = IOUtil.readNumber("\nEnter ticket ID to confirm return the ticket or \'0\' to return: ");
-                if (ticketId == ticketConfirm && ticketController.returnTicket(ticketId)
-                        && movieController.reduceCostMovie(BigDecimal.valueOf(ticket.getPrice()), ticket.getMovie())) {
+            if (ticketId != 0 && viewerController.getOrderedTicketById(ticketId) != null) {
+                long ticketIdConfirm = IOUtil.readNumber("\nEnter ticket ID to confirm return the ticket or \'0\' to return: ");
+                if (ticketId == ticketIdConfirm && ticketController.returnTicket(ticketId)) {
                     returnExist = true;
-                    System.out.println("Ticket returned.\n");
+                    System.out.println("\nTicket returned.\n");
                 } else {
-                    System.out.println("Ticket not returned.\n");
+                    System.out.println("\nTicket not returned.\n");
                 }
             }
         } else {
-            System.out.println("List of tickets ordered is empty.");
+            System.out.println("\nList of tickets ordered is empty.");
         }
         return returnExist;
     }
@@ -323,7 +320,7 @@ public class ViewerMenu {
                 }
             }
         } else {
-            System.out.println("This menu requires administrator rights\n.");
+            System.out.println("\nThis menu requires administrator rights\n.");
         }
         return ticketExist;
     }

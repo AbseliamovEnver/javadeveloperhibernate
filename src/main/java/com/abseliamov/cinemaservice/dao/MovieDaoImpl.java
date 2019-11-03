@@ -11,12 +11,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDaoEntityImpl extends AbstractDao<Movie> {
-    private static final Logger logger = LogManager.getLogger(MovieDaoEntityImpl.class);
+public class MovieDaoImpl extends AbstractDao<Movie> {
+    private static final Logger logger = LogManager.getLogger(MovieDaoImpl.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database: ";
     private Connection connection = ConnectionUtil.getConnection();
 
-    public MovieDaoEntityImpl(String entityName, SessionFactory sessionFactory, Class<Movie> clazz) {
+    public MovieDaoImpl(String entityName, SessionFactory sessionFactory, Class<Movie> clazz) {
         super(entityName, sessionFactory, clazz);
     }
 

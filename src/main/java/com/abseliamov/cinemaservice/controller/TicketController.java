@@ -37,20 +37,12 @@ public class TicketController {
         return ticketService.buyTicket(ticketId);
     }
 
-    public List<Ticket> getAllTicketViewer() {
-        return ticketService.getAllTicketViewer();
-    }
-
     public boolean returnTicket(long ticketId) {
         return ticketService.returnTicket(ticketId);
     }
 
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
         return ticketService.getAllTicketByViewerId(viewerId);
-    }
-
-    public Ticket getOrderedTicketById(long ticketId) {
-        return ticketService.getOrderedTicketById(ticketId);
     }
 
     public Map<LocalDate, Long> printAllActiveTicketDate() {

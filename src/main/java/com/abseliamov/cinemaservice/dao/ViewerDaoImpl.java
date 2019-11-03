@@ -14,12 +14,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewerDaoEntityImpl extends AbstractDao<Viewer> {
-    private static final Logger logger = LogManager.getLogger(ViewerDaoEntityImpl.class);
+public class ViewerDaoImpl extends AbstractDao<Viewer> {
+    private static final Logger logger = LogManager.getLogger(ViewerDaoImpl.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database: ";
     Connection connection = ConnectionUtil.getConnection();
 
-    public ViewerDaoEntityImpl(String entityName, SessionFactory sessionFactory, Class<Viewer> clazz) {
+    public ViewerDaoImpl(String entityName, SessionFactory sessionFactory, Class<Viewer> clazz) {
         super(entityName, sessionFactory, clazz);
     }
 

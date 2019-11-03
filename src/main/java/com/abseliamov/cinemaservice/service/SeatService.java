@@ -1,6 +1,6 @@
 package com.abseliamov.cinemaservice.service;
 
-import com.abseliamov.cinemaservice.dao.SeatDaoEntityImpl;
+import com.abseliamov.cinemaservice.dao.SeatDaoImpl;
 import com.abseliamov.cinemaservice.model.Seat;
 import com.abseliamov.cinemaservice.model.enums.SeatTypes;
 
@@ -9,9 +9,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SeatService {
-    private SeatDaoEntityImpl seatDao;
+    private SeatDaoImpl seatDao;
 
-    public SeatService(SeatDaoEntityImpl seatDao) {
+    public SeatService(SeatDaoImpl seatDao) {
         this.seatDao = seatDao;
     }
 

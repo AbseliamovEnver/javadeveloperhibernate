@@ -1,25 +1,27 @@
 package com.abseliamov.cinemaservice.service;
 
-import com.abseliamov.cinemaservice.dao.ViewerDaoEntityImpl;
+import com.abseliamov.cinemaservice.dao.ViewerDaoImpl;
+import com.abseliamov.cinemaservice.model.Ticket;
 import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.model.Viewer;
+import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 import com.google.common.collect.Multimap;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ViewerService {
-    private ViewerDaoEntityImpl viewerDao;
+    private ViewerDaoImpl viewerDao;
     private CurrentViewer currentViewer;
     private static final String ERROR_NAME_OR_PASSWORD =
             "Please enter correct username and password or enter \'0\' to exit:";
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public ViewerService(ViewerDaoEntityImpl viewerDao, CurrentViewer currentViewer) {
+    public ViewerService(ViewerDaoImpl viewerDao, CurrentViewer currentViewer) {
         this.viewerDao = viewerDao;
         this.currentViewer = currentViewer;
     }
@@ -99,6 +101,53 @@ public class ViewerService {
     public void delete(long viewerId) {
         if (viewerDao.delete(viewerId)) {
             System.out.println("Viewer with id \'" + viewerId + "\' deleted.");
+        }
+    }
+
+    public List<Ticket> getAllViewerTicket() {
+        List<Ticket> tickets = currentViewer.getViewer().getTickets();
+        List<Ticket> result = null;
+        if (tickets != null) {
+            result = tickets.stream()
+                    .filter(ticket -> ticket.getDateTime().isAfter(LocalDateTime.now()))
+                    .filter(ticket -> ticket.getStatus() == TicketStatus.INACTIVE)
+                    .collect(Collectors.toList());
+        }
+        if (result != null) {
+            printViewerTicket(result);
+        }
+        return result;
+    }
+
+    public Ticket getOrderedTicketById(long ticketId) {
+        Ticket ticket = currentViewer.getViewer().getTickets().stream()
+                .filter(ticketItem -> ticketItem.getId() == ticketId)
+                .filter(ticketItem -> ticketItem.getStatus() == TicketStatus.INACTIVE)
+                .findFirst()
+                .orElse(null);
+        if (ticket != null) {
+            printViewerTicket(Collections.singletonList(ticket));
+        }
+        return ticket;
+    }
+
+    private void printViewerTicket(List<Ticket> tickets) {
+        if (tickets != null) {
+            System.out.println("\n|--------------------------------------------------------------------" +
+                    "--------------------------------------------------|");
+            System.out.printf("%-55s%-1s\n", " ", "LIST OF TICKETS");
+            System.out.println("|----------------------------------------------------------------------" +
+                    "------------------------------------------------|");
+            System.out.printf("%-3s%-15s%-29s%-17s%-12s%-9s%-12s%-15s%-1s\n",
+                    " ", "ID", "MOVIE TITLE", "GENRE", "DATE", "TIME", "SEAT TYPE", "SEAT NUMBER", "PRICE");
+            System.out.println("|-------|------------------------------|-------------------|------------|----------" +
+                    "|-----------|-------------|---------|");
+            tickets.stream()
+                    .sorted(Comparator.comparing(Ticket::getId))
+                    .collect(Collectors.toList())
+                    .forEach(System.out::println);
+        } else {
+            System.out.println("At your request tickets available is not found");
         }
     }
 

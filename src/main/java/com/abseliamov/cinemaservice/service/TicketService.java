@@ -1,7 +1,7 @@
 package com.abseliamov.cinemaservice.service;
 
 import com.abseliamov.cinemaservice.dao.TicketDaoImpl;
-import com.abseliamov.cinemaservice.dao.ViewerDaoEntityImpl;
+import com.abseliamov.cinemaservice.dao.ViewerDaoImpl;
 import com.abseliamov.cinemaservice.model.*;
 import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 
 public class TicketService {
     private TicketDaoImpl ticketDao;
-    private ViewerDaoEntityImpl viewerDao;
+    private ViewerDaoImpl viewerDao;
     private CurrentViewer currentViewer;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private DateTimeFormatter weekdayFormatter = DateTimeFormatter.ofPattern("EEEE").withLocale(Locale.ENGLISH);
 
-    public TicketService(TicketDaoImpl ticketDao, ViewerDaoEntityImpl viewerDao, CurrentViewer currentViewer) {
+    public TicketService(TicketDaoImpl ticketDao, ViewerDaoImpl viewerDao, CurrentViewer currentViewer) {
         this.ticketDao = ticketDao;
         this.viewerDao = viewerDao;
         this.currentViewer = currentViewer;
@@ -135,22 +135,12 @@ public class TicketService {
         return false;
     }
 
-    public List<Ticket> getAllTicketViewer() {
-        List<Ticket> ticketList = ticketDao.getAllTicketViewer();
-        printTicket(ticketList);
-        return ticketList;
-    }
-
-    public Ticket getOrderedTicketById(long ticketId) {
-        Ticket ticket = ticketDao.getOrderedTicketById(ticketId);
-        List<Ticket> list = Arrays.asList(ticket);
-        printTicket(list);
-        return ticket;
-    }
-
     public boolean returnTicket(long ticketId) {
-        Ticket ticket = ticketDao.getOrderedTicketById(ticketId);
-        return ticketDao.returnTicket(ticket);
+        Ticket ticket = ticketDao.getById(ticketId);
+        if (ticket != null && ticket.getStatus() == TicketStatus.INACTIVE) {
+            return ticketDao.returnTicket(ticket);
+        }
+        return false;
     }
 
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
@@ -231,7 +221,8 @@ public class TicketService {
         boolean ticketAvailable = false;
         Ticket ticket = ticketDao.getById(ticketId);
         if (ticket != null) {
-            if (ticket.getStatus() == TicketStatus.ACTIVE) {
+            if (ticket.getDateTime().isAfter(LocalDateTime.now()) &&
+                    ticket.getStatus() == TicketStatus.ACTIVE) {
                 tickets.add(ticket);
                 printTicket(tickets);
                 ticketAvailable = true;
