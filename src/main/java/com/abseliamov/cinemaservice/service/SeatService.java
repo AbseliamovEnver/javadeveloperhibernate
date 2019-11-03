@@ -5,6 +5,8 @@ import com.abseliamov.cinemaservice.model.Seat;
 import com.abseliamov.cinemaservice.model.enums.SeatTypes;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SeatService {
     private SeatDaoEntityImpl seatDao;
@@ -82,5 +84,24 @@ public class SeatService {
 
     private void printSeatTypes(List<Seat> seats) {
 
+    }
+
+    public Set<SeatTypes> printAllSeatType() {
+        List<Seat> seats = seatDao.getAll();
+        Set<SeatTypes> seatTypes = null;
+        if (seats.size() != 0) {
+            System.out.println("\n|--------------------|");
+            System.out.printf("%-3s%-1s\n", " ", "LIST SEAT TYPES");
+            System.out.println("|--------------------|");
+            System.out.printf("%-3s%-9s%-1s\n%-1s\n", " ", "ID", "TYPE",
+                    "|------|-------------|");
+            seatTypes = seats.stream().map(Seat::getSeatTypes).collect(Collectors.toSet());
+            seatTypes.forEach(seatType -> System.out.printf("%-3s%-6s%-1s\n%-1s\n",
+                    " ", seatType.getId(), seatType,
+                    "|------|-------------|"));
+        } else {
+            System.out.println("List seats is empty.");
+        }
+        return seatTypes;
     }
 }

@@ -242,11 +242,14 @@ public class ViewerMenu {
         long ticketId = 0;
         long seatTypeListSize;
         List<Ticket> ticketList;
-        if ((seatTypeListSize = seatTypesController.getAllSeatType().size()) != 0) {
+        if ((seatTypeListSize = seatController.printAllSeatType().size()) != 0) {
             long seatTypeId = IOUtil.readNumber("\nEnter ID seat type or \'0\' to return: ");
             if (seatTypeId != 0 && seatTypeId <= seatTypeListSize) {
-                ticketList = ticketController.getTicketBySeatType(seatTypeId);
-                ticketId = checkTicketAvailable(ticketList);
+                if ((ticketList = ticketController.getTicketBySeatType(seatTypeId)).size() != 0) {
+                    ticketId = checkTicketAvailable(ticketList);
+                } else {
+                    System.out.println("Tickets for the requested seat type not found.");
+                }
             } else {
                 System.out.println("Seat type with id \'" + seatTypeId + "\' not available.\n" +
                         "Please try again.");
@@ -257,7 +260,7 @@ public class ViewerMenu {
 
     private boolean buyTicketById(long ticketId) {
         boolean buyExist = false;
-        if (ticketId != 0 && ticketController.getById(ticketId) != null) {
+        if (ticketId != 0 && ticketController.checkTicketAvailable(ticketId)) {
             long ticketConfirm = IOUtil.readNumber("\nEnter the ticket ID to confirm the purchase or \'0\' to return: ");
             if (ticketConfirm == 0) {
                 return buyExist;

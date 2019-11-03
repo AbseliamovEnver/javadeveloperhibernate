@@ -5,6 +5,8 @@ import com.abseliamov.cinemaservice.model.enums.SeatTypes;
 import com.abseliamov.cinemaservice.service.SeatService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class SeatController {
     private SeatService seatService;
@@ -35,5 +37,9 @@ public class SeatController {
 
     public void deleteSeat(long seatId) {
         seatService.delete(seatId);
+    }
+
+    public Set<SeatTypes> printAllSeatType() {
+        return seatService.printAllSeatType();
     }
 }

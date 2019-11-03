@@ -100,9 +100,18 @@ public class TicketService {
     }
 
     public List<Ticket> getTicketBySeatType(long seatTypeId) {
-        List<Ticket> ticketList = ticketDao.getTicketBySeatType(seatTypeId);
-        printTicket(ticketList);
-        return ticketList;
+        List<Ticket> ticketList = ticketDao.getAll();
+        List<Ticket> result = null;
+        if (ticketList != null) {
+            result = ticketList.stream()
+                    .filter(ticket -> ticket.getStatus() == TicketStatus.ACTIVE)
+                    .filter(ticket -> ticket.getSeat().getSeatTypes().getId() == seatTypeId)
+                    .collect(Collectors.toList());
+        }
+        if (result != null) {
+            printTicket(result);
+        }
+        return result;
     }
 
     public Ticket getById(long ticketId) {
@@ -120,7 +129,10 @@ public class TicketService {
 
     public boolean buyTicket(long ticketId) {
         Ticket ticket = ticketDao.getById(ticketId);
-        return ticketDao.buyTicket(ticket);
+        if (ticket != null && ticket.getStatus() == TicketStatus.ACTIVE) {
+            return ticketDao.buyTicket(ticket);
+        }
+        return false;
     }
 
     public List<Ticket> getAllTicketViewer() {
@@ -215,10 +227,17 @@ public class TicketService {
     }
 
     public boolean checkTicketAvailable(long ticketId) {
+        List<Ticket> tickets = new ArrayList<>();
         boolean ticketAvailable = false;
         Ticket ticket = ticketDao.getById(ticketId);
-        if (ticket.getStatus() == TicketStatus.ACTIVE) {
-            ticketAvailable = true;
+        if (ticket != null) {
+            if (ticket.getStatus() == TicketStatus.ACTIVE) {
+                tickets.add(ticket);
+                printTicket(tickets);
+                ticketAvailable = true;
+            } else {
+                System.out.println("Ticket with id \'" + ticketId + "\' has already been sold.");
+            }
         } else {
             System.out.println("Ticket with id \'" + ticketId + "\' not available.\n" +
                     "Please try again.");
