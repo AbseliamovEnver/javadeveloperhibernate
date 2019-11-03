@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ViewerMenu {
     private CurrentViewer currentViewer;
@@ -220,12 +221,15 @@ public class ViewerMenu {
     private long searchTicketByDate() {
         long ticketId = 0;
         List<Ticket> ticketList;
-        if (ticketController.printAllActiveTicketDate() != null) {
+        Map<LocalDate, Long> dateMap;
+        if ((dateMap = ticketController.printAllActiveTicketDate()).size() != 0) {
             long dateId = IOUtil.readNumber("\nEnter ID date or \'0\' to return: ");
             if (dateId != 0) {
-                ticketList = ticketController.getAllTicketByDate(dateId);
+                ticketList = ticketController.getAllTicketByDate(dateId, dateMap);
                 ticketId = checkTicketAvailable(ticketList);
             }
+        }else {
+            System.out.println("List date is empty. ");
         }
         return ticketId;
     }

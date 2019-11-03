@@ -77,6 +77,27 @@ public class TicketService {
         return result;
     }
 
+    public List<Ticket> getAllTicketByDate(long dateId, Map<LocalDate, Long> dateMap) {
+        List<Ticket> result = null;
+        List<Ticket> ticketList = ticketDao.getAll();
+        LocalDate date;
+        date = dateMap.entrySet().stream()
+                .filter(dateItem -> dateItem.getValue() == dateId)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+        if (ticketList != null && date != null) {
+            result = ticketList.stream()
+                    .filter(ticketActive -> ticketActive.getStatus() == TicketStatus.ACTIVE)
+                    .filter(ticketDate -> ticketDate.getDateTime().toLocalDate().equals(date))
+                    .collect(Collectors.toList());
+            printTicket(result);
+        } else {
+            System.out.println("Tickets for this date is not found.");
+        }
+        return result;
+    }
+
     public List<Ticket> getTicketBySeatType(long seatTypeId) {
         List<Ticket> ticketList = ticketDao.getTicketBySeatType(seatTypeId);
         printTicket(ticketList);
@@ -143,24 +164,6 @@ public class TicketService {
             System.out.println("Date list is empty.");
         }
         return dateMap;
-    }
-
-    public List<Ticket> getAllTicketByDate(long ticketId) {
-        List<Ticket> result = null;
-        LocalDate date;
-        List<Ticket> ticketList = ticketDao.getAll();
-        Ticket ticket = ticketDao.getById(ticketId);
-        if (ticketList != null && ticket != null) {
-            date = ticket.getDateTime().toLocalDate();
-            result = ticketList.stream()
-                    .filter(ticketItem -> ticketItem.getDateTime().toLocalDate().equals(date))
-//                    .filter(ticketItem -> ticketItem.getStatus() == 0)
-                    .collect(Collectors.toList());
-            printTicket(result);
-        } else {
-            System.out.println("");
-        }
-        return result;
     }
 
     public List<Ticket> getAll() {

@@ -57,8 +57,8 @@ public class TicketController {
         return ticketService.printAllActiveTicketDate();
     }
 
-    public List<Ticket> getAllTicketByDate(long dateId) {
-        return ticketService.getAllTicketByDate(dateId);
+    public List<Ticket> getAllTicketByDate(long dateId, Map<LocalDate, Long> dateMap) {
+        return ticketService.getAllTicketByDate(dateId, dateMap);
     }
 
     public boolean checkTicketAvailable(long ticketId) {
