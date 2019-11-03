@@ -18,8 +18,6 @@ public class Injector {
     private static CurrentViewer currentViewer = CurrentViewer.getInstance();
 
     private static ViewerDaoImpl viewerDao = new ViewerDaoImpl(Viewer.class.getSimpleName(), sessionFactory, Viewer.class);
-    private static ViewerService viewerService = new ViewerService(viewerDao, currentViewer);
-    private static ViewerController viewerController = new ViewerController(viewerService);
 
     private static GenreDaoImpl genreDao = new GenreDaoImpl(Genre.class.getSimpleName(), sessionFactory, Genre.class);
     private static GenreService genreService = new GenreService(genreDao);
@@ -45,6 +43,10 @@ public class Injector {
             sessionFactory, Ticket.class, currentViewer, viewerDao);
     private static TicketService ticketService = new TicketService(ticketDao, viewerDao, currentViewer);
     private static TicketController ticketController = new TicketController(ticketService);
+
+    private static ViewerService viewerService = new ViewerService(viewerDao, currentViewer, ticketDao);
+    private static ViewerController viewerController = new ViewerController(viewerService);
+
 
     private static ViewerMenu viewerMenu = new ViewerMenu(currentViewer, viewerController, ticketController,
             genreController, seatController, seatTypesController, movieController);

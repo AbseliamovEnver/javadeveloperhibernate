@@ -143,6 +143,34 @@ public class TicketService {
         return false;
     }
 
+    public List<Ticket> getAllViewerTicket() {
+        List<Ticket> tickets = ticketDao.getAll();
+        List<Ticket> result = null;
+        if (tickets != null) {
+            result = tickets.stream()
+                    .filter(ticket -> ticket.getViewer().getId() == currentViewer.getViewer().getId())
+                    .filter(ticket -> ticket.getDateTime().isAfter(LocalDateTime.now()))
+                    .filter(ticket -> ticket.getStatus() == TicketStatus.INACTIVE)
+                    .collect(Collectors.toList());
+        }
+        if (result != null) {
+            printTicket(result);
+        }
+        return result;
+    }
+
+    public Ticket getOrderedTicketById(long ticketId) {
+        Ticket ticket = ticketDao.getById(ticketId);
+        if (ticket != null && ticket.getViewer().getId() == currentViewer.getViewer().getId() &&
+                ticket.getStatus() == TicketStatus.INACTIVE && ticket.getDateTime().isAfter(LocalDateTime.now())) {
+            printTicket(Collections.singletonList(ticket));
+        }
+        return ticket;
+    }
+
+
+
+
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
         List<Ticket> ticketList = ticketDao.getAllTicketByViewerId(viewerId);
         Viewer viewer = viewerDao.getById(viewerId);

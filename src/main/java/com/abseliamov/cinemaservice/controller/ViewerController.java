@@ -20,14 +20,6 @@ public class ViewerController {
         return viewerService.authorization(name, password);
     }
 
-    public List<Ticket> getAllViewerTicket() {
-        return viewerService.getAllViewerTicket();
-    }
-
-    public Ticket getOrderedTicketById(long ticketId) {
-        return viewerService.getOrderedTicketById(ticketId);
-    }
-
     public boolean createViewer(String firstName, String lastName, String password, Role role, LocalDate birthday) {
         return viewerService.createViewer(firstName, lastName, password, role, birthday);
     }

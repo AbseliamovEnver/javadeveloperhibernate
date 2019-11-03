@@ -73,7 +73,7 @@ public class ViewerMenu {
                     }
                     break;
                 case 3:
-                    mainMenuItem = returnTicket() ? -1 : -1;
+                    mainMenuItem = returnTicket() ? 3 : -1;
                     break;
                 case 4:
                     mainMenuItem = searchTicketByViewer() ? 4 : -1;
@@ -291,9 +291,9 @@ public class ViewerMenu {
 
     private boolean returnTicket() {
         boolean returnExist = false;
-        if (viewerController.getAllViewerTicket().size() != 0) {
+        if (ticketController.getAllViewerTicket().size() != 0) {
             long ticketId = IOUtil.readNumber("\nEnter the ticket ID to return or \'0\' to return menu: ");
-            if (ticketId != 0 && viewerController.getOrderedTicketById(ticketId) != null) {
+            if (ticketId != 0 && ticketController.getOrderedTicketById(ticketId) != null) {
                 long ticketIdConfirm = IOUtil.readNumber("\nEnter ticket ID to confirm return the ticket or \'0\' to return: ");
                 if (ticketId == ticketIdConfirm && ticketController.returnTicket(ticketId)) {
                     returnExist = true;
