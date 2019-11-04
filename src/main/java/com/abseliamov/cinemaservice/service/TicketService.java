@@ -143,7 +143,7 @@ public class TicketService {
         return false;
     }
 
-    public List<Ticket> getAllViewerTicket() {
+    public List<Ticket> getAllViewerActualTicket() {
         List<Ticket> tickets = ticketDao.getAll();
         List<Ticket> result = null;
         if (tickets != null) {
@@ -168,7 +168,19 @@ public class TicketService {
         return ticket;
     }
 
-
+    public List<Ticket> getAllViewerTicket() {
+        List<Ticket> tickets = ticketDao.getAll();
+        List<Ticket> result = null;
+        if (tickets != null) {
+            result = tickets.stream()
+                    .filter(ticket -> ticket.getViewer().getId() == currentViewer.getViewer().getId())
+                    .collect(Collectors.toList());
+        }
+        if (result != null) {
+            printTicketWithStatus(result);
+        }
+        return result;
+    }
 
 
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
@@ -214,17 +226,7 @@ public class TicketService {
     }
 
     public void update(long ticketId, Movie movie, Seat seat, long buyStatus, double price, LocalDateTime dateTime) {
-//        List<Ticket> tickets = ticketDao.getAll();
-//        Ticket updateTicket = new Ticket(ticketId, dateTime, movie, seat, price, buyStatus);
-//        Ticket ticket = tickets.stream()
-//                .filter(ticketItem -> ticketItem.getDateTime().equals(dateTime) &&
-//                        ticketItem.getMovie().equals(movie) &&
-//                        ticketItem.getSeat().equals(seat))
-//                .findFirst()
-//                .orElse(null);
-//        if (ticket == null && ticketDao.update(ticketId, updateTicket)) {
-//            System.out.println("Ticket with id \'" + ticketId + "\' updated successfully.");
-//        }
+
     }
 
     public void delete(long ticketId) {
@@ -265,7 +267,7 @@ public class TicketService {
     }
 
     private void printTicket(List<Ticket> ticketList) {
-        if (!ticketList.isEmpty()) {
+        if (ticketList != null) {
             System.out.println("\n|--------------------------------------------------------------------" +
                     "--------------------------------------------------|");
             System.out.printf("%-55s%-1s\n", " ", "LIST OF TICKETS");
@@ -285,27 +287,49 @@ public class TicketService {
     }
 
     private void printTicketWithStatus(List<Ticket> tickets) {
-        if (!tickets.isEmpty()) {
+        StringBuilder genres = new StringBuilder();
+        int firstGenre = 0;
+        if (tickets != null) {
             System.out.println("\n|--------------------------------------------------------------------" +
-                    "-----------------------------------------------------------|");
+                    "--------------------------------------------------------------|");
             System.out.printf("%-55s%-1s\n", " ", "LIST OF TICKETS");
             System.out.println("|----------------------------------------------------------------------" +
-                    "---------------------------------------------------------|");
-            System.out.printf("%-3s%-15s%-29s%-17s%-12s%-9s%-12s%-15s%-9s%-1s\n",
+                    "------------------------------------------------------------|");
+            System.out.printf("%-3s%-15s%-29s%-17s%-12s%-9s%-12s%-15s%-10s%-1s\n",
                     " ", "ID", "MOVIE TITLE", "GENRE", "DATE", "TIME", "SEAT TYPE", "SEAT NUMBER", "PRICE", "STATUS");
             System.out.println("|-------|------------------------------|-------------------|------------|----------" +
-                    "|-----------|-------------|---------|--------|");
-            tickets.stream()
-                    .sorted(Comparator.comparing(Ticket::getId))
-                    .collect(Collectors.toList())
-                    .forEach(ticket -> System.out.printf("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-11s%-1s\n%1s\n",
-                            " ", ticket.getId(), ticket.getMovie().getName(), ticket.getMovie().getGenres(),
+                    "|-----------|-------------|---------|-----------|");
+            for (Ticket ticket : tickets) {
+                if (ticket.getMovie().getGenres().size() > 1) {
+                    for (Genre genre : ticket.getMovie().getGenres()) {
+                        if (firstGenre == 0) {
+                            firstGenre = 1;
+                            continue;
+                        }
+                        genres.append(genre.getName());
+                        genres.append("\n");
+                    }
+                    System.out.printf("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-9s%-1s\n%-41s%-1s%1s",
+                            " ", ticket.getId(), ticket.getMovie().getName(),
+                            ticket.getMovie().getGenres().get(0).getName(),
                             ticket.getDateTime().toLocalDate().format(dateFormatter),
                             ticket.getDateTime().toLocalTime().format(timeFormatter),
                             ticket.getSeat().getSeatTypes(), ticket.getSeat().getNumber(),
-//                            ticket.getPrice(), ticket.getStatus(),
+                            ticket.getPrice(), ticket.getStatus(), " ", genres,
                             "|-------|------------------------------|-------------------|------------|----------" +
-                                    "|-----------|-------------|---------|--------|"));
+                                    "|-----------|-------------|---------|-----------|");
+                } else {
+                    System.out.printf("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-9s%-1s\n%-1s",
+                            " ", ticket.getId(), ticket.getMovie().getName(),
+                            ticket.getMovie().getGenres().get(0).getName(),
+                            ticket.getDateTime().toLocalDate().format(dateFormatter),
+                            ticket.getDateTime().toLocalTime().format(timeFormatter),
+                            ticket.getSeat().getSeatTypes(), ticket.getSeat().getNumber(),
+                            ticket.getPrice(), ticket.getStatus(),
+                            "|-------|------------------------------|-------------------|------------|----------" +
+                                    "|-----------|-------------|---------|-----------|");
+                }
+            }
         } else {
             System.out.println("List tickets is empty.");
         }

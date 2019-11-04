@@ -41,14 +41,17 @@ public class TicketController {
         return ticketService.returnTicket(ticketId);
     }
 
-    public List<Ticket> getAllViewerTicket() {
-        return ticketService.getAllViewerTicket();
+    public List<Ticket> getAllViewerActualTicket() {
+        return ticketService.getAllViewerActualTicket();
     }
 
     public Ticket getOrderedTicketById(long ticketId) {
         return ticketService.getOrderedTicketById(ticketId);
     }
 
+    public List<Ticket> getAllViewerTicket() {
+        return ticketService.getAllViewerTicket();
+    }
 
 
 

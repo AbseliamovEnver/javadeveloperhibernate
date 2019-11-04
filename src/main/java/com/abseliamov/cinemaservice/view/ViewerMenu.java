@@ -7,7 +7,6 @@ import com.abseliamov.cinemaservice.model.Viewer;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 import com.abseliamov.cinemaservice.utils.IOUtil;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -76,7 +75,8 @@ public class ViewerMenu {
                     mainMenuItem = returnTicket() ? 3 : -1;
                     break;
                 case 4:
-                    mainMenuItem = searchTicketByViewer() ? 4 : -1;
+                    searchAllViewerTicket();
+                    mainMenuItem = -1;
                     break;
                 case 5:
                     mainMenuItem = requestMenu() == 0 ? -1 : 5;
@@ -291,7 +291,7 @@ public class ViewerMenu {
 
     private boolean returnTicket() {
         boolean returnExist = false;
-        if (ticketController.getAllViewerTicket().size() != 0) {
+        if (ticketController.getAllViewerActualTicket().size() != 0) {
             long ticketId = IOUtil.readNumber("\nEnter the ticket ID to return or \'0\' to return menu: ");
             if (ticketId != 0 && ticketController.getOrderedTicketById(ticketId) != null) {
                 long ticketIdConfirm = IOUtil.readNumber("\nEnter ticket ID to confirm return the ticket or \'0\' to return: ");
@@ -306,6 +306,18 @@ public class ViewerMenu {
             System.out.println("\nList of tickets ordered is empty.");
         }
         return returnExist;
+    }
+
+    private boolean searchAllViewerTicket() {
+        boolean ticketExist = false;
+        if (currentViewer.getViewer().getRole() == Role.USER) {
+            if (ticketController.getAllViewerTicket().size() != 0) {
+                ticketExist = true;
+            } else {
+                System.out.println("\nList of tickets is empty.");
+            }
+        }
+        return ticketExist;
     }
 
     private boolean searchTicketByViewer() {
