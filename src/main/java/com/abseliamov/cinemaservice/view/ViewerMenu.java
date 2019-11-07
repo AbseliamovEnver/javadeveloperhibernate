@@ -390,7 +390,7 @@ public class ViewerMenu {
         if ((genreId = getGenreId()) != 0) {
             amount = getAmountOfOrdersViewer();
             if ((dates = getDatePeriod()) != null) {
-                viewerController.searchViewerByComplexQuery(genreId, amount, dates);
+                ticketController.searchViewerByComplexQuery(genreId, amount, dates);
             }
         }
     }
@@ -398,7 +398,7 @@ public class ViewerMenu {
     private long getGenreId() {
         long genreListSize;
         long genreId = 0;
-        if ((genreListSize = genreController.getAll().size()) != 0) {
+        if ((genreListSize = genreController.printGenre().size()) != 0) {
             genreId = IOUtil.readNumber("\nEnter ID genre or \'0\' to return: ");
             if (genreId != 0 && genreId <= genreListSize) {
                 return genreId;

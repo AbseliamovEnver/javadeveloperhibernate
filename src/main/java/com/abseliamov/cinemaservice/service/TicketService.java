@@ -7,8 +7,6 @@ import com.abseliamov.cinemaservice.model.*;
 import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 
-import javax.persistence.Query;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TicketService {
+    private static final String REQUEST_IS_EMPTY = "\nON YOUR REQUEST IS NO RESULTS";
     private TicketDaoImpl ticketDao;
     private ViewerDaoImpl viewerDao;
     private GenreDaoImpl genreDao;
@@ -187,32 +186,53 @@ public class TicketService {
     public void searchMostProfitableMovie() {
         List result = ticketDao.searchMostProfitableMovie();
         Ticket ticket = (Ticket) result.get(0);
-        printMovieByRequest(ticket, "THE MOST PROFITABLE FILM FOR THE LAST QUARTER");
+        if (ticket != null) {
+            printMovieByRequest(ticket, "THE MOST PROFITABLE FILM FOR THE LAST QUARTER");
+        } else {
+            System.out.println(REQUEST_IS_EMPTY);
+        }
     }
 
     public void searchLeastProfitableMovie() {
         List result = ticketDao.searchLeastProfitableMovie();
         Ticket ticket = (Ticket) result.get(0);
-        printMovieByRequest(ticket, "THE LEAST PROFITABLE FILM FOR THE LAST QUARTER");
+        if (ticket != null) {
+            printMovieByRequest(ticket, "THE LEAST PROFITABLE FILM FOR THE LAST QUARTER");
+        } else {
+            System.out.println(REQUEST_IS_EMPTY);
+        }
     }
 
     public void searchViewerMovieCountByGenre(long genreId) {
         List result = ticketDao.searchViewerMovieCountByGenre(genreId);
         List<Ticket> tickets = (List<Ticket>) result;
-        printViewerByRequest(tickets, "LIST OF VIEWERS BUYING MORE THAN 10 TICKETS FOR THE GENRE: \'" +
-                genreDao.getById(genreId).getName().toUpperCase() + "\'");
+        if (tickets.size() != 0) {
+            printViewerByRequest(tickets, "LIST OF VIEWERS BUYING MORE THAN 10 TICKETS FOR THE GENRE: \'" +
+                    genreDao.getById(genreId).getName().toUpperCase() + "\'");
+        } else {
+            System.out.println(REQUEST_IS_EMPTY);
+        }
     }
 
     public void searchViewersVisitingMovieInIntervalDaysFromBirthday() {
         List result = ticketDao.searchViewersVisitingMovieInIntervalDaysFromBirthday();
         List<Ticket> tickets = (List<Ticket>) result;
-        printViewerByRequest(tickets, "\t\tLIST OF VIEWERS BUYING A TICKET +-3 DAYS FROM THEIR BIRTHDAY");
+        if (tickets.size() != 0) {
+            printViewerByRequest(tickets, "\t\tLIST OF VIEWERS BUYING A TICKET +-3 DAYS FROM THEIR BIRTHDAY");
+        } else {
+            System.out.println(REQUEST_IS_EMPTY);
+        }
     }
 
-
-
-
-
+    public void searchViewerByComplexQuery(long genreId, double amount, List<LocalDate> dates) {
+        List result = ticketDao.searchViewerByComplexQuery(genreId, amount, dates);
+        List<Ticket> tickets = (List<Ticket>) result;
+        if (tickets.size() != 0) {
+            printViewerByRequest(tickets, "\t\t\tLIST OF VIEWERS BY COMPLEX REQUEST");
+        } else {
+            System.out.println(REQUEST_IS_EMPTY);
+        }
+    }
 
 
     public Ticket getByIdAdmin(long ticketId) {

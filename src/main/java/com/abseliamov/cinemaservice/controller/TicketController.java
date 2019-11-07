@@ -69,6 +69,11 @@ public class TicketController {
         ticketService.searchViewersVisitingMovieInIntervalDaysFromBirthday();
     }
 
+    public void searchViewerByComplexQuery(long genreId, double amount, List<LocalDate> dates) {
+        ticketService.searchViewerByComplexQuery(genreId, amount, dates);
+    }
+
+
 
 
 

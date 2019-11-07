@@ -17,6 +17,8 @@ import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,6 +126,28 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
         Query query = entityManager.createNativeQuery(sql, Ticket.class);
         return query.getResultList();
     }
+
+    public List searchViewerByComplexQuery(long genreId, double amount, List<LocalDate> dates) {
+        LocalDateTime startDate = LocalDateTime.from(dates.get(0).atStartOfDay());
+        LocalDateTime endDate = LocalDateTime.from(dates.get(1).atTime(23,59));
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        String sql = "SELECT t.ticket_id, t.date_time, t.movie_id, t.seat_id, SUM(price) AS price, t.status, t.viewer_id " +
+                "       FROM tickets t " +
+                "     JOIN movie_genres m_g ON t.movie_id = m_g.movie_id " +
+                "       WHERE m_g.genre_id = ?1 " +
+                "           AND t.status = 'INACTIVE' " +
+                "           AND t.date_time >= ?2 " +
+                "           AND t.date_time <= ?3 " +
+                "   GROUP BY t.viewer_id HAVING price >= ?4";
+        Query query = entityManager.createNativeQuery(sql, Ticket.class)
+                .setParameter(1, genreId)
+                .setParameter(2, startDate)
+                .setParameter(3, endDate)
+                .setParameter(4, amount);
+        return query.getResultList();
+    }
+
+
 
 
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
