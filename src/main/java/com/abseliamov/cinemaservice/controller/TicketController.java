@@ -17,6 +17,10 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
+    public Ticket getById(long ticketId) {
+        return ticketService.getById(ticketId);
+    }
+
     public List<Ticket> getTicketByMovieTitle(String movieTitle) {
         return ticketService.getTicketByMovieTitle(movieTitle);
     }
@@ -27,10 +31,6 @@ public class TicketController {
 
     public List<Ticket> getTicketBySeatType(long seatTypeId) {
         return ticketService.getTicketBySeatType(seatTypeId);
-    }
-
-    public Ticket getById(long ticketId) {
-        return ticketService.getById(ticketId);
     }
 
     public boolean buyTicket(long ticketId) {
@@ -51,6 +51,14 @@ public class TicketController {
 
     public List<Ticket> getAllViewerTicket() {
         return ticketService.getAllViewerTicket();
+    }
+
+    public void searchMostProfitableMovie() {
+        ticketService.searchMostProfitableMovie();
+    }
+
+    public void searchLeastProfitableMovie() {
+        ticketService.searchLeastProfitableMovie();
     }
 
 

@@ -6,6 +6,8 @@ import com.abseliamov.cinemaservice.model.*;
 import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 
+import javax.persistence.Query;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -123,10 +125,6 @@ public class TicketService {
         return ticket;
     }
 
-    public Ticket getByIdAdmin(long ticketId) {
-        return ticketDao.getById(ticketId);
-    }
-
     public boolean buyTicket(long ticketId) {
         Ticket ticket = ticketDao.getById(ticketId);
         if (ticket != null && ticket.getStatus() == TicketStatus.ACTIVE) {
@@ -182,6 +180,21 @@ public class TicketService {
         return result;
     }
 
+    public void searchMostProfitableMovie() {
+        List result = ticketDao.searchMostProfitableMovie();
+        Ticket ticket = (Ticket) result.get(0);
+        printMovieByRequest(ticket, "THE MOST PROFITABLE FILM FOR THE LAST QUARTER");
+    }
+
+    public void searchLeastProfitableMovie() {
+        List result = ticketDao.searchLeastProfitableMovie();
+        Ticket ticket = (Ticket) result.get(0);
+        printMovieByRequest(ticket, "THE LEAST PROFITABLE FILM FOR THE LAST QUARTER");
+    }
+
+    public Ticket getByIdAdmin(long ticketId) {
+        return ticketDao.getById(ticketId);
+    }
 
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
         List<Ticket> ticketList = ticketDao.getAllTicketByViewerId(viewerId);
@@ -332,6 +345,42 @@ public class TicketService {
             }
         } else {
             System.out.println("List tickets is empty.");
+        }
+    }
+
+    private void printMovieByRequest(Ticket ticket, String nameRequest) {
+        StringBuilder genres = new StringBuilder();
+        int firstGenre = 0;
+        if (ticket != null) {
+            System.out.println("\n|-----------------------------------------------------------------------------------------|");
+            System.out.printf("%-25s%-1s\n", " ", nameRequest.toUpperCase());
+            System.out.println("|-----------------------------------------------------------------------------------------|");
+            System.out.printf("%-2s%-19s%-29s%-14s%-15s%-1s\n",
+                    " ", "MOVIE ID", "MOVIE TITLE", "GENRE", "QUARTER COST", "TOTAL COST");
+            System.out.println("|----------|------------------------------|-------------------|--------------|------------|");
+            if (ticket.getMovie().getGenres().size() > 1) {
+                for (Genre genre : ticket.getMovie().getGenres()) {
+                    if (firstGenre == 0) {
+                        firstGenre = 1;
+                        continue;
+                    }
+                    genres.append(genre.getName());
+                    genres.append("\n");
+                }
+                System.out.printf("%-2s%-11s%-31s%-21s%-16s%-1s\n%-44s%-1s%1s",
+                        " ", ticket.getMovie().getId(), ticket.getMovie().getName(),
+                        ticket.getMovie().getGenres().get(0).getName(),
+                        ticket.getPrice(),
+                        ticket.getMovie().getCost(), " ", genres,
+                        "|----------|------------------------------|-------------------|--------------|------------|");
+            } else {
+                System.out.printf("%-2s%-11s%-31s%-21s%-16s%-1s\n%-1s",
+                        " ", ticket.getMovie().getId(), ticket.getMovie().getName(),
+                        ticket.getMovie().getGenres().get(0).getName(),
+                        ticket.getPrice(),
+                        ticket.getMovie().getCost(),
+                        "|----------|------------------------------|-------------------|--------------|------------|");
+            }
         }
     }
 }

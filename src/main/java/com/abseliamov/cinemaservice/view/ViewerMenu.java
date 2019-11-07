@@ -155,11 +155,11 @@ public class ViewerMenu {
                 case 0:
                     return 0;
                 case 1:
-                    movieController.searchMostProfitableMovie();
+                    ticketController.searchMostProfitableMovie();
                     requestMenuItem = -1;
                     break;
                 case 2:
-                    movieController.searchLeastProfitableMovie();
+                    ticketController.searchLeastProfitableMovie();
                     requestMenuItem = -1;
                     break;
                 case 3:
@@ -308,16 +308,12 @@ public class ViewerMenu {
         return returnExist;
     }
 
-    private boolean searchAllViewerTicket() {
-        boolean ticketExist = false;
-        if (currentViewer.getViewer().getRole() == Role.USER) {
-            if (ticketController.getAllViewerTicket().size() != 0) {
-                ticketExist = true;
-            } else {
-                System.out.println("\nList of tickets is empty.");
-            }
+    private void searchAllViewerTicket() {
+        if (currentViewer.getViewer().getRole() == Role.USER &&
+                ticketController.getAllViewerTicket().size() != 0) {
+        } else {
+            System.out.println("\nList of tickets is empty.");
         }
-        return ticketExist;
     }
 
     private boolean searchTicketByViewer() {

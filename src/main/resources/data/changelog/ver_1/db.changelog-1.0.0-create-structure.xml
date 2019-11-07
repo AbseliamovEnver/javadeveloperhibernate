@@ -94,7 +94,7 @@
                 <constraints nullable="false" foreignKeyName="fk_seat_id"
                              referencedTableName="seats" referencedColumnNames="seat_id"/>
             </column>
-            <column name="price" type="decimal(3,2)">
+            <column name="price" type="decimal(8,2)">
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="varchar(25)">

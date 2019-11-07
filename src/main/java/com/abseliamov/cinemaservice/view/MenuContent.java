@@ -20,7 +20,7 @@ public class MenuContent {
     }
 
     public static void createMenuContent() {
-        headerMenu.add("*********************************");
+        headerMenu.add("\n*********************************");
         headerMenu.add("   ** WELCOME TO THE CINEMA **");
         headerMenu.add("*********************************");
 

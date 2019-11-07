@@ -5,12 +5,15 @@ import com.abseliamov.cinemaservice.model.Ticket;
 import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.ConnectionUtil;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
+import com.abseliamov.cinemaservice.utils.EntityManagerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.*;
@@ -74,6 +77,29 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
             }
         }
     }
+
+    public List searchMostProfitableMovie() {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        String sql = "SELECT ticket_id, date_time, movie_id, seat_id, SUM(price) AS price, status, viewer_id " +
+                " FROM tickets " +
+                " WHERE(QUARTER(date_time) = QUARTER(CURDATE())" +
+                "       AND status = 'INACTIVE')" +
+                " GROUP BY movie_id ORDER BY price DESC LIMIT 1";
+        Query query = entityManager.createNativeQuery(sql, Ticket.class);
+        return query.getResultList();
+    }
+
+    public List searchLeastProfitableMovie() {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        String sql = "SELECT ticket_id, date_time, movie_id, seat_id, SUM(price) AS price, status, viewer_id " +
+                " FROM tickets " +
+                " WHERE(QUARTER(date_time) = QUARTER(CURDATE())" +
+                "       AND status = 'INACTIVE')" +
+                " GROUP BY movie_id ORDER BY price LIMIT 1";
+        Query query = entityManager.createNativeQuery(sql, Ticket.class);
+        return query.getResultList();
+    }
+
 
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
         List<Ticket> ticketList = new ArrayList<>();
