@@ -65,6 +65,10 @@ public class TicketController {
         ticketService.searchViewerMovieCountByGenre(genreId);
     }
 
+    public void searchViewersVisitingMovieInIntervalDaysFromBirthday() {
+        ticketService.searchViewersVisitingMovieInIntervalDaysFromBirthday();
+    }
+
 
 
 

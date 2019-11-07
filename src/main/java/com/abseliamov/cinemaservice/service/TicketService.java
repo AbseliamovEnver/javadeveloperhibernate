@@ -203,6 +203,18 @@ public class TicketService {
                 genreDao.getById(genreId).getName().toUpperCase() + "\'");
     }
 
+    public void searchViewersVisitingMovieInIntervalDaysFromBirthday() {
+        List result = ticketDao.searchViewersVisitingMovieInIntervalDaysFromBirthday();
+        List<Ticket> tickets = (List<Ticket>) result;
+        printViewerByRequest(tickets, "\t\tLIST OF VIEWERS BUYING A TICKET +-3 DAYS FROM THEIR BIRTHDAY");
+    }
+
+
+
+
+
+
+
     public Ticket getByIdAdmin(long ticketId) {
         return ticketDao.getById(ticketId);
     }

@@ -167,7 +167,7 @@ public class ViewerMenu {
                     requestMenuItem = -1;
                     break;
                 case 4:
-                    viewerController.searchViewersVisitingMovieInIntervalDaysFromBirthday();
+                    ticketController.searchViewersVisitingMovieInIntervalDaysFromBirthday();
                     requestMenuItem = -1;
                     break;
                 case 5:
