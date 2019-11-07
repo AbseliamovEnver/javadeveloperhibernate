@@ -372,10 +372,10 @@ public class ViewerMenu {
 
     private void searchViewerMovieCountByGenre() {
         long genreListSize;
-        if ((genreListSize = genreController.getAll().size()) != 0) {
-            long genreId = IOUtil.readNumber("\nEnter ID genre or \'0\' to return: ");
+        if ((genreListSize = genreController.printGenre().size()) != 0) {
+            long genreId = IOUtil.readNumber("\nEnter genre ID: ");
             if (genreId != 0 && genreId <= genreListSize) {
-                viewerController.searchViewerMovieCountByGenre(genreId);
+                ticketController.searchViewerMovieCountByGenre(genreId);
             } else {
                 System.out.println("Genre with id \'" + genreId + "\' not available.\n" +
                         "Please try again.");

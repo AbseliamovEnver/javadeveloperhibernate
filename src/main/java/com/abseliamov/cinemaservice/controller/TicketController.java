@@ -61,6 +61,10 @@ public class TicketController {
         ticketService.searchLeastProfitableMovie();
     }
 
+    public void searchViewerMovieCountByGenre(long genreId) {
+        ticketService.searchViewerMovieCountByGenre(genreId);
+    }
+
 
 
 

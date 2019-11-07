@@ -1,5 +1,6 @@
 package com.abseliamov.cinemaservice.service;
 
+import com.abseliamov.cinemaservice.dao.GenreDaoImpl;
 import com.abseliamov.cinemaservice.dao.TicketDaoImpl;
 import com.abseliamov.cinemaservice.dao.ViewerDaoImpl;
 import com.abseliamov.cinemaservice.model.*;
@@ -17,14 +18,17 @@ import java.util.stream.Collectors;
 public class TicketService {
     private TicketDaoImpl ticketDao;
     private ViewerDaoImpl viewerDao;
+    private GenreDaoImpl genreDao;
     private CurrentViewer currentViewer;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private DateTimeFormatter weekdayFormatter = DateTimeFormatter.ofPattern("EEEE").withLocale(Locale.ENGLISH);
 
-    public TicketService(TicketDaoImpl ticketDao, ViewerDaoImpl viewerDao, CurrentViewer currentViewer) {
+    public TicketService(TicketDaoImpl ticketDao, ViewerDaoImpl viewerDao, GenreDaoImpl genreDao,
+                         CurrentViewer currentViewer) {
         this.ticketDao = ticketDao;
         this.viewerDao = viewerDao;
+        this.genreDao = genreDao;
         this.currentViewer = currentViewer;
     }
 
@@ -192,6 +196,13 @@ public class TicketService {
         printMovieByRequest(ticket, "THE LEAST PROFITABLE FILM FOR THE LAST QUARTER");
     }
 
+    public void searchViewerMovieCountByGenre(long genreId) {
+        List result = ticketDao.searchViewerMovieCountByGenre(genreId);
+        List<Ticket> tickets = (List<Ticket>) result;
+        printViewerByRequest(tickets, "LIST OF VIEWERS BUYING MORE THAN 10 TICKETS FOR THE GENRE: \'" +
+                genreDao.getById(genreId).getName().toUpperCase() + "\'");
+    }
+
     public Ticket getByIdAdmin(long ticketId) {
         return ticketDao.getById(ticketId);
     }
@@ -348,12 +359,12 @@ public class TicketService {
         }
     }
 
-    private void printMovieByRequest(Ticket ticket, String nameRequest) {
+    private void printMovieByRequest(Ticket ticket, String request) {
         StringBuilder genres = new StringBuilder();
         int firstGenre = 0;
         if (ticket != null) {
             System.out.println("\n|-----------------------------------------------------------------------------------------|");
-            System.out.printf("%-25s%-1s\n", " ", nameRequest.toUpperCase());
+            System.out.printf("%-25s%-1s\n", " ", request.toUpperCase());
             System.out.println("|-----------------------------------------------------------------------------------------|");
             System.out.printf("%-2s%-19s%-29s%-14s%-15s%-1s\n",
                     " ", "MOVIE ID", "MOVIE TITLE", "GENRE", "QUARTER COST", "TOTAL COST");
@@ -381,6 +392,22 @@ public class TicketService {
                         ticket.getMovie().getCost(),
                         "|----------|------------------------------|-------------------|--------------|------------|");
             }
+        }
+    }
+
+    private void printViewerByRequest(List<Ticket> tickets, String request) {
+        if (tickets != null) {
+            System.out.println("\n|----------------------------------------------------------------------------------|");
+            System.out.printf("%-6s%-1s\n", " ", request);
+            System.out.println("|----------------------------------------------------------------------------------|");
+            System.out.printf("%-3s%-12s%-23s%-21s%-13s%-1s\n",
+                    " ", "ID", "FIRST NAME", "LAST NAME", "ROLE", "BIRTHDAY");
+            System.out.println("|-------|---------------------|----------------------|--------------|--------------|");
+            tickets.forEach(ticket -> System.out.printf("%-2s%-8s%-22s%-23s%-15s%-1s\n%-1s\n",
+                    " ", ticket.getViewer().getId(), ticket.getViewer().getFirstName(),
+                    ticket.getViewer().getLastName(), ticket.getViewer().getRole().name(),
+                    ticket.getViewer().getBirthday(),
+                    "|-------|---------------------|----------------------|--------------|--------------|"));
         }
     }
 }

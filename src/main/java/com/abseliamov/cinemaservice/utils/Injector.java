@@ -41,7 +41,7 @@ public class Injector {
 
     private static TicketDaoImpl ticketDao = new TicketDaoImpl(Ticket.class.getSimpleName(),
             sessionFactory, Ticket.class, currentViewer, viewerDao);
-    private static TicketService ticketService = new TicketService(ticketDao, viewerDao, currentViewer);
+    private static TicketService ticketService = new TicketService(ticketDao, viewerDao, genreDao, currentViewer);
     private static TicketController ticketController = new TicketController(ticketService);
 
     private static ViewerService viewerService = new ViewerService(viewerDao, currentViewer, ticketDao);

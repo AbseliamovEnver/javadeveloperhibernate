@@ -100,6 +100,24 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
         return query.getResultList();
     }
 
+    public List searchViewerMovieCountByGenre(long genreId) {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+//        String sql = "SELECT ticket_id, date_time, movie_id, seat_id, price, status, COUNT(viewer_id) AS viewer_id " +
+//                " FROM tickets " +
+//                " WHERE(QUARTER(date_time) = QUARTER(CURDATE())" +
+//                "       AND status = 'INACTIVE')" +
+//                " GROUP BY movie_id ORDER BY price LIMIT 1";
+        String sql = "SELECT * FROM tickets t " +
+                " JOIN movie_genres m_g ON t.movie_id = m_g.movie_id " +
+                " WHERE m_g.genre_id = ?1 " +
+                "   AND QUARTER(t.date_time) = QUARTER(CURDATE()) " +
+                "   AND status = 'INACTIVE' " +
+                " GROUP BY t.viewer_id HAVING COUNT(viewer_id) > 1";
+        Query query = entityManager.createNativeQuery(sql, Ticket.class)
+                .setParameter(1, genreId);
+        return query.getResultList();
+    }
+
 
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
         List<Ticket> ticketList = new ArrayList<>();
