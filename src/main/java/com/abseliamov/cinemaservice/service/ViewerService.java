@@ -2,23 +2,20 @@ package com.abseliamov.cinemaservice.service;
 
 import com.abseliamov.cinemaservice.dao.TicketDaoImpl;
 import com.abseliamov.cinemaservice.dao.ViewerDaoImpl;
-import com.abseliamov.cinemaservice.model.Ticket;
 import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.model.Viewer;
-import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 import com.google.common.collect.Multimap;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ViewerService {
     private static final String ERROR_NAME_OR_PASSWORD =
             "Please enter correct username and password or enter \'0\' to exit:";
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd MMMM", Locale.ENGLISH);
     private CurrentViewer currentViewer;
     private ViewerDaoImpl viewerDao;
     private TicketDaoImpl ticketDao;
@@ -166,10 +163,45 @@ public class ViewerService {
         return viewers;
     }
 
-    public Multimap<String, Viewer> searchDateWithSeveralViewersBirthday() {
-        Multimap<String, Viewer> localDateListMap = viewerDao.searchDateWithSeveralViewersBirthday();
-        printMapWithListBirthday(localDateListMap);
-        return localDateListMap;
+    public void searchDateWithSeveralViewersBirthday() {
+        List<LocalDate> birthdays = new ArrayList<>();
+        List<Viewer> viewers = viewerDao.getAll();
+        List resultDate = viewerDao.searchDateWithSeveralViewersBirthday();
+        List<Viewer> viewersBirthday = (List<Viewer>) resultDate;
+        if (viewersBirthday.size() != 0) {
+            for (Viewer viewer : viewersBirthday) {
+                birthdays.add(viewer.getBirthday());
+            }
+            printViewersWithOneDayBirthday(birthdays, viewers);
+        }
+    }
+
+    private void printViewersWithOneDayBirthday(List<LocalDate> birthday, List<Viewer> viewers) {
+        if (birthday != null && !viewers.isEmpty()) {
+            System.out.println("\n|--------------------------------------------------------------------|");
+            System.out.printf("%-30s%-1s\n", " ", "REQUEST RESULT");
+            System.out.println("|--------------------------------------------------------------------|");
+            for (LocalDate date : birthday) {
+                System.out.printf("%-12s%-39s%-1s\n%-1s\n", " ",
+                        "LIST OF VIEWERS WHO HAVE A BIRTHDAY ON\t", formatterDate.format(date).toUpperCase(),
+                        "|--------------------------------------------------------------------|");
+                System.out.printf("%-3s%-10s%-21s%-19s%-10s%-1s\n%-1s\n", " ",
+                        "ID", "FIRST NAME", "LAST NAME", "ROLE", "YEARS",
+                        "|------|-------------------|--------------------|------------|-------|");
+                for (Viewer viewer : viewers) {
+                    if (!viewer.getFirstName().equalsIgnoreCase("ticket_Active") &&
+                            date.format(DateTimeFormatter.ofPattern("dd-MM")).
+                                    equals(viewer.getBirthday().format(DateTimeFormatter.ofPattern("dd-MM")))) {
+                        System.out.printf("%-3s%-6s%-20s%-21s%-15s%-1s\n%-1s\n",
+                                " ", viewer.getId(), viewer.getFirstName(), viewer.getLastName(),
+                                viewer.getRole().name(), LocalDate.now().getYear() - viewer.getBirthday().getYear(),
+                                "|------|-------------------|--------------------|------------|-------|");
+                    }
+                }
+            }
+        } else {
+            System.out.println("At your request viewers not found\n");
+        }
     }
 
     private void printViewerByRequest(List<Viewer> viewers) {

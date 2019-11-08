@@ -53,7 +53,7 @@ public class ViewerController {
         return viewerService.searchViewerByComplexQuery(genreId, amount, dates);
     }
 
-    public Multimap<String, Viewer> searchDateWithSeveralViewersBirthday() {
-        return viewerService.searchDateWithSeveralViewersBirthday();
+    public void searchDateWithSeveralViewersBirthday() {
+        viewerService.searchDateWithSeveralViewersBirthday();
     }
 }

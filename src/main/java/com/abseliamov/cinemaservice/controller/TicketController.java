@@ -77,6 +77,7 @@ public class TicketController {
 
 
 
+
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
         return ticketService.getAllTicketByViewerId(viewerId);
     }

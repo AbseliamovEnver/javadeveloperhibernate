@@ -150,6 +150,8 @@ public class TicketDaoImpl extends AbstractDao<Ticket> {
 
 
 
+
+
     public List<Ticket> getAllTicketByViewerId(long viewerId) {
         List<Ticket> ticketList = new ArrayList<>();
         try (PreparedStatement statement = connection

@@ -387,8 +387,7 @@ public class ViewerMenu {
         long genreId;
         double amount;
         List<LocalDate> dates;
-        if ((genreId = getGenreId()) != 0) {
-            amount = getAmountOfOrdersViewer();
+        if ((genreId = getGenreId()) != 0 && (amount = getAmountOfOrdersViewer()) != 0) {
             if ((dates = getDatePeriod()) != null) {
                 ticketController.searchViewerByComplexQuery(genreId, amount, dates);
             }
@@ -431,13 +430,13 @@ public class ViewerMenu {
                         dates.add(startDate);
                         dates.add(endDate);
                         return dates;
-                    } else return dates;
+                    } else return null;
                 } catch (DateTimeParseException e) {
                     System.out.println("The entered date is incorrect. \n" +
                             "Please enter the date in the correct format.");
                 }
             } else {
-                return dates;
+                return null;
             }
         }
     }
