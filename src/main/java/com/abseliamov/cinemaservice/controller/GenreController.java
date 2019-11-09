@@ -20,6 +20,8 @@ public class GenreController {
         return genreService.printGenre();
     }
 
+//    ADMIN MENU METHODS
+
     public void createGenre(String genreName) {
         genreService.createGenre(genreName);
     }

@@ -56,4 +56,8 @@ public class ViewerController {
     public void searchDateWithSeveralViewersBirthday() {
         viewerService.searchDateWithSeveralViewersBirthday();
     }
+
+    public List<Role> printAllRoles() {
+        return viewerService.printAllRoles();
+    }
 }

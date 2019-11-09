@@ -5,7 +5,7 @@ import javax.persistence.*;
 @MappedSuperclass
 public class GenericModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private long id;
 

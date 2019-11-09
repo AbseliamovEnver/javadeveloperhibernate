@@ -34,18 +34,14 @@ public class GenreService {
     }
 
     public Genre getById(long genreId) {
-        List<Genre> genres = genreDao.getAll();
-        return genres.stream()
-                .filter(genre -> genre.getId() == genreId)
-                .findFirst()
-                .orElse(null);
+        return genreDao.getById(genreId);
     }
 
     public List<Genre> getAll() {
         return genreDao.getAll();
     }
 
-    public List<Genre> printGenre(){
+    public List<Genre> printGenre() {
         List<Genre> genreList = genreDao.getAll();
         if (!genreList.isEmpty()) {
             List<Genre> sortedGenreList = genreList
@@ -81,7 +77,7 @@ public class GenreService {
     }
 
     public void delete(long genreId) {
-        if (genreDao.delete(genreId)){
+        if (genreDao.delete(genreId)) {
             System.out.println("Genre with id \'" + genreId + "\' deleted.");
         }
     }

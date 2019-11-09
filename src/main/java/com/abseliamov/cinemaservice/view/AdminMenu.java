@@ -9,6 +9,10 @@ import com.abseliamov.cinemaservice.utils.IOUtil;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class AdminMenu extends ViewerMenu {
     private GenreController genreController;
@@ -241,20 +245,42 @@ public class AdminMenu extends ViewerMenu {
     }
 
     private void createMovie() {
+        List<Genre> genres = new ArrayList<>();
+        long genreId;
         Genre genre;
         String movieTitle = IOUtil.readString("Enter new movie title or \'0\' to return: ");
-        if (!movieTitle.equals("0") && genreController.getAll() != null) {
-            long genreId = IOUtil.readNumber("Select movie genre ID or \'0\' to return:");
-            if (genreId != 0 && (genre = genreController.getById(genreId)) != null) {
-                movieController.createMovie(movieTitle, genre);
-            }
+        if (!movieTitle.equals("0") && genreController.printGenre() != null) {
+            do {
+                genreId = IOUtil.readNumber("Select movie genre ID or \'0\' to return:");
+                if (genreId != 0 && (genre = genreController.getById(genreId)) != null) {
+                    if (genres.size() == 0) {
+                        genres.add(genre);
+                        genreController.printGenre();
+                    } else {
+                        long finalGenreId = genreId;
+                        Genre result = genres.stream().filter(genreItem -> genreItem.getId() == finalGenreId)
+                                .findFirst()
+                                .orElse(null);
+                        if (result != null) {
+                            System.out.println("Such genre already exist.");
+                            break;
+                        } else {
+                            genres.add(genre);
+                            genreController.printGenre();
+                        }
+                    }
+                } else {
+                    System.out.println("Such genre does'n exist. Please try again.");
+                }
+            } while (genreId != 0);
+            movieController.createMovie(movieTitle, genres);
         }
     }
 
     private void createSeat() {
         SeatTypes seatType = null;
         long seatNumber = IOUtil.readNumber("Enter seat number or enter \'0\' to return: ");
-        if (seatNumber != 0 && seatTypesController.getAllSeatType() != null) {
+        if (seatNumber != 0 && seatController.printAllSeatType() != null) {
             long seatTypeId = IOUtil.readNumber("Select seat type ID or enter \'0\' to return: ");
             if (seatTypeId != 0) {
                 for (SeatTypes seatTypesItem : SeatTypes.values()) {
@@ -268,17 +294,29 @@ public class AdminMenu extends ViewerMenu {
     }
 
     private void createViewer() {
+        boolean viewerAdded = false;
         long roleId;
-        Role role;
         String firstName = IOUtil.readString("Enter first name: ");
         String lastName = IOUtil.readString("Enter last name: ");
         String password = IOUtil.readString("Enter password: ");
         LocalDate birthday = IOUtil.readDate("Enter your birthday in format dd-mm-yyyy or enter \'0\' to return: ");
-        if (birthday != null && roleController.getAll() != null) {
-            roleController.printAllRoles();
+        if (birthday != null && viewerController.printAllRoles() != null) {
             roleId = IOUtil.readNumber("Select role ID: ");
-            if (roleId != 0 && (role = roleController.getById(roleId)) != null) {
-                viewerController.createViewer(firstName, lastName, password, role, birthday);
+            if (roleId != 0) {
+                do {
+                    for (Role role : Role.values()) {
+                        if (role.getId() == roleId) {
+                            viewerController.createViewer(firstName, lastName, password, role, birthday);
+                            viewerAdded = true;
+                        }
+                    }
+                    if (!viewerAdded) {
+                        System.out.println("Role with id \'" + roleId + "\' doesn't exist. " +
+                                "\nPlease try again.");
+                        viewerController.printAllRoles();
+                        roleId = IOUtil.readNumber("Select role ID: ");
+                    }
+                } while (!viewerAdded);
             }
         }
     }
@@ -332,7 +370,7 @@ public class AdminMenu extends ViewerMenu {
                 genreController.getAll();
                 String genreStr = IOUtil.readString("Select genre ID to update or press \'ENTER\' key to continue: ");
                 if (genreStr.equals("")) {
-                    genre = movie.getGenres().get(1);
+//                    genre = movie.getGenres().get(1);
                 } else {
                     genre = genreController.getById(Long.parseLong(genreStr));
                 }
