@@ -11,7 +11,7 @@ import java.util.List;
 public class Seat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seat_id", nullable = false, updatable = false)
     private long id;
 

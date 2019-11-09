@@ -18,13 +18,16 @@ public class SeatService {
     public void createSeat(long seatNumber, SeatTypes seatType) {
         List<Seat> seats = seatDao.getAll();
         Seat seat = seats.stream()
-                .filter(seatItem ->
-                        seatItem.getNumber() == seatNumber && seatItem.getSeatTypes().getId() == seatType.getId())
-                .findFirst().orElse(null);
+                .filter(seatItem -> seatItem.getNumber() == seatNumber &&
+                        seatItem.getSeatTypes().getId() == seatType.getId())
+                .findFirst()
+                .orElse(null);
         if (seat == null) {
             seatDao.add(new Seat(0, seatType, seatNumber));
+            System.out.println("\nSeat with number \'" + seatNumber + "\' " +
+                    "and type \'" + seatType.name() + "\' successfully added.");
         } else {
-            System.out.println("Such seat already exists.");
+            System.out.println("\nSuch seat already exists.");
         }
     }
 
