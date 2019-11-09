@@ -15,17 +15,17 @@ public class MovieService {
         this.movieDao = movieDao;
     }
 
-    public void createMovie(String movieTitle, Genre genre) {
+    public void createMovie(String movieTitle, List<Genre> genres) {
         List<Movie> movies;
         if ((movies = movieDao.getAll()) != null) {
             Movie movie = movies.stream()
                     .filter(movieItem -> movieItem.getName().equalsIgnoreCase(movieTitle))
                     .findFirst()
                     .orElse(null);
-            /*if (movie == null) {
-                movieDao.add(new Movie(0, movieTitle, genre,
+            if (movie == null) {
+                movieDao.add(new Movie(0, movieTitle, genres,
                         new BigDecimal(0).setScale(2, RoundingMode.DOWN)));
-            }*/
+            }
         }
     }
 

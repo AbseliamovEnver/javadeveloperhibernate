@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ticket_id", nullable = false, updatable = false)
     private long id;
 

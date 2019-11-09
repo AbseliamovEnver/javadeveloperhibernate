@@ -14,9 +14,11 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    public void createMovie(String movieTitle, Genre genre) {
-        movieService.createMovie(movieTitle, genre);
+    public void createMovie(String movieTitle, List<Genre> genres) {
+        movieService.createMovie(movieTitle, genres);
     }
+
+
 
     public Movie getById(long movieId) {
         return movieService.getById(movieId);
