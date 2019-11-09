@@ -13,7 +13,7 @@ import java.util.List;
 public class Viewer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "viewer_id", nullable = false, updatable = false)
     private long id;
 

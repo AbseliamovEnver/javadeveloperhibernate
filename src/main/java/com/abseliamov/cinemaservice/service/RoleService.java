@@ -22,7 +22,7 @@ public class RoleService {
         return roleDao.getAll();
     }
 
-    public void printAllRoles() {
+    public List<Role> printAllRoles() {
         List<Role> roles = roleDao.getAll();
         if (!roles.isEmpty()) {
             List<Role> sortedRoleList = roles
@@ -38,5 +38,6 @@ public class RoleService {
         } else {
             System.out.println("Role list is empty.");
         }
+        return roles;
     }
 }

@@ -10,6 +10,7 @@ import com.google.common.collect.Multimap;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ViewerService {
     private static final String ERROR_NAME_OR_PASSWORD =
@@ -36,10 +37,10 @@ public class ViewerService {
                 .orElse(null);
         if (viewer == null) {
             viewerDao.add(new Viewer(0, firstName, lastName, password, birthday, role));
-            System.out.println("Viewer with name \'" + firstName + "\' successfully added.");
+            System.out.println("\nViewer with name \'" + firstName + "\' successfully added.");
             return true;
         } else {
-            System.out.println("Such viewer already exists.");
+            System.out.println("\nSuch viewer already exists.");
         }
         return false;
     }
@@ -218,6 +219,23 @@ public class ViewerService {
         } else {
             System.out.println("At your request viewers not found\n");
         }
+    }
+
+    public List<Role> printAllRoles() {
+        List<Role> roles = Arrays.asList(Role.values());
+        if (roles.size() != 0) {
+            System.out.println("\n|--------------------|");
+            System.out.printf("%-3s%-1s\n", " ", "LIST ROLES");
+            System.out.println("|--------------------|");
+            System.out.printf("%-3s%-9s%-1s\n%-1s\n", " ", "ID", "ROLE",
+                    "|------|-------------|");
+            roles.forEach(role -> System.out.printf("%-3s%-6s%-1s\n%-1s\n",
+                    " ", role.getId(), role.name(),
+                    "|------|-------------|"));
+        } else {
+            System.out.println("List seats is empty.");
+        }
+        return roles;
     }
 
     private void printMapWithListBirthday(Multimap<String, Viewer> dateListMap) {
