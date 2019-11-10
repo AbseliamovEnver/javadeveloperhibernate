@@ -72,7 +72,7 @@ public class SeatService {
 
     private void printSeats(List<Seat> seats) {
         if (seats.size() != 0) {
-            System.out.println("|--------------------------|");
+            System.out.println("\n|--------------------------|");
             System.out.printf("%-9s%-1s\n", " ", "LIST SEATS");
             System.out.println("|--------------------------|");
             System.out.printf("%-3s%-6s%-11s%-1s\n%-1s\n", " ", "ID", "NUMBER", "TYPE",

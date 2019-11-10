@@ -328,7 +328,7 @@ public class AdminMenu extends ViewerMenu {
         Movie movie = null;
         Seat seat = null;
         double price;
-        if (movieController.getAll() != null) {
+        if (movieController.printAllMovie() != null) {
             movieId = IOUtil.readNumber("Select movie ID or enter \'0\' to return: ");
             if (movieId != 0 && (movie = movieController.getById(movieId)) != null) {
                 status = true;
@@ -338,7 +338,7 @@ public class AdminMenu extends ViewerMenu {
                 status = seatId != 0 && (seat = seatController.getById(seatId)) != null;
             }
             if (status) {
-                price = IOUtil.readPrice("Enter price ticket: ");
+                price = IOUtil.readPrice("\nEnter price ticket: ");
                 dateTime = IOUtil.readDateTime("Enter date and time in format dd-MM-yyyy HH-mm");
                 ticketController.createTicket(movie, seat, price, dateTime);
             }

@@ -6,6 +6,7 @@ import com.abseliamov.cinemaservice.model.Movie;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieService {
@@ -39,7 +40,7 @@ public class MovieService {
 
     public List<Movie> getAll() {
         List<Movie> movies = movieDao.getAll();
-        printMovie(movies);
+//        printMovie(movies);
         return movies;
     }
 
@@ -79,20 +80,41 @@ public class MovieService {
         return movies;
     }
 
-    private void printMovie(List<Movie> movies) {
+    public List<Movie> printAllMovie() {
+        List<Movie> movies = movieDao.getAll();
+        int firstGenre;
         if (movies.size() != 0) {
-            System.out.println("|---------------------------------------------------------------------|");
+            System.out.println("\n|---------------------------------------------------------------------|");
             System.out.printf("%-30s%-1s\n", " ", "LIST MOVIES");
             System.out.println("|---------------------------------------------------------------------|");
-            System.out.printf("%-3s%-18s%-25s%-13s%-1s\n%-1s\n", " ", "ID", "TITLE", "GENRE", "TOTAL COST",
+            System.out.printf("%-3s%-18s%-25s%-13s%-1s\n%-1s\n", " ", "ID", "TITLE", "GENRES", "TOTAL COST",
                     "|------|-----------------------------|-------------------|------------|");
-            movies.forEach(movie -> System.out.printf("%-3s%-6s%-30s%-21s%-1s\n%-1s\n",
-                    " ", movie.getId(), movie.getName(), movie.getGenres(),
-                    movie.getCost().setScale(2, RoundingMode.DOWN),
-                    "|------|-----------------------------|-------------------|------------|"));
+            for (Movie movie : movies) {
+                firstGenre = 0;
+                if (movie.getGenres().size() > 1) {
+                    System.out.printf("%-3s%-6s%-30s%-21s%-1s\n",
+                            " ", movie.getId(), movie.getName(), movie.getGenres().get(0).getName(),
+                            movie.getCost().setScale(2, RoundingMode.DOWN));
+                    for (Genre genre : movie.getGenres()) {
+                        if (firstGenre == 0) {
+                            firstGenre = 1;
+                            continue;
+                        }
+                        System.out.printf("%-39s%-1s\n",
+                                " ", genre.getName());
+                    }
+                    System.out.println("|------|-----------------------------|-------------------|------------|");
+                } else {
+                    System.out.printf("%-3s%-6s%-30s%-21s%-1s\n%-1s\n",
+                            " ", movie.getId(), movie.getName(), movie.getGenres().get(0).getName(),
+                            movie.getCost().setScale(2, RoundingMode.DOWN),
+                            "|------|-----------------------------|-------------------|------------|");
+                }
+            }
         } else {
             System.out.println("List movies is empty.");
         }
+        return movies;
     }
 
     private void printMovieByRequest(List<Movie> movies) {

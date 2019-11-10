@@ -51,4 +51,8 @@ public class MovieController {
     public void searchLeastProfitableMovie() {
         movieService.searchLeastProfitableMovie();
     }
+
+    public List<Movie> printAllMovie() {
+        return movieService.printAllMovie();
+    }
 }
