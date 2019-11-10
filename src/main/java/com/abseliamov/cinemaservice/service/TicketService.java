@@ -4,6 +4,7 @@ import com.abseliamov.cinemaservice.dao.GenreDaoImpl;
 import com.abseliamov.cinemaservice.dao.TicketDaoImpl;
 import com.abseliamov.cinemaservice.dao.ViewerDaoImpl;
 import com.abseliamov.cinemaservice.model.*;
+import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
 
@@ -270,15 +271,14 @@ public class TicketService {
         return ticketDao.getAll();
     }
 
-    public List<Ticket> getAllTicket() {
+    public List<Ticket> printAllTicket() {
+        Role role = currentViewer.getViewer().getRole();
         List<Ticket> tickets = ticketDao.getAll();
-        printTicket(tickets);
-        return tickets;
-    }
-
-    public List<Ticket> getAllTicketWithStatus() {
-        List<Ticket> tickets = ticketDao.getAll();
-        printTicketWithStatus(tickets);
+        if (role == Role.ADMIN) {
+            printTicketWithStatus(tickets);
+        } else if (role == Role.USER) {
+            printTicket(tickets);
+        }
         return tickets;
     }
 
@@ -344,7 +344,7 @@ public class TicketService {
     }
 
     private void printTicketWithStatus(List<Ticket> tickets) {
-        int firstGenre = 0;
+        int firstGenre;
         if (tickets != null) {
             System.out.println("\n|--------------------------------------------------------------------" +
                     "--------------------------------------------------------------|");
@@ -356,6 +356,7 @@ public class TicketService {
             System.out.println("|-------|------------------------------|-------------------|------------|----------" +
                     "|-----------|-------------|---------|-----------|");
             for (Ticket ticket : tickets) {
+                firstGenre = 0;
                 if (ticket.getMovie().getGenres().size() > 1) {
                     System.out.printf("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-9s%-1s\n",
                             " ", ticket.getId(), ticket.getMovie().getName(),
@@ -375,7 +376,7 @@ public class TicketService {
                     System.out.println("|-------|------------------------------|-------------------|------------|" +
                             "----------|-----------|-------------|---------|-----------|");
                 } else {
-                    System.out.printf("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-9s%-1s\n%-1s",
+                    System.out.printf("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-9s%-1s\n%-1s\n",
                             " ", ticket.getId(), ticket.getMovie().getName(),
                             ticket.getMovie().getGenres().get(0).getName(),
                             ticket.getDateTime().toLocalDate().format(dateFormatter),

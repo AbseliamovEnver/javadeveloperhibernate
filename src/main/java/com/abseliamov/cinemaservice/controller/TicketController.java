@@ -106,12 +106,8 @@ public class TicketController {
         return ticketService.getAll();
     }
 
-    public List<Ticket> getAllTicket() {
-        return ticketService.getAllTicket();
-    }
-
-    public List<Ticket> getAllTicketWithStatus() {
-        return ticketService.getAllTicketWithStatus();
+    public List<Ticket> printAllTicket() {
+        return ticketService.printAllTicket();
     }
 
     public void updateTicket(long ticketId, Movie movie, Seat seat, long buyStatus, double price,

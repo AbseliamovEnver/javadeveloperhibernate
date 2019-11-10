@@ -60,4 +60,8 @@ public class ViewerController {
     public List<Role> printAllRoles() {
         return viewerService.printAllRoles();
     }
+
+    public void printAllViewer() {
+        viewerService.printAllViewer();
+    }
 }

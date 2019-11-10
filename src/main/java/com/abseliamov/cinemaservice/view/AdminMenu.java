@@ -10,9 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class AdminMenu extends ViewerMenu {
     private GenreController genreController;
@@ -122,17 +120,17 @@ public class AdminMenu extends ViewerMenu {
         while (true) {
             if (selectMenuItem == -1) {
                 IOUtil.printMenuItem(MenuContent.getAdminMenuSelect());
-                selectMenuItem = IOUtil.getValidLongInputData("Choose SELECT MENU item: ");
+                selectMenuItem = IOUtil.getValidLongInputData("Choose SELECT MENU item or enter \'0\' to return: ");
             }
             switch ((int) selectMenuItem) {
                 case 0:
                     return -1;
                 case 1:
-                    genreController.getAll();
+                    genreController.printGenre();
                     selectMenuItem = -1;
                     break;
                 case 2:
-                    movieController.getAll();
+                    movieController.printAllMovie();
                     selectMenuItem = -1;
                     break;
                 case 3:
@@ -140,11 +138,11 @@ public class AdminMenu extends ViewerMenu {
                     selectMenuItem = -1;
                     break;
                 case 4:
-                    viewerController.getAll();
+                    viewerController.printAllViewer();
                     selectMenuItem = -1;
                     break;
                 case 5:
-                    ticketController.getAllTicket();
+                    ticketController.printAllTicket();
                     selectMenuItem = -1;
                     break;
                 default:
@@ -443,7 +441,7 @@ public class AdminMenu extends ViewerMenu {
         Ticket ticket;
         Movie movie;
         Seat seat;
-        if (ticketController.getAllTicketWithStatus() != null) {
+        if (ticketController.printAllTicket() != null) {
             ticketId = IOUtil.readNumber("Select ticket ID to update or enter \'0\' to return: ");
             if (ticketId != 0 && (ticket = ticketController.getById(ticketId)) != null
                     && movieController.getAll() != null) {
@@ -501,7 +499,7 @@ public class AdminMenu extends ViewerMenu {
     }
 
     private void deleteTicket() {
-        if (ticketController.getAllTicket() != null) {
+        if (ticketController.printAllTicket() != null) {
             long ticketId = IOUtil.readNumber("Select ticket ID to delete or enter \'0\' to return: ");
             if (ticketId != 0 && ticketController.getByIdAdmin(ticketId) != null) {
                 ticketController.deleteTicket(ticketId);

@@ -73,14 +73,7 @@ public class ViewerService {
     }
 
     public List<Viewer> getAll() {
-        Role role = currentViewer.getViewer().getRole();
-        List<Viewer> viewerList = viewerDao.getAll();
-        if (role == Role.ADMIN) {
-            printViewerForAdmin(viewerList);
-        } else if (role == Role.USER) {
-            printViewer(viewerList);
-        }
-        return viewerList;
+        return viewerDao.getAll();
     }
 
     public void update(long viewerId, String firstName, String lastName,
@@ -105,8 +98,19 @@ public class ViewerService {
         }
     }
 
-    private void printViewerForAdmin(List<Viewer> viewerList) {
-        if (!viewerList.isEmpty()) {
+    public List<Viewer> printAllViewer() {
+        Role role = currentViewer.getViewer().getRole();
+        List<Viewer> viewers = viewerDao.getAll();
+        if (role == Role.ADMIN) {
+            printViewerForAdmin(viewers);
+        } else if (role == Role.USER) {
+            printViewerForUser(viewers);
+        }
+        return viewers;
+    }
+
+    private void printViewerForAdmin(List<Viewer> viewers) {
+        if (!viewers.isEmpty()) {
             System.out.println("\n|-------------------------------------------------------------------" +
                     "-----------------------------------|");
             System.out.printf("%-45s%-1s\n", " ", "LIST OF VIEWERS");
@@ -116,20 +120,20 @@ public class ViewerService {
                     " ", "ID", "FIRST NAME", "LAST NAME", "PASSWORD", "ROLE", "BIRTHDAY");
             System.out.println("|-------|---------------------|----------------------|----------------" +
                     "---|--------------|--------------|");
-//            viewerList.stream()
-//                    .sorted(Comparator.comparing(GenericModel::getId))
-//                    .collect(Collectors.toList())
-//                    .forEach(viewer -> System.out.printf("%-2s%-8s%-22s%-24s%-20s%-14s%-1s\n%-1s",
-//                            " ", viewer.getId(), viewer.getName(), viewer.getLastName(), viewer.getPassword(),
-//                            viewer.getRole().name(), formatter.format(viewer.getBirthday()),
-//                            "|-------|---------------------|----------------------|----------------" +
-//                                    "---|--------------|--------------|\n"));
+            viewers.stream()
+                    .sorted(Comparator.comparing(Viewer::getId))
+                    .collect(Collectors.toList())
+                    .forEach(viewer -> System.out.printf("%-2s%-8s%-22s%-24s%-20s%-14s%-1s\n%-1s",
+                            " ", viewer.getId(), viewer.getFirstName(), viewer.getLastName(), viewer.getPassword(),
+                            viewer.getRole().name(), formatter.format(viewer.getBirthday()),
+                            "|-------|---------------------|----------------------|----------------" +
+                                    "---|--------------|--------------|\n"));
         } else {
             System.out.println("List viewers is empty.");
         }
     }
 
-    private void printViewer(List<Viewer> viewerList) {
+    private void printViewerForUser(List<Viewer> viewerList) {
         if (!viewerList.isEmpty()) {
             System.out.println("\n|----------------------------------------------------------------------------------|");
             System.out.printf("%-35s%-1s\n", " ", "LIST OF VIEWERS");
@@ -137,10 +141,11 @@ public class ViewerService {
             System.out.printf("%-3s%-12s%-23s%-21s%-13s%-1s\n",
                     " ", "ID", "FIRST NAME", "LAST NAME", "ROLE", "BIRTHDAY");
             System.out.println("|-------|---------------------|----------------------|--------------|--------------|");
-//            viewerList.stream()
-//                    .sorted(Comparator.comparing(GenericModel::getId))
-//                    .collect(Collectors.toList())
-//                    .forEach(System.out::println);
+            viewerList.stream()
+                    .filter(viewer -> viewer.getId() != 1)
+                    .sorted(Comparator.comparing(Viewer::getId))
+                    .collect(Collectors.toList())
+                    .forEach(System.out::println);
         } else {
             System.out.println("List viewers is empty.");
         }
