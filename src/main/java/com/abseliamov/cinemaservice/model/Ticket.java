@@ -19,8 +19,8 @@ public class Ticket {
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "movie_id")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -120,27 +120,27 @@ public class Ticket {
     public String toString() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        StringBuilder genres = new StringBuilder();
-        int firstGenre = 0;
-        for (Genre genre : getMovie().getGenres()) {
-            if (firstGenre == 0) {
-                firstGenre = 1;
-                continue;
-            }
-            genres.append(genre.getName());
-            genres.append("\n");
+        StringBuilder builder = new StringBuilder();
+        Genre firstGenre;
 
-        }
         if (getMovie().getGenres().size() > 1) {
-            return String.format("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-1s\n%-41s%-1s%1s",
-                    " ", getId(), getMovie().getName(), getMovie().getGenres().get(0).getName(),
+            firstGenre = getMovie().getGenres().iterator().next();
+            builder.append(String.format("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-1s\n",
+                    " ", getId(), getMovie().getName(), firstGenre.getName(),
                     getDateTime().toLocalDate().format(dateFormatter), getDateTime().toLocalTime().format(timeFormatter),
-                    getSeat().getSeatTypes(), getSeat().getNumber(), getPrice(), " ", genres,
-                    "|-------|------------------------------|-------------------|------------|----------" +
-                            "|-----------|-------------|---------|");
+                    getSeat().getSeatTypes(), getSeat().getNumber(), getPrice()));
+            for (Genre genre : getMovie().getGenres()) {
+                if (genre.equals(firstGenre)) {
+                    continue;
+                }
+                builder.append(String.format("%-41s%-1s\n", " ", genre.getName()));
+            }
+            builder.append("|-------|------------------------------|-------------------|------------|----------" +
+                    "|-----------|-------------|---------|");
+            return String.valueOf(builder);
         }
         return String.format("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-1s\n%-1s",
-                " ", getId(), getMovie().getName(), getMovie().getGenres().get(0).getName(),
+                " ", getId(), getMovie().getName(), getMovie().getGenres().iterator().next().getName(),
                 getDateTime().toLocalDate().format(dateFormatter), getDateTime().toLocalTime().format(timeFormatter),
                 getSeat().getSeatTypes(), getSeat().getNumber(), getPrice(),
                 "|-------|------------------------------|-------------------|------------|----------" +

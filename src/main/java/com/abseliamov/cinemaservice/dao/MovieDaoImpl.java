@@ -1,9 +1,12 @@
 package com.abseliamov.cinemaservice.dao;
 
+import com.abseliamov.cinemaservice.exceptions.ConnectionException;
 import com.abseliamov.cinemaservice.model.Movie;
 import com.abseliamov.cinemaservice.utils.ConnectionUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.math.RoundingMode;
@@ -14,59 +17,33 @@ import java.util.List;
 public class MovieDaoImpl extends AbstractDao<Movie> {
     private static final Logger logger = LogManager.getLogger(MovieDaoImpl.class);
     private static final String ERROR_MESSAGE = "Cannot connect to database: ";
-    private Connection connection = ConnectionUtil.getConnection();
 
     public MovieDaoImpl(String entityName, SessionFactory sessionFactory, Class<Movie> clazz) {
         super(entityName, sessionFactory, clazz);
     }
 
+    @Override
+    public boolean update(long id, Movie updateMovie) {
+        boolean result;
+        Movie movie;
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.beginTransaction();
 
-    public List<Movie> searchMostProfitableMovie() {
-        List<Movie> movies = new ArrayList<>();
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("" +
-                     "SELECT movies.id, movies.name, movie_price.total_price FROM (" +
-                     "    SELECT movie_id FROM tickets WHERE (QUARTER(date_time) = QUARTER(CURDATE()))) AS date " +
-                     "RIGHT JOIN (" +
-                     "    SELECT movie_id AS movie_price_id, SUM(price) AS total_price FROM tickets WHERE buy_status > 0 " +
-                     "      GROUP BY movie_id ORDER BY total_price DESC LIMIT 1) AS movie_price " +
-                     "ON date.movie_id = movie_price.movie_price_id " +
-                     "INNER JOIN movies " +
-                     "ON movies.id = movie_price.movie_price_id LIMIT 1")) {
-            while (resultSet.next()) {
-                movies.add(createMovieByRequest(resultSet));
+                movie = getById(id);
+                movie.setName(updateMovie.getName());
+                movie.setGenres(updateMovie.getGenres());
+                movie.setCost(updateMovie.getCost());
+                session.update(movie);
+
+                session.getTransaction().commit();
+                result = true;
+            } catch (HibernateException e) {
+                session.getTransaction().rollback();
+                logger.error(ERROR_MESSAGE, e);
+                throw new ConnectionException(ERROR_MESSAGE, e);
             }
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + e);
         }
-        return movies;
-    }
-
-    public List<Movie> searchLeastProfitableMovie() {
-        List<Movie> movies = new ArrayList<>();
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("" +
-                     "SELECT movies.id, movies.name, movie_price.total_price FROM (" +
-                     "    SELECT movie_id FROM tickets WHERE (QUARTER(date_time) = QUARTER(CURDATE()))) AS date " +
-                     "RIGHT JOIN (" +
-                     "    SELECT movie_id AS movie_price_id, SUM(price) AS total_price FROM tickets WHERE buy_status > 0 " +
-                     "      GROUP BY movie_id ORDER BY total_price LIMIT 1) AS movie_price " +
-                     "ON date.movie_id = movie_price.movie_price_id " +
-                     "INNER JOIN movies " +
-                     "ON movies.id = movie_price.movie_price_id LIMIT 1")) {
-            while (resultSet.next()) {
-                movies.add(createMovieByRequest(resultSet));
-            }
-        } catch (SQLException e) {
-            System.out.println(ERROR_MESSAGE + e);
-        }
-        return movies;
-    }
-
-    private Movie createMovieByRequest(ResultSet resultSet) throws SQLException {
-        return new Movie(
-                resultSet.getLong("id"),
-                resultSet.getString("title"),
-                resultSet.getBigDecimal("total_price").setScale(2, RoundingMode.DOWN));
+        return result;
     }
 }

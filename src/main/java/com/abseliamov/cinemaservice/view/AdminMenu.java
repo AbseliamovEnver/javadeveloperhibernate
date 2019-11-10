@@ -10,7 +10,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AdminMenu extends ViewerMenu {
     private GenreController genreController;
@@ -243,34 +245,9 @@ public class AdminMenu extends ViewerMenu {
     }
 
     private void createMovie() {
-        List<Genre> genres = new ArrayList<>();
-        long genreId;
-        Genre genre;
+        Set<Genre> genres;
         String movieTitle = IOUtil.readString("Enter new movie title or \'0\' to return: ");
-        if (!movieTitle.equals("0") && genreController.printGenre() != null) {
-            do {
-                genreId = IOUtil.readNumber("Select movie genre ID or \'0\' to return:");
-                if (genreId != 0 && (genre = genreController.getById(genreId)) != null) {
-                    if (genres.size() == 0) {
-                        genres.add(genre);
-                        genreController.printGenre();
-                    } else {
-                        long finalGenreId = genreId;
-                        Genre result = genres.stream().filter(genreItem -> genreItem.getId() == finalGenreId)
-                                .findFirst()
-                                .orElse(null);
-                        if (result != null) {
-                            System.out.println("Such genre already exist.");
-                            break;
-                        } else {
-                            genres.add(genre);
-                            genreController.printGenre();
-                        }
-                    }
-                } else {
-                    System.out.println("Such genre does'n exist. Please try again.");
-                }
-            } while (genreId != 0);
+        if (!movieTitle.equals("0") && (genres = selectGenre()).size() != 0) {
             movieController.createMovie(movieTitle, genres);
         }
     }
@@ -356,32 +333,57 @@ public class AdminMenu extends ViewerMenu {
 
     private void updateMovie() {
         Movie movie;
-        Genre genre = null;
-        BigDecimal cost = null;
+        long movieId = 0;
         String movieTitle = null;
-        if (movieController.getAll() != null) {
-            long movieId = IOUtil.readNumber("Select movie ID to update or enter \'0\' to return: ");
+        Set<Genre> genres = null;
+        BigDecimal cost = null;
+        if (movieController.printAllMovie() != null) {
+            movieId = IOUtil.readNumber("\nSelect movie ID to update or enter \'0\' to return: ");
             if (movieId != 0 && (movie = movieController.getById(movieId)) != null) {
-                movieTitle = IOUtil.readString("Enter a new title for the movie to update " +
+                movieTitle = IOUtil.readString("\nEnter a new title for the movie to update " +
                         "or press \'ENTER\' key to continue: ");
                 movieTitle = movieTitle.equals("") ? movie.getName() : movieTitle;
-                genreController.getAll();
-                String genreStr = IOUtil.readString("Select genre ID to update or press \'ENTER\' key to continue: ");
-                if (genreStr.equals("")) {
-//                    genre = movie.getGenres().get(1);
-                } else {
-                    genre = genreController.getById(Long.parseLong(genreStr));
-                }
-                String costStr = IOUtil.readString("Enter a new cost for the movie to update " +
+                genres = selectGenre();
+                genres = genres.size() != 0 ? genres : movie.getGenres();
+                String costStr = IOUtil.readString("\nEnter a new cost for the movie to update " +
                         "or press \'ENTER\' key to continue: ");
-                if (costStr.equals("")) {
-                    cost = movie.getCost();
-                } else {
-                    cost = new BigDecimal(costStr);
-                }
+                cost = costStr.equals("") ? movie.getCost() : new BigDecimal(costStr);
             }
-            movieController.updateMovie(movieId, movieTitle, genre, cost);
         }
+        movieController.updateMovie(movieId, movieTitle, genres, cost);
+    }
+
+    private Set<Genre> selectGenre() {
+        long genreId;
+        Genre genre;
+        Set<Genre> genres = new HashSet<>();
+        if (genreController.printGenre().size() != 0) {
+            do {
+                genreId = IOUtil.readNumber("Select genre ID or \'0\' to continue:");
+                if (genreId != 0 && (genre = genreController.getById(genreId)) != null) {
+                    if (genres.size() == 0) {
+                        genres.add(genre);
+                        genreController.printGenre();
+                    } else {
+                        long finalGenreId = genreId;
+                        Genre result = genres.stream()
+                                .filter(genreItem -> genreItem.getId() == finalGenreId)
+                                .findFirst()
+                                .orElse(null);
+                        if (result != null) {
+                            System.out.println("\nSuch genre already exist.");
+                            break;
+                        } else {
+                            genres.add(genre);
+                            genreController.printGenre();
+                        }
+                    }
+                } else if (genreId != 0 && genreController.getById(genreId) == null) {
+                    System.out.println("\nSuch genre does'n exist. \nPlease try again.");
+                }
+            } while (genreId != 0);
+        }
+        return genres;
     }
 
     private void updateSeat() {

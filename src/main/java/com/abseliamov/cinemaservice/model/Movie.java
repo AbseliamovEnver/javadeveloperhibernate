@@ -5,8 +5,9 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "movies")
@@ -21,16 +22,16 @@ public class Movie extends GenericModel {
     private List<Ticket> tickets;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
+    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "movie_genres",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "genre_id"))
-    private List<Genre> genres = new ArrayList<>();
+    private Set<Genre> genres = new HashSet<>();
 
     public Movie() {
     }
 
-    public Movie(long id, String title, List<Genre> genres, BigDecimal cost) {
+    public Movie(long id, String title, Set<Genre> genres, BigDecimal cost) {
         super(id, title);
         this.genres = genres;
         this.cost = cost;
@@ -41,11 +42,17 @@ public class Movie extends GenericModel {
         this.cost = totalPrice;
     }
 
-    public List<Genre> getGenres() {
+    public Movie(String title, Set<Genre> genres, BigDecimal totalPrice) {
+        super(title);
+        this.genres = genres;
+        this.cost = totalPrice;
+    }
+
+    public Set<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(Set<Genre> genres) {
         this.genres = genres;
     }
 

@@ -6,6 +6,7 @@ import com.abseliamov.cinemaservice.service.MovieService;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 public class MovieController {
     private MovieService movieService;
@@ -14,7 +15,7 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    public void createMovie(String movieTitle, List<Genre> genres) {
+    public void createMovie(String movieTitle, Set<Genre> genres) {
         movieService.createMovie(movieTitle, genres);
     }
 
@@ -28,8 +29,8 @@ public class MovieController {
         return movieService.getAll();
     }
 
-    public void updateMovie(long movieId, String movieTitle, Genre genre, BigDecimal cost) {
-        movieService.update(movieId, movieTitle, genre, cost);
+    public void updateMovie(long movieId, String movieTitle, Set<Genre> genres, BigDecimal cost) {
+        movieService.update(movieId, movieTitle, genres, cost);
     }
 
     public void deleteMovie(long movieId) {
@@ -42,14 +43,6 @@ public class MovieController {
 
     public boolean reduceCostMovie(BigDecimal ticketCost, Movie movie) {
         return movieService.reduceCostMovie(ticketCost, movie);
-    }
-
-    public void searchMostProfitableMovie() {
-        movieService.searchMostProfitableMovie();
-    }
-
-    public void searchLeastProfitableMovie() {
-        movieService.searchLeastProfitableMovie();
     }
 
     public List<Movie> printAllMovie() {

@@ -344,7 +344,7 @@ public class TicketService {
     }
 
     private void printTicketWithStatus(List<Ticket> tickets) {
-        int firstGenre;
+        Genre firstGenre;
         if (tickets != null) {
             System.out.println("\n|--------------------------------------------------------------------" +
                     "--------------------------------------------------------------|");
@@ -356,29 +356,27 @@ public class TicketService {
             System.out.println("|-------|------------------------------|-------------------|------------|----------" +
                     "|-----------|-------------|---------|-----------|");
             for (Ticket ticket : tickets) {
-                firstGenre = 0;
+                firstGenre = ticket.getMovie().getGenres().iterator().next();
                 if (ticket.getMovie().getGenres().size() > 1) {
                     System.out.printf("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-9s%-1s\n",
                             " ", ticket.getId(), ticket.getMovie().getName(),
-                            ticket.getMovie().getGenres().get(0).getName(),
+                            firstGenre.getName(),
                             ticket.getDateTime().toLocalDate().format(dateFormatter),
                             ticket.getDateTime().toLocalTime().format(timeFormatter),
                             ticket.getSeat().getSeatTypes(), ticket.getSeat().getNumber(),
                             ticket.getPrice(), ticket.getStatus());
                     for (Genre genre : ticket.getMovie().getGenres()) {
-                        if (firstGenre == 0) {
-                            firstGenre = 1;
+                        if (genre.equals(firstGenre)) {
                             continue;
                         }
-                        System.out.printf("%-41s%-1s\n",
-                                " ", genre.getName());
+                        System.out.printf("%-41s%-1s\n", " ", genre.getName());
                     }
                     System.out.println("|-------|------------------------------|-------------------|------------|" +
                             "----------|-----------|-------------|---------|-----------|");
                 } else {
                     System.out.printf("%-2s%-8s%-31s%-20s%-13s%-11s%-16s%-11s%-9s%-1s\n%-1s\n",
                             " ", ticket.getId(), ticket.getMovie().getName(),
-                            ticket.getMovie().getGenres().get(0).getName(),
+                            firstGenre.getName(),
                             ticket.getDateTime().toLocalDate().format(dateFormatter),
                             ticket.getDateTime().toLocalTime().format(timeFormatter),
                             ticket.getSeat().getSeatTypes(), ticket.getSeat().getNumber(),
@@ -393,9 +391,9 @@ public class TicketService {
     }
 
     private void printMovieByRequest(Ticket ticket, String request) {
-        StringBuilder genres = new StringBuilder();
-        int firstGenre = 0;
+        Genre firstGenre;
         if (ticket != null) {
+            firstGenre = ticket.getMovie().getGenres().iterator().next();
             System.out.println("\n|-----------------------------------------------------------------------------------------|");
             System.out.printf("%-25s%-1s\n", " ", request.toUpperCase());
             System.out.println("|-----------------------------------------------------------------------------------------|");
@@ -403,26 +401,20 @@ public class TicketService {
                     " ", "MOVIE ID", "MOVIE TITLE", "GENRE", "QUARTER COST", "TOTAL COST");
             System.out.println("|----------|------------------------------|-------------------|--------------|------------|");
             if (ticket.getMovie().getGenres().size() > 1) {
+                System.out.printf("%-2s%-11s%-31s%-21s%-16s%-1s\n",
+                        " ", ticket.getMovie().getId(), ticket.getMovie().getName(),
+                        firstGenre.getName(), ticket.getPrice(), ticket.getMovie().getCost());
                 for (Genre genre : ticket.getMovie().getGenres()) {
-                    if (firstGenre == 0) {
-                        firstGenre = 1;
+                    if (genre.equals(firstGenre)) {
                         continue;
                     }
-                    genres.append(genre.getName());
-                    genres.append("\n");
+                    System.out.printf("%-41s%-1s\n", " ", genre.getName());
                 }
-                System.out.printf("%-2s%-11s%-31s%-21s%-16s%-1s\n%-44s%-1s%1s",
-                        " ", ticket.getMovie().getId(), ticket.getMovie().getName(),
-                        ticket.getMovie().getGenres().get(0).getName(),
-                        ticket.getPrice(),
-                        ticket.getMovie().getCost(), " ", genres,
-                        "|----------|------------------------------|-------------------|--------------|------------|");
+                System.out.println("|----------|------------------------------|-------------------|--------------|------------|");
             } else {
                 System.out.printf("%-2s%-11s%-31s%-21s%-16s%-1s\n%-1s",
                         " ", ticket.getMovie().getId(), ticket.getMovie().getName(),
-                        ticket.getMovie().getGenres().get(0).getName(),
-                        ticket.getPrice(),
-                        ticket.getMovie().getCost(),
+                        firstGenre.getName(), ticket.getPrice(), ticket.getMovie().getCost(),
                         "|----------|------------------------------|-------------------|--------------|------------|");
             }
         }

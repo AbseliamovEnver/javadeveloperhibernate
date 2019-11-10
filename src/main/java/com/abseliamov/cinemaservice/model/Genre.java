@@ -1,8 +1,5 @@
 package com.abseliamov.cinemaservice.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +9,7 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "genre_id"))
 public class Genre extends GenericModel {
 
-    @ManyToMany(mappedBy = "genres", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.EAGER)
     private List<Movie> movies = new ArrayList<>();
 
     public Genre() {
