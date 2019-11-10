@@ -69,10 +69,10 @@ public class GenreService {
                 .orElse(null);
         if (genre == null) {
             if (genreDao.update(genreId, new Genre(genreId, updateGenreName))) {
-                System.out.println("Update successfully.");
+                System.out.println("\nUpdate successfully.");
             }
         } else {
-            System.out.println("Genre with name \'" + updateGenreName + "\' already exists.");
+            System.out.println("\nGenre with name \'" + updateGenreName + "\' already exists.");
         }
     }
 

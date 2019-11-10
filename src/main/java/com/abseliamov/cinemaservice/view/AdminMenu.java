@@ -80,7 +80,7 @@ public class AdminMenu extends ViewerMenu {
         while (true) {
             if (createMenuItem == -1) {
                 IOUtil.printMenuItem(MenuContent.getAdminMenuCreate());
-                createMenuItem = IOUtil.getValidLongInputData("Select CREATE MENU item: ");
+                createMenuItem = IOUtil.getValidLongInputData("Select CREATE MENU item or enter \'0\' to return: ");
             }
             switch ((int) createMenuItem) {
                 case 0:
@@ -160,7 +160,7 @@ public class AdminMenu extends ViewerMenu {
         while (true) {
             if (updateMenuItem == -1) {
                 IOUtil.printMenuItem(MenuContent.getAdminMenuUpdate());
-                updateMenuItem = IOUtil.getValidLongInputData("Select UPDATE MENU item: ");
+                updateMenuItem = IOUtil.getValidLongInputData("Select UPDATE MENU item or enter \'0\' to return: ");
             }
             switch ((int) updateMenuItem) {
                 case 0:
@@ -200,7 +200,7 @@ public class AdminMenu extends ViewerMenu {
         while (true) {
             if (deleteMenuItem == -1) {
                 IOUtil.printMenuItem(MenuContent.getAdminMenuDelete());
-                deleteMenuItem = IOUtil.getValidLongInputData("Select DELETE MENU item: ");
+                deleteMenuItem = IOUtil.getValidLongInputData("Select DELETE MENU item or enter \'0\' to return: ");
             }
             switch ((int) deleteMenuItem) {
                 case 0:
@@ -345,10 +345,10 @@ public class AdminMenu extends ViewerMenu {
 
     private void updateGenre() {
         String updateGenreName;
-        if (genreController.getAll() != null) {
-            long genreId = IOUtil.readNumber("Select genre ID to update or enter \'0\' to return: ");
+        if (genreController.printGenre() != null) {
+            long genreId = IOUtil.readNumber("\nSelect genre ID to update or enter \'0\' to return: ");
             if (genreId != 0 && genreController.getById(genreId) != null) {
-                updateGenreName = IOUtil.readString("Enter a new name for the genre to update: ");
+                updateGenreName = IOUtil.readString("\nEnter a new name for the genre to update: ");
                 genreController.updateGenre(genreId, updateGenreName);
             }
         }
