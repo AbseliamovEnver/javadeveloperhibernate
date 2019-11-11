@@ -61,7 +61,11 @@ public class ViewerController {
         return viewerService.printAllRoles();
     }
 
-    public void printAllViewer() {
-        viewerService.printAllViewer();
+    public List<Viewer> printAllViewer() {
+        return viewerService.printAllViewer();
+    }
+
+    public Role getRoleById(long roleId) {
+        return viewerService.getRoleById(roleId);
     }
 }

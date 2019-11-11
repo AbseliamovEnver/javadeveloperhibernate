@@ -87,8 +87,10 @@ public class ViewerService {
                 .orElse(null);
         if (viewer == null) {
             if (viewerDao.update(viewerId, updateViewer)) {
-                System.out.println("Update successfully.");
+                System.out.println("\nUpdate successfully.");
             }
+        }else {
+            System.out.println("\nSuch user already exist.");
         }
     }
 
@@ -265,5 +267,13 @@ public class ViewerService {
         } else {
             System.out.println("At your request viewers not found\n");
         }
+    }
+
+    public Role getRoleById(long roleId) {
+        List<Role> roles = Arrays.asList(Role.values());
+        return roles.stream().
+                filter(role -> role.getId() == roleId).
+                findFirst().
+                orElse(null);
     }
 }

@@ -411,26 +411,26 @@ public class AdminMenu extends ViewerMenu {
     private void updateViewer() {
         Viewer viewer;
         Role role;
-        if (viewerController.getAll() != null) {
-            long viewerId = IOUtil.readNumber("Select viewer ID to update or enter \'0\' to return: ");
+        if (viewerController.printAllViewer() != null) {
+            long viewerId = IOUtil.readNumber("\nSelect viewer ID to update or enter \'0\' to return: ");
             if (viewerId != 0 && (viewer = viewerController.getById(viewerId)) != null) {
-                String firstName = IOUtil.readString("Enter a new first name to update " +
+                String firstName = IOUtil.readString("\nEnter a new first name to update " +
                         "or press \'ENTER\' key to continue: ");
-                String lastName = IOUtil.readString("Enter a new last name to update " +
+                String lastName = IOUtil.readString("\nEnter a new last name to update " +
                         "or press \'ENTER\' key to continue: ");
-                String password = IOUtil.readString("Enter a new password to update " +
+                String password = IOUtil.readString("\nEnter a new password to update " +
                         "or press \'ENTER\' key to continue: ");
-                LocalDate birthday = IOUtil.readDate("Enter a new birthday in format dd-mm-yyyy " +
+                LocalDate birthday = IOUtil.readDate("\nEnter a new birthday in format dd-mm-yyyy " +
                         "or enter \'0\' to continue: ");
-                roleController.printAllRoles();
-                long roleId = IOUtil.readNumber("Select a new role ID to update " +
+                viewerController.printAllRoles();
+                long roleId = IOUtil.readNumber("\nSelect a new role ID to update " +
                         "or enter \'0\' to continue: ");
                 firstName = firstName.equals("") ? viewer.getFirstName() : firstName;
                 lastName = lastName.equals("") ? viewer.getLastName() : lastName;
                 password = password.equals("") ? viewer.getPassword() : password;
                 birthday = birthday == null ? viewer.getBirthday() : birthday;
                 roleId = roleId == 0 ? viewer.getRole().getId() : roleId;
-                if ((role = roleController.getById(roleId)) != null) {
+                if ((role = viewerController.getRoleById(roleId)) != null) {
                     viewerController.updateViewer(viewerId, firstName, lastName,
                             password, birthday, role);
                 }

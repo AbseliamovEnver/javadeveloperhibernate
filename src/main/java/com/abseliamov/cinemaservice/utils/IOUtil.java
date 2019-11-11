@@ -1,5 +1,6 @@
 package com.abseliamov.cinemaservice.utils;
 
+import com.google.protobuf.TextFormat;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
@@ -8,6 +9,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Locale;
 
@@ -96,6 +98,9 @@ public class IOUtil {
                 } else {
                     return null;
                 }
+            } catch (DateTimeParseException d) {
+                System.out.println("Incorrect date. Please try again.");
+                return null;
             } catch (IOException e) {
                 System.out.println("Error read from console " + e);
             }
