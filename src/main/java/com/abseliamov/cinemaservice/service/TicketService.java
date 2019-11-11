@@ -408,7 +408,7 @@ public class TicketService {
                     if (genre.equals(firstGenre)) {
                         continue;
                     }
-                    System.out.printf("%-41s%-1s\n", " ", genre.getName());
+                    System.out.printf("%-44s%-1s\n", " ", genre.getName());
                 }
                 System.out.println("|----------|------------------------------|-------------------|--------------|------------|");
             } else {

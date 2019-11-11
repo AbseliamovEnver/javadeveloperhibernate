@@ -8,4 +8,5 @@
 
     <include file="src/main/resources/data/changelog/ver_1/db.changelog-1.0.0-create-structure.xml"/>
     <include file="src/main/resources/data/changelog/ver_1/db.changelog-1.0.1-init.xml"/>
+    <include file="src/main/resources/data/changelog/ver_1/db.changelog-1.0.2-insert.xml"/>
 </databaseChangeLog>

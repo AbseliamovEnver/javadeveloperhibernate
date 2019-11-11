@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="insert_genres" author="enver">
+        <insert tableName="genres">
+            <column name="name" value="Comedy"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="name" value="Parody"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="name" value="Crime"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="name" value="Fantasy"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="name" value="Historical"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="name" value="Action"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_movies" author="enver">
+        <insert tableName="movies">
+            <column name="title" value="Matrix"/>
+            <column name="total_cost" value="20.0"/>
+        </insert>
+        <insert tableName="movies">
+            <column name="title" value="Contratiempo"/>
+            <column name="total_cost" value="25.0"/>
+        </insert>
+        <insert tableName="movies">
+            <column name="title" value="Fracture"/>
+            <column name="total_cost" value="30.0"/>
+        </insert>
+        <insert tableName="movies">
+            <column name="title" value="Unforgiven"/>
+            <column name="total_cost" value="35.0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_movie_genres" author="enver">
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="1"/>
+            <column name="genre_id" value="1"/>
+        </insert>
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="1"/>
+            <column name="genre_id" value="2"/>
+        </insert>
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="2"/>
+            <column name="genre_id" value="3"/>
+        </insert>
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="2"/>
+            <column name="genre_id" value="4"/>
+        </insert>
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="3"/>
+            <column name="genre_id" value="5"/>
+        </insert>
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="3"/>
+            <column name="genre_id" value="6"/>
+        </insert>
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="4"/>
+            <column name="genre_id" value="5"/>
+        </insert>
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="5"/>
+            <column name="genre_id" value="7"/>
+        </insert>
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="6"/>
+            <column name="genre_id" value="3"/>
+        </insert>
+        <insert tableName="movie_genres">
+            <column name="movie_id" value="7"/>
+            <column name="genre_id" value="6"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_seats" author="enver">
+        <insert tableName="seats">
+            <column name="number" value="4"/>
+            <column name="seat_type" value="VIP"/>
+        </insert>
+        <insert tableName="seats">
+            <column name="number" value="5"/>
+            <column name="seat_type" value="VIP"/>
+        </insert>
+        <insert tableName="seats">
+            <column name="number" value="6"/>
+            <column name="seat_type" value="VIP"/>
+        </insert>
+        <insert tableName="seats">
+            <column name="number" value="4"/>
+            <column name="seat_type" value="STANDARD"/>
+        </insert>
+        <insert tableName="seats">
+            <column name="number" value="5"/>
+            <column name="seat_type" value="STANDARD"/>
+        </insert>
+        <insert tableName="seats">
+            <column name="number" value="6"/>
+            <column name="seat_type" value="STANDARD"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_viewers" author="enver">
+        <insert tableName="viewers">
+            <column name="first_name" value="admin_1"/>
+            <column name="last_name" value="admin_1"/>
+            <column name="password" value="admin_1"/>
+            <column name="birthday" value="2000-01-01"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="admin_2"/>
+            <column name="last_name" value="admin_2"/>
+            <column name="password" value="admin_2"/>
+            <column name="birthday" value="1990-01-01"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="admin_3"/>
+            <column name="last_name" value="admin_3"/>
+            <column name="password" value="admin_3"/>
+            <column name="birthday" value="1992-01-01"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="admin_4"/>
+            <column name="last_name" value="admin_4"/>
+            <column name="password" value="admin_4"/>
+            <column name="birthday" value="1993-01-01"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="admin_5"/>
+            <column name="last_name" value="admin_5"/>
+            <column name="password" value="admin_5"/>
+            <column name="birthday" value="1997-01-01"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="admin_6"/>
+            <column name="last_name" value="admin_6"/>
+            <column name="password" value="admin_6"/>
+            <column name="birthday" value="2002-01-01"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="viewer_1"/>
+            <column name="last_name" value="viewer_1"/>
+            <column name="password" value="viewer_1"/>
+            <column name="birthday" value="2003-01-01"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="viewer_2"/>
+            <column name="last_name" value="viewer_2"/>
+            <column name="password" value="viewer_2"/>
+            <column name="birthday" value="2005-01-01"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="viewer_3"/>
+            <column name="last_name" value="viewer_3"/>
+            <column name="password" value="viewer_3"/>
+            <column name="birthday" value="2004-01-01"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="viewer_4"/>
+            <column name="last_name" value="viewer_4"/>
+            <column name="password" value="viewer_4"/>
+            <column name="birthday" value="2010-01-01"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="viewer_5"/>
+            <column name="last_name" value="viewer_5"/>
+            <column name="password" value="viewer_5"/>
+            <column name="birthday" value="2014-01-01"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="some_user_1"/>
+            <column name="last_name" value="some_user_1"/>
+            <column name="password" value="some_user_1"/>
+            <column name="birthday" value="2003-10-15"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="some_user_2"/>
+            <column name="last_name" value="some_user_2"/>
+            <column name="password" value="some_user_2"/>
+            <column name="birthday" value="2013-04-26"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="some_user_3"/>
+            <column name="last_name" value="some_user_3"/>
+            <column name="password" value="some_user_3"/>
+            <column name="birthday" value="2007-07-09"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="some_user_4"/>
+            <column name="last_name" value="some_user_4"/>
+            <column name="password" value="some_user_4"/>
+            <column name="birthday" value="2011-09-12"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="viewers">
+            <column name="first_name" value="some_user_5"/>
+            <column name="last_name" value="some_user_5"/>
+            <column name="password" value="some_user_5"/>
+            <column name="birthday" value="2012-11-11"/>
+            <column name="role" value="USER"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_tickets" author="enver">
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-20 09:00:00"/>
+            <column name="movie_id" value="4"/>
+            <column name="seat_id" value="1"/>
+            <column name="price" value="6.0"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="viewer_id" value="1"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-20 09:00:00"/>
+            <column name="movie_id" value="4"/>
+            <column name="seat_id" value="2"/>
+            <column name="price" value="6.0"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="viewer_id" value="1"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-20 09:00:00"/>
+            <column name="movie_id" value="4"/>
+            <column name="seat_id" value="3"/>
+            <column name="price" value="6.0"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="viewer_id" value="1"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-20 09:00:00"/>
+            <column name="movie_id" value="4"/>
+            <column name="seat_id" value="4"/>
+            <column name="price" value="6.0"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="viewer_id" value="1"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-20 09:00:00"/>
+            <column name="movie_id" value="4"/>
+            <column name="seat_id" value="5"/>
+            <column name="price" value="6.0"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="viewer_id" value="1"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-20 09:00:00"/>
+            <column name="movie_id" value="4"/>
+            <column name="seat_id" value="6"/>
+            <column name="price" value="6.0"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="viewer_id" value="1"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-13 09:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="7"/>
+            <column name="price" value="4.5"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="2"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-15 09:00:00"/>
+            <column name="movie_id" value="4"/>
+            <column name="seat_id" value="8"/>
+            <column name="price" value="4.5"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="2"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-20 09:00:00"/>
+            <column name="movie_id" value="5"/>
+            <column name="seat_id" value="10"/>
+            <column name="price" value="4.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="2"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-14 09:00:00"/>
+            <column name="movie_id" value="5"/>
+            <column name="seat_id" value="2"/>
+            <column name="price" value="5.5"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-17 11:00:00"/>
+            <column name="movie_id" value="6"/>
+            <column name="seat_id" value="5"/>
+            <column name="price" value="3.5"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="6"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-18 11:00:00"/>
+            <column name="movie_id" value="7"/>
+            <column name="seat_id" value="10"/>
+            <column name="price" value="3.5"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="8"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-17 11:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="8"/>
+            <column name="price" value="3.5"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-16 15:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="9"/>
+            <column name="price" value="6.5"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-22 15:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="4"/>
+            <column name="price" value="6.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-10-09 15:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="6"/>
+            <column name="price" value="4.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-10-15 16:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="7"/>
+            <column name="price" value="3.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-12-05 17:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="3"/>
+            <column name="price" value="2.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-12-05 17:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="4"/>
+            <column name="price" value="2.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-12-05 17:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="5"/>
+            <column name="price" value="2.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-25 17:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="5"/>
+            <column name="price" value="2.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-27 21:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="6"/>
+            <column name="price" value="4.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-21 17:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="7"/>
+            <column name="price" value="3.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="5"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-11-13 17:00:00"/>
+            <column name="movie_id" value="2"/>
+            <column name="seat_id" value="7"/>
+            <column name="price" value="3.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="22"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2019-02-04 17:00:00"/>
+            <column name="movie_id" value="4"/>
+            <column name="seat_id" value="2"/>
+            <column name="price" value="5.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="3"/>
+        </insert>
+        <insert tableName="tickets">
+            <column name="date_time" value="2020-01-02 13:00:00"/>
+            <column name="movie_id" value="6"/>
+            <column name="seat_id" value="7"/>
+            <column name="price" value="8.0"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="viewer_id" value="10"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
