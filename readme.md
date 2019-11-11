@@ -1,4 +1,4 @@
-## Java Developer project with JDBS
+## Java Developer project with Hibernate
 
 ###Tasks:
 1. Implement a console application that emulates the work of a ticket office.
@@ -19,7 +19,8 @@
 ### Technology stack:
 1. Java 8
 2. MySQL
-3. JDBC
+3. Hibernate
 4. Maven
 5. Liquibase
+6. Log4j2
 
