@@ -391,16 +391,18 @@ public class AdminMenu extends ViewerMenu {
         SeatTypes seatType;
         long seatTypeId;
         if (seatController.getAll() != null) {
-            long seatId = IOUtil.readNumber("Select seat ID to update or enter \'0\' to return: ");
+            long seatId = IOUtil.readNumber("Select seat ID to update or enter \'0\' to continue: ");
             if (seatId != 0 && (seat = seatController.getById(seatId)) != null) {
-                seatTypesController.getAllSeatType();
-                String seatTypeStr = IOUtil.readString("Enter a new seat type to update " +
-                        "or press \'ENTER\' key to continue: ");
-                seatTypeId = seatTypeStr.equals("") ? seat.getSeatTypes().getId() : Long.parseLong(seatTypeStr);
-                if ((seatType = seatTypesController.getById(seatTypeId)) != null) {
+                seatController.printAllSeatType();
+                seatTypeId = IOUtil.readNumber("Select a new seat type ID or enter \'0\' to continue: ");
+                seatTypeId = seatTypeId == 0 ? seat.getSeatTypes().getId() : seatTypeId;
+                if ((seatType = seatController.getSeatTypeById(seatTypeId)) != null) {
                     long seatNumber = IOUtil.readNumber("Enter a new seat number to update " +
-                            "or press \'ENTER\' key to continue: ");
+                            "or press \'0\' key to continue: ");
+                    seatNumber = seatNumber == 0 ? seat.getNumber() : seatNumber;
                     seatController.updateSeat(seatId, seatType, seatNumber);
+                } else {
+                    System.out.println("Seat type with ID \'" + seatTypeId + "\' does't exist.");
                 }
             }
         }

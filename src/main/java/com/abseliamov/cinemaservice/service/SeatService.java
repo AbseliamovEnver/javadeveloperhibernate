@@ -4,6 +4,7 @@ import com.abseliamov.cinemaservice.dao.SeatDaoImpl;
 import com.abseliamov.cinemaservice.model.Seat;
 import com.abseliamov.cinemaservice.model.enums.SeatTypes;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,10 +57,10 @@ public class SeatService {
                 .orElse(null);
         if (seat == null) {
             if (seatDao.update(seatId, new Seat(seatId, seatType, seatNumber))) {
-                System.out.println("Update successfully.");
+                System.out.println("\nUpdate successfully.");
             }
         } else {
-            System.out.println("Seat with number \'" + seatNumber + "\' " +
+            System.out.println("\nSeat with number \'" + seatNumber + "\' " +
                     "and type " + seat.getSeatTypes() + " already exists.");
         }
     }
@@ -68,6 +69,14 @@ public class SeatService {
         if (seatDao.delete(seatId)) {
             System.out.println("Seat with id \'" + seatId + "\' deleted.");
         }
+    }
+
+    public SeatTypes getSeatTypeById(long seatTypeId) {
+        List<SeatTypes> seatTypes = Arrays.asList(SeatTypes.values());
+        return seatTypes.stream().
+                filter(seatTypesItem -> seatTypesItem.getId() == seatTypeId)
+                .findFirst()
+                .orElse(null);
     }
 
     private void printSeats(List<Seat> seats) {

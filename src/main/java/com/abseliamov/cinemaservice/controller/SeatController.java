@@ -42,4 +42,8 @@ public class SeatController {
     public Set<SeatTypes> printAllSeatType() {
         return seatService.printAllSeatType();
     }
+
+    public SeatTypes getSeatTypeById(long seatTypeId) {
+        return seatService.getSeatTypeById(seatTypeId);
+    }
 }
