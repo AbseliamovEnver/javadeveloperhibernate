@@ -50,7 +50,8 @@ public class Ticket {
         this.price = price;
     }
 
-    public Ticket(long id, LocalDateTime dateTime, Movie movie, Seat seat, double price, TicketStatus status, Viewer viewer) {
+    public Ticket(long id, LocalDateTime dateTime, Movie movie, Seat seat,
+                  double price, TicketStatus status, Viewer viewer) {
         this.id = id;
         this.dateTime = dateTime;
         this.movie = movie;

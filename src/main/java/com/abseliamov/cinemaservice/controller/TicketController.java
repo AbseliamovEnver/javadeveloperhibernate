@@ -3,6 +3,8 @@ package com.abseliamov.cinemaservice.controller;
 import com.abseliamov.cinemaservice.model.Movie;
 import com.abseliamov.cinemaservice.model.Seat;
 import com.abseliamov.cinemaservice.model.Ticket;
+import com.abseliamov.cinemaservice.model.Viewer;
+import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.service.TicketService;
 
 import java.time.LocalDate;
@@ -110,12 +112,16 @@ public class TicketController {
         return ticketService.printAllTicket();
     }
 
-    public void updateTicket(long ticketId, Movie movie, Seat seat, long buyStatus, double price,
-                             LocalDateTime dateTime) {
-        ticketService.update(ticketId, movie, seat, buyStatus, price, dateTime);
+    public void updateTicket(long ticketId, LocalDateTime dateTime, Movie movie, Seat seat,
+                             double price, TicketStatus status, Viewer viewer) {
+        ticketService.update(ticketId, dateTime, movie, seat, price, status, viewer);
     }
 
     public void deleteTicket(long ticketId) {
         ticketService.delete(ticketId);
+    }
+
+    public List<TicketStatus> printAllTicketStatus() {
+        return ticketService.printAllTicketStatus();
     }
 }

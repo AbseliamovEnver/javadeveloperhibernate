@@ -282,8 +282,13 @@ public class TicketService {
         return tickets;
     }
 
-    public void update(long ticketId, Movie movie, Seat seat, long buyStatus, double price, LocalDateTime dateTime) {
-
+    public void update(long ticketId, LocalDateTime dateTime, Movie movie, Seat seat,
+                       double price, TicketStatus status, Viewer viewer) {
+        if (ticketDao.update(ticketId, new Ticket(ticketId, dateTime, movie, seat, price, status, viewer))) {
+            System.out.println("Update successful");
+        } else {
+            System.out.println("Update not successful.");
+        }
     }
 
     public void delete(long ticketId) {
@@ -434,5 +439,23 @@ public class TicketService {
                     ticket.getViewer().getBirthday(),
                     "|-------|---------------------|----------------------|--------------|--------------|"));
         }
+    }
+
+    public List<TicketStatus> printAllTicketStatus() {
+        List<TicketStatus> statuses = Arrays.asList(TicketStatus.values());
+
+        System.out.println("\n|-------------------------|");
+        System.out.printf("%-3s%-1s\n", " ", "LIST OF TICKET STATUS");
+        System.out.println("|-------------------------|");
+        System.out.printf("%-3s%-7s%-1s\n", " ", "ID", "TICKET STATUS");
+        System.out.println("|-----|-------------------|");
+
+        statuses.stream()
+                .sorted()
+                .collect(Collectors.toList())
+                .forEach(ticketStatus -> System.out.printf("%-2s%-7s%-1s\n%-1s\n",
+                        " ", ticketStatus.getId(), ticketStatus.name(), "|-----|-------------------|"));
+
+        return statuses;
     }
 }

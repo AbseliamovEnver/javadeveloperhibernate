@@ -121,8 +121,10 @@ public class IOUtil {
                 } else {
                     return null;
                 }
+            } catch (DateTimeParseException d) {
+                System.out.println("\nError parse date and time. \nPlease try again.");
             } catch (IOException e) {
-                System.out.println("Error read from console " + e);
+                System.out.println("\nError read from console " + e);
             }
         }
     }

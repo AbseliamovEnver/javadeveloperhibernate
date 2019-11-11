@@ -4,6 +4,7 @@ import com.abseliamov.cinemaservice.controller.*;
 import com.abseliamov.cinemaservice.model.*;
 import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.model.enums.SeatTypes;
+import com.abseliamov.cinemaservice.model.enums.TicketStatus;
 import com.abseliamov.cinemaservice.utils.IOUtil;
 
 import java.math.BigDecimal;
@@ -439,36 +440,46 @@ public class AdminMenu extends ViewerMenu {
     }
 
     private void updateTicket() {
-        long ticketId, movieId, seatId, buyStatus;
+        long ticketId, movieId, seatId, ticketStatus, viewerId;
         double price;
         LocalDateTime dateTime;
         Ticket ticket;
         Movie movie;
         Seat seat;
+        TicketStatus status;
+        Viewer viewer;
         if (ticketController.printAllTicket() != null) {
-            ticketId = IOUtil.readNumber("Select ticket ID to update or enter \'0\' to return: ");
-            if (ticketId != 0 && (ticket = ticketController.getById(ticketId)) != null
-                    && movieController.getAll() != null) {
-                movieId = IOUtil.readNumber("Select new movie ID or enter \'0\' to continue: ");
+            ticketId = IOUtil.readNumber("\nSelect ticket ID to update or enter \'0\' to return: ");
+            if (ticketId != 0 && (ticket = ticketController.getById(ticketId)) != null) {
+                movieController.printAllMovie();
+                movieId = IOUtil.readNumber("\nSelect new movie ID or enter \'0\' to continue: ");
                 seatController.getAll();
-                seatId = IOUtil.readNumber("Select new seat ID or enter \'0\' to continue: ");
-                buyStatus = IOUtil.readNumber("Enter new buy status: ");
-                price = IOUtil.readPrice("Enter new price ticket: ");
-                dateTime = IOUtil.readDateTime("Enter new date and time in format dd-MM-yyyy HH-mm " +
+                seatId = IOUtil.readNumber("\nSelect new seat ID or enter \'0\' to continue: ");
+                ticketController.printAllTicketStatus();
+                ticketStatus = IOUtil.readNumber("\nSelect new status ID or enter \'0\' to continue: ");
+                price = IOUtil.readPrice("\nEnter new price ticket or enter \'0\' to continue:: ");
+                dateTime = IOUtil.readDateTime("\nEnter new date and time in format dd-MM-yyyy HH-mm " +
                         "or enter \'0\' to continue: ");
+                viewerController.printAllViewer();
+                viewerId = IOUtil.readNumber("\nSelect new viewer ID or enter \'0\' to continue: ");
 
-                if ((movie = movieController.getById(movieId)) != null &&
-                        (seat = seatController.getById(seatId)) != null) {
-                    dateTime = dateTime == null ? ticket.getDateTime() : dateTime;
-                    ticketController.updateTicket(ticketId, movie, seat, buyStatus, price, dateTime);
+                dateTime = dateTime != null ? dateTime : ticket.getDateTime();
+                movie = movieId != 0 ? movieController.getById(movieId) : ticket.getMovie();
+                seat = seatId != 0 ? seatController.getById(seatId) : ticket.getSeat();
+                price = price != 0 ? price : ticket.getPrice();
+                status = ticketStatus != 0 ? TicketStatus.getTicketStatus(ticketStatus) : ticket.getStatus();
+                viewer = viewerId != 0 ? viewerController.getById(viewerId) : ticket.getViewer();
+
+                if (movie != null && seat != null && viewer != null) {
+                    ticketController.updateTicket(ticketId, dateTime, movie, seat, price, status, viewer);
                 }
             }
         }
     }
 
     private void deleteGenre() {
-        if (genreController.getAll() != null) {
-            long genreId = IOUtil.readNumber("Select genre ID to delete or enter \'0\' to return: ");
+        if (genreController.printGenre() != null) {
+            long genreId = IOUtil.readNumber("\nSelect genre ID to delete or enter \'0\' to return: ");
             if (genreId != 0 && genreController.getById(genreId) != null) {
                 genreController.deleteGenre(genreId);
             }
@@ -476,7 +487,7 @@ public class AdminMenu extends ViewerMenu {
     }
 
     private void deleteMovie() {
-        if (movieController.getAll() != null) {
+        if (movieController.printAllMovie() != null) {
             long movieId = IOUtil.readNumber("Select movie ID to delete or enter \'0\' to return: ");
             if (movieId != 0 && movieController.getById(movieId) != null) {
                 movieController.deleteMovie(movieId);
@@ -494,7 +505,7 @@ public class AdminMenu extends ViewerMenu {
     }
 
     private void deleteViewer() {
-        if (viewerController.getAll() != null) {
+        if (viewerController.printAllViewer() != null) {
             long viewerId = IOUtil.readNumber("Select viewer ID to delete or enter \'0\' to return: ");
             if (viewerId != 0 && viewerController.getById(viewerId) != null) {
                 viewerController.deleteSeat(viewerId);
