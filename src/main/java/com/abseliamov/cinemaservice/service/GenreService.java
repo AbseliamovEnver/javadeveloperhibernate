@@ -78,7 +78,9 @@ public class GenreService {
 
     public void delete(long genreId) {
         if (genreDao.delete(genreId)) {
-            System.out.println("Genre with id \'" + genreId + "\' deleted.");
+            System.out.println("\nGenre with id \'" + genreId + "\' deleted.");
+        } else {
+            System.out.println("\nGenre with id \'" + genreId + "\' doesn't delete.");
         }
     }
 }

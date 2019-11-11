@@ -9,7 +9,17 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "genre_id"))
 public class Genre extends GenericModel {
 
-    @ManyToMany(mappedBy = "genres", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST},
+            targetEntity = Movie.class)
+    @JoinTable(name = "movie_genres",
+            joinColumns = @JoinColumn(name = "genre_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id"),
+            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
+            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     private List<Movie> movies = new ArrayList<>();
 
     public Genre() {

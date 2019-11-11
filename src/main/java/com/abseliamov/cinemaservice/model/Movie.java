@@ -21,11 +21,18 @@ public class Movie extends GenericModel {
     @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
     private List<Ticket> tickets;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST},
+            targetEntity = Genre.class)
     @Fetch(FetchMode.JOIN)
     @JoinTable(name = "movie_genres",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "genre_id"))
+            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "genre_id"),
+            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
+            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     private Set<Genre> genres = new HashSet<>();
 
     public Movie() {
