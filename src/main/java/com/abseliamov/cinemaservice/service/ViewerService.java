@@ -1,11 +1,9 @@
 package com.abseliamov.cinemaservice.service;
 
-import com.abseliamov.cinemaservice.dao.TicketDaoImpl;
 import com.abseliamov.cinemaservice.dao.ViewerDaoImpl;
 import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.model.Viewer;
 import com.abseliamov.cinemaservice.utils.CurrentViewer;
-import com.google.common.collect.Multimap;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,17 +12,15 @@ import java.util.stream.Collectors;
 
 public class ViewerService {
     private static final String ERROR_NAME_OR_PASSWORD =
-            "Please enter correct username and password or enter \'0\' to exit:";
+            "\nPlease enter correct username and password or enter \'0\' to exit:";
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd MMMM", Locale.ENGLISH);
     private CurrentViewer currentViewer;
     private ViewerDaoImpl viewerDao;
-    private TicketDaoImpl ticketDao;
 
-    public ViewerService(ViewerDaoImpl viewerDao, CurrentViewer currentViewer, TicketDaoImpl ticketDao) {
+    public ViewerService(ViewerDaoImpl viewerDao, CurrentViewer currentViewer) {
         this.viewerDao = viewerDao;
         this.currentViewer = currentViewer;
-        this.ticketDao = ticketDao;
     }
 
     public boolean createViewer(String firstName, String lastName, String password, Role role, LocalDate birthday) {
@@ -61,7 +57,7 @@ public class ViewerService {
                 currentViewer.setViewer(viewerExist);
                 checkUser = true;
             } else {
-                System.out.println("User with name \'" + name + "\' and password \'" + password + "\' does not exist.");
+                System.out.println("\nUser with name \'" + name + "\' and password \'" + password + "\' does not exist.");
                 System.out.println(ERROR_NAME_OR_PASSWORD);
             }
         }
@@ -89,14 +85,16 @@ public class ViewerService {
             if (viewerDao.update(viewerId, updateViewer)) {
                 System.out.println("\nUpdate successfully.");
             }
-        }else {
+        } else {
             System.out.println("\nSuch user already exist.");
         }
     }
 
     public void delete(long viewerId) {
         if (viewerDao.delete(viewerId)) {
-            System.out.println("Viewer with id \'" + viewerId + "\' deleted.");
+            System.out.println("\nViewer with id \'" + viewerId + "\' deleted.");
+        } else {
+            System.out.println("\nViewer with id \'" + viewerId + "\' doesn't delete.");
         }
     }
 
@@ -131,7 +129,7 @@ public class ViewerService {
                             "|-------|---------------------|----------------------|----------------" +
                                     "---|--------------|--------------|\n"));
         } else {
-            System.out.println("List viewers is empty.");
+            System.out.println("\nList viewers is empty.");
         }
     }
 
@@ -149,26 +147,8 @@ public class ViewerService {
                     .collect(Collectors.toList())
                     .forEach(System.out::println);
         } else {
-            System.out.println("List viewers is empty.");
+            System.out.println("\nList viewers is empty.");
         }
-    }
-
-    public List<Viewer> searchViewerMovieCountByGenre(long genreId) {
-        List<Viewer> viewers = viewerDao.searchViewerMovieCountByGenre(genreId);
-        printViewerByRequest(viewers);
-        return viewers;
-    }
-
-    public List<Viewer> searchViewersVisitingMovieInIntervalDaysFromBirthday() {
-        List<Viewer> viewers = viewerDao.searchViewersVisitingMovieInIntervalDaysFromBirthday();
-        printViewerByRequest(viewers);
-        return viewers;
-    }
-
-    public List<Viewer> searchViewerByComplexQuery(long genreId, double amount, List<LocalDate> dates) {
-        List<Viewer> viewers = viewerDao.searchViewerByComplexQuery(genreId, amount, dates);
-        printViewerByRequest(viewers);
-        return viewers;
     }
 
     public void searchDateWithSeveralViewersBirthday() {
@@ -208,23 +188,7 @@ public class ViewerService {
                 }
             }
         } else {
-            System.out.println("At your request viewers not found\n");
-        }
-    }
-
-    private void printViewerByRequest(List<Viewer> viewers) {
-        if (!viewers.isEmpty()) {
-            System.out.println("|------------------------------------------------------------|");
-            System.out.printf("%-27s%-1s\n", " ", "REQUEST RESULT");
-            System.out.println("|------------------------------------------------------------|");
-            System.out.printf("%-3s%-10s%-21s%-17s%-1s\n%-1s\n", " ", "ID", "FIRST NAME", "LAST NAME", "BIRTHDAY",
-                    "|------|-------------------|--------------------|------------|");
-            viewers.forEach(viewer -> System.out.printf("%-3s%-6s%-20s%-21s%-1s\n%-1s\n",
-                    " ", viewer.getId(), viewer.getFirstName(), viewer.getLastName(),
-                    formatter.format(viewer.getBirthday()),
-                    "|------|-------------------|--------------------|------------|"));
-        } else {
-            System.out.println("At your request viewers not found\n");
+            System.out.println("\nAt your request viewers not found\n");
         }
     }
 
@@ -240,33 +204,9 @@ public class ViewerService {
                     " ", role.getId(), role.name(),
                     "|------|-------------|"));
         } else {
-            System.out.println("List seats is empty.");
+            System.out.println("\nList seats is empty.");
         }
         return roles;
-    }
-
-    private void printMapWithListBirthday(Multimap<String, Viewer> dateListMap) {
-        if (!dateListMap.isEmpty()) {
-            System.out.println("|------------------------------------------------------------|");
-            System.out.printf("%-24s%-1s\n", " ", "REQUEST RESULT");
-            System.out.println("|------------------------------------------------------------|");
-            for (Map.Entry<String, Collection<Viewer>> mapDate : dateListMap.asMap().entrySet()) {
-                System.out.printf("%-2s%-39s%-1s\n%-1s\n", " ",
-                        "LIST OF VIEWERS WHO HAVE A BIRTHDAY ON ", mapDate.getKey(),
-                        "|------------------------------------------------------------|");
-                for (Viewer viewer : mapDate.getValue()) {
-                    System.out.printf("%-3s%-10s%-21s%-17s%-1s\n%-1s\n", " ",
-                            "ID", "FIRST NAME", "LAST NAME", "BIRTHDAY",
-                            "|------|-------------------|--------------------|------------|");
-                    System.out.printf("%-3s%-6s%-20s%-21s%-1s\n%-1s\n",
-                            " ", viewer.getId(), viewer.getFirstName(), viewer.getLastName(),
-                            formatter.format(viewer.getBirthday()),
-                            "|------|-------------------|--------------------|------------|");
-                }
-            }
-        } else {
-            System.out.println("At your request viewers not found\n");
-        }
     }
 
     public Role getRoleById(long roleId) {

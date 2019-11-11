@@ -5,7 +5,6 @@ import com.abseliamov.cinemaservice.model.enums.SeatTypes;
 import com.abseliamov.cinemaservice.service.SeatService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class SeatController {
@@ -25,10 +24,6 @@ public class SeatController {
 
     public List<Seat> getAll() {
         return seatService.getAll();
-    }
-
-    public List<Seat> getAllSeatType() {
-        return seatService.getAllSeatType();
     }
 
     public void updateSeat(long seatId, SeatTypes seatType, long seatNumber) {

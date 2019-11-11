@@ -18,7 +18,7 @@ public class Movie extends GenericModel {
     @Column(name = "total_cost", nullable = false)
     private BigDecimal cost;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Ticket> tickets;
 
     @ManyToMany(fetch = FetchType.EAGER,

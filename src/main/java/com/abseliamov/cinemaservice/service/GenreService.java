@@ -27,9 +27,9 @@ public class GenreService {
         }
         if (newGenre == null) {
             genreDao.add(new Genre(0, genreName));
-            System.out.println("Genre with name \'" + genreName + "\' successfully added.");
+            System.out.println("\nGenre with name \'" + genreName + "\' successfully added.");
         } else {
-            System.out.println("Such a genre already exists.");
+            System.out.println("\nSuch a genre already exists.");
         }
     }
 
@@ -56,7 +56,7 @@ public class GenreService {
             sortedGenreList.forEach(genre -> System.out.printf("%-2s%-8s%-1s\n%-1s\n",
                     " ", genre.getId(), genre.getName(), "|-------|----------------|"));
         } else {
-            System.out.println("Genre list is empty.");
+            System.out.println("\nGenre list is empty.");
         }
         return genreList;
     }

@@ -16,10 +16,6 @@ public class RoleController {
         return roleService.getAll();
     }
 
-    public List<Role> printAllRoles() {
-        return roleService.printAllRoles();
-    }
-
     public Role getById(long roleId) {
         return roleService.getById(roleId);
     }

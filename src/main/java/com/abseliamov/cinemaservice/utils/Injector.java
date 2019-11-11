@@ -44,12 +44,11 @@ public class Injector {
     private static TicketService ticketService = new TicketService(ticketDao, viewerDao, genreDao, currentViewer);
     private static TicketController ticketController = new TicketController(ticketService);
 
-    private static ViewerService viewerService = new ViewerService(viewerDao, currentViewer, ticketDao);
+    private static ViewerService viewerService = new ViewerService(viewerDao, currentViewer);
     private static ViewerController viewerController = new ViewerController(viewerService);
 
-
     private static ViewerMenu viewerMenu = new ViewerMenu(currentViewer, viewerController, ticketController,
-            genreController, seatController, seatTypesController, movieController);
+            genreController, seatController);
 
     private static AdminMenu adminMenu = new AdminMenu(genreController, movieController, seatController,
             viewerController, ticketController, seatTypesController, roleController, viewerMenu);

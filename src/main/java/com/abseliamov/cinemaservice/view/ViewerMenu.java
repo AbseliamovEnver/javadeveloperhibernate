@@ -20,22 +20,17 @@ public class ViewerMenu {
     private TicketController ticketController;
     private GenreController genreController;
     private SeatController seatController;
-    private SeatTypesController seatTypesController;
-    private MovieController movieController;
 
     public ViewerMenu() {
     }
 
     public ViewerMenu(CurrentViewer currentViewer, ViewerController viewerController, TicketController ticketController,
-                      GenreController genreController, SeatController seatController,
-                      SeatTypesController seatTypesController, MovieController movieController) {
+                      GenreController genreController, SeatController seatController) {
         this.currentViewer = currentViewer;
         this.viewerController = viewerController;
         this.ticketController = ticketController;
         this.genreController = genreController;
         this.seatController = seatController;
-        this.seatTypesController = seatTypesController;
-        this.movieController = movieController;
     }
 
     public long viewerMenu() {
@@ -314,23 +309,6 @@ public class ViewerMenu {
         } else {
             System.out.println("\nList of tickets is empty.");
         }
-    }
-
-    private boolean searchTicketByViewer() {
-        boolean ticketExist = false;
-        List<Viewer> viewerList;
-        if (currentViewer.getViewer().getRole() == Role.ADMIN) {
-            viewerList = viewerController.getAll();
-            long viewerId = IOUtil.readNumber("\nEnter viewer ID or \'0\' to return menu: ");
-            if (viewerId != 0 && confirmViewer(viewerList, viewerId)) {
-                if (ticketController.getAllTicketByViewerId(viewerId) != null) {
-                    ticketExist = true;
-                }
-            }
-        } else {
-            System.out.println("\nThis menu requires administrator rights\n.");
-        }
-        return ticketExist;
     }
 
     private long checkTicketAvailable(List<Ticket> ticketList) {

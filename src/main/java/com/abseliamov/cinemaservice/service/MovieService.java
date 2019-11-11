@@ -50,22 +50,10 @@ public class MovieService {
 
     public void delete(long movieId) {
         if (movieDao.delete(movieId)) {
-            System.out.println("Movie with id \'" + movieId + "\' deleted.");
+            System.out.println("\nMovie with id \'" + movieId + "\' deleted.");
+        }else {
+            System.out.println("\nMovie with id \'" + movieId + "\' doesn't delete.");
         }
-    }
-
-    public boolean increaseCostMovie(BigDecimal ticketCost, Movie movie) {
-        long movieId = movie.getId();
-        Movie newMovie = new Movie(movieId, movie.getName(), movie.getGenres(),
-                (movie.getCost()).add(ticketCost).setScale(2, RoundingMode.DOWN));
-        return movieDao.update(movieId, newMovie);
-    }
-
-    public boolean reduceCostMovie(BigDecimal ticketCost, Movie movie) {
-        long movieId = movie.getId();
-        Movie newMovie = new Movie(movieId, movie.getName(), movie.getGenres(),
-                movie.getCost().subtract(ticketCost).setScale(2, RoundingMode.DOWN));
-        return movieDao.update(movieId, newMovie);
     }
 
     public List<Movie> printAllMovie() {

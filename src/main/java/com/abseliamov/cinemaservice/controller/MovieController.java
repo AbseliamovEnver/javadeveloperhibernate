@@ -19,8 +19,6 @@ public class MovieController {
         movieService.createMovie(movieTitle, genres);
     }
 
-
-
     public Movie getById(long movieId) {
         return movieService.getById(movieId);
     }
@@ -35,14 +33,6 @@ public class MovieController {
 
     public void deleteMovie(long movieId) {
         movieService.delete(movieId);
-    }
-
-    public boolean increaseCostMovie(BigDecimal ticketCost, Movie movie) {
-        return movieService.increaseCostMovie(ticketCost, movie);
-    }
-
-    public boolean reduceCostMovie(BigDecimal ticketCost, Movie movie) {
-        return movieService.reduceCostMovie(ticketCost, movie);
     }
 
     public List<Movie> printAllMovie() {

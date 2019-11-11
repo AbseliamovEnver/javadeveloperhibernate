@@ -2,17 +2,11 @@ package com.abseliamov.cinemaservice.dao;
 
 import com.abseliamov.cinemaservice.exceptions.ConnectionException;
 import com.abseliamov.cinemaservice.model.Movie;
-import com.abseliamov.cinemaservice.utils.ConnectionUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-import java.math.RoundingMode;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MovieDaoImpl extends AbstractDao<Movie> {
     private static final Logger logger = LogManager.getLogger(MovieDaoImpl.class);

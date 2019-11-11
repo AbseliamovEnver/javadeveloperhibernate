@@ -101,7 +101,7 @@ public class TicketService {
                     .collect(Collectors.toList());
             printTicket(result);
         } else {
-            System.out.println("Tickets for this date is not found.");
+            System.out.println("\nTickets for this date is not found.");
         }
         return result;
     }
@@ -122,12 +122,7 @@ public class TicketService {
     }
 
     public Ticket getById(long ticketId) {
-        Ticket ticket = ticketDao.getById(ticketId);
-//        if (ticket.getStatus() == 0) {
-//            List<Ticket> list = Arrays.asList(ticket);
-//            printTicket(list);
-//        } else ticket = null;
-        return ticket;
+        return ticketDao.getById(ticketId);
     }
 
     public boolean buyTicket(long ticketId) {
@@ -186,8 +181,13 @@ public class TicketService {
     }
 
     public void searchMostProfitableMovie() {
+        Ticket ticket = null;
         List result = ticketDao.searchMostProfitableMovie();
-        Ticket ticket = (Ticket) result.get(0);
+        if (result.size() != 0) {
+            ticket = (Ticket) result.get(0);
+        } else {
+            System.out.println("\nList tickets is empty.");
+        }
         if (ticket != null) {
             printMovieByRequest(ticket, "THE MOST PROFITABLE FILM FOR THE LAST QUARTER");
         } else {
@@ -196,8 +196,13 @@ public class TicketService {
     }
 
     public void searchLeastProfitableMovie() {
+        Ticket ticket = null;
         List result = ticketDao.searchLeastProfitableMovie();
-        Ticket ticket = (Ticket) result.get(0);
+        if (result.size() != 0) {
+            ticket = (Ticket) result.get(0);
+        } else {
+            System.out.println("\nList tickets is empty.");
+        }
         if (ticket != null) {
             printMovieByRequest(ticket, "THE LEAST PROFITABLE FILM FOR THE LAST QUARTER");
         } else {
@@ -241,18 +246,6 @@ public class TicketService {
         return ticketDao.getById(ticketId);
     }
 
-    public List<Ticket> getAllTicketByViewerId(long viewerId) {
-        List<Ticket> ticketList = ticketDao.getAllTicketByViewerId(viewerId);
-        Viewer viewer = viewerDao.getById(viewerId);
-        if (ticketList.size() != 0) {
-            System.out.println("List of tickets of a viewer with a name \'" + viewer.getFirstName() + "\'.");
-            printTicket(ticketList);
-        } else {
-            System.out.println("List of tickets of a viewer with a name \'" + viewer.getFirstName() + "\' is empty.");
-        }
-        return ticketList;
-    }
-
     public Map<LocalDate, Long> printAllActiveTicketDate() {
         Map<LocalDate, Long> dateMap = new TreeMap<>();
         List<Ticket> ticketList = ticketDao.getAll();
@@ -262,7 +255,7 @@ public class TicketService {
                     .forEach(ticket -> dateMap.put(ticket.getDateTime().toLocalDate(), ticket.getId()));
             printAllDate(dateMap);
         } else {
-            System.out.println("Date list is empty.");
+            System.out.println("\nDate list is empty.");
         }
         return dateMap;
     }
@@ -285,15 +278,17 @@ public class TicketService {
     public void update(long ticketId, LocalDateTime dateTime, Movie movie, Seat seat,
                        double price, TicketStatus status, Viewer viewer) {
         if (ticketDao.update(ticketId, new Ticket(ticketId, dateTime, movie, seat, price, status, viewer))) {
-            System.out.println("Update successful");
+            System.out.println("\nUpdate successful");
         } else {
-            System.out.println("Update not successful.");
+            System.out.println("\nUpdate not successful.");
         }
     }
 
     public void delete(long ticketId) {
         if (ticketDao.delete(ticketId)) {
-            System.out.println("Ticket with id \'" + ticketId + "\' deleted.");
+            System.out.println("\nTicket with id \'" + ticketId + "\' deleted.");
+        } else {
+            System.out.println("\nTicket with id \'" + ticketId + "\' doesn't delete.");
         }
     }
 
@@ -319,10 +314,10 @@ public class TicketService {
                 printTicket(tickets);
                 ticketAvailable = true;
             } else {
-                System.out.println("Ticket with id \'" + ticketId + "\' has already been sold.");
+                System.out.println("\nTicket with id \'" + ticketId + "\' has already been sold.");
             }
         } else {
-            System.out.println("Ticket with id \'" + ticketId + "\' not available.\n" +
+            System.out.println("\nTicket with id \'" + ticketId + "\' not available.\n" +
                     "Please try again.");
         }
         return ticketAvailable;
@@ -344,7 +339,7 @@ public class TicketService {
                     .collect(Collectors.toList())
                     .forEach(System.out::println);
         } else {
-            System.out.println("At your request tickets available is not found");
+            System.out.println("\nAt your request tickets available is not found");
         }
     }
 
@@ -391,7 +386,7 @@ public class TicketService {
                 }
             }
         } else {
-            System.out.println("List tickets is empty.");
+            System.out.println("\nList tickets is empty.");
         }
     }
 

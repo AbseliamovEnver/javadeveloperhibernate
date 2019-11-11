@@ -19,7 +19,8 @@ public class Ticket {
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 

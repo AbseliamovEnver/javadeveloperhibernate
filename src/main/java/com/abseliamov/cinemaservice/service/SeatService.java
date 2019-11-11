@@ -42,12 +42,6 @@ public class SeatService {
         return seats;
     }
 
-    public List<Seat> getAllSeatType() {
-        List<Seat> seatTypes = seatDao.getAll();
-        printSeatTypes(seatTypes);
-        return seatTypes;
-    }
-
     public void update(long seatId, SeatTypes seatType, long seatNumber) {
         List<Seat> seats = seatDao.getAll();
         Seat seat = seats.stream()
@@ -67,7 +61,9 @@ public class SeatService {
 
     public void delete(long seatId) {
         if (seatDao.delete(seatId)) {
-            System.out.println("Seat with id \'" + seatId + "\' deleted.");
+            System.out.println("\nSeat with id \'" + seatId + "\' deleted.");
+        } else {
+            System.out.println("\nSeat with id \'" + seatId + "\' doesn't delete.");
         }
     }
 
@@ -90,12 +86,8 @@ public class SeatService {
                     " ", seat.getId(), seat.getNumber(), seat.getSeatTypes(),
                     "|------|--------|----------|"));
         } else {
-            System.out.println("List seats is empty.");
+            System.out.println("\nList seats is empty.");
         }
-    }
-
-    private void printSeatTypes(List<Seat> seats) {
-
     }
 
     public Set<SeatTypes> printAllSeatType() {
@@ -112,7 +104,7 @@ public class SeatService {
                     " ", seatType.getId(), seatType,
                     "|------|-------------|"));
         } else {
-            System.out.println("List seats is empty.");
+            System.out.println("\nList seats is empty.");
         }
         return seatTypes;
     }

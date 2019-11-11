@@ -1,10 +1,8 @@
 package com.abseliamov.cinemaservice.controller;
 
-import com.abseliamov.cinemaservice.model.Ticket;
 import com.abseliamov.cinemaservice.model.enums.Role;
 import com.abseliamov.cinemaservice.model.Viewer;
 import com.abseliamov.cinemaservice.service.ViewerService;
-import com.google.common.collect.Multimap;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,18 +37,6 @@ public class ViewerController {
 
     public void deleteSeat(long viewerId) {
         viewerService.delete(viewerId);
-    }
-
-    public List<Viewer> searchViewerMovieCountByGenre(long genreId) {
-        return viewerService.searchViewerMovieCountByGenre(genreId);
-    }
-
-    public List<Viewer> searchViewersVisitingMovieInIntervalDaysFromBirthday() {
-        return viewerService.searchViewersVisitingMovieInIntervalDaysFromBirthday();
-    }
-
-    public List<Viewer> searchViewerByComplexQuery(long genreId, double amount, List<LocalDate> dates) {
-        return viewerService.searchViewerByComplexQuery(genreId, amount, dates);
     }
 
     public void searchDateWithSeveralViewersBirthday() {

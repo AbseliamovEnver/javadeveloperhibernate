@@ -75,15 +75,6 @@ public class TicketController {
         ticketService.searchViewerByComplexQuery(genreId, amount, dates);
     }
 
-
-
-
-
-
-    public List<Ticket> getAllTicketByViewerId(long viewerId) {
-        return ticketService.getAllTicketByViewerId(viewerId);
-    }
-
     public Map<LocalDate, Long> printAllActiveTicketDate() {
         return ticketService.printAllActiveTicketDate();
     }
