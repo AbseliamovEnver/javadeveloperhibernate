@@ -18,7 +18,7 @@
         <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
         <java.version>8</java.version>
         <guava.version>18.0</guava.version>
-        <log4j.version>2.12.1</log4j.version>
+        <log4j.version>2.13.3</log4j.version>
 
         <liquibase-maven-plugin.version>3.8.0</liquibase-maven-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
