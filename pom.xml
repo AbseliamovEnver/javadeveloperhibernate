@@ -15,7 +15,7 @@
         <hibernate-c3p0.version>5.4.7.Final</hibernate-c3p0.version>
         <liquibase-core.version>3.8.0</liquibase-core.version>
         <liquibase-hibernate5.version>3.8</liquibase-hibernate5.version>
-        <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <java.version>8</java.version>
         <guava.version>18.0</guava.version>
         <log4j.version>2.12.1</log4j.version>
